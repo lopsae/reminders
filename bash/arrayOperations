@@ -45,7 +45,6 @@ echo "\${arrayCopy[@]}: ${arrayCopy[@]}"
 echo "\${arrayCopy[2]}: ${arrayCopy[2]}"
 echo
 
-
 # Or other arrays concatenated, same rules as copying apply
 # Appending one item is actually contatenating a one-element-array
 goodConcat=("${array[@]}")
@@ -78,4 +77,14 @@ for value in ${goodConcat[@]}; do
 	echo "loop with \${goodConcat[@]}: $value"
 done
 echo
+
+# For appending, the empty array does make a difference
+emptyStart=()
+fillyStart=''
+
+emptyStart+=("i am the one that is")
+fillyStart+=("i am the one that is")
+
+echo "\${#emptyStart[@]}: ${#emptyStart[@]}"
+echo "\${#fillyStart[@]}: ${#fillyStart[@]}"
 
