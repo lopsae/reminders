@@ -4,6 +4,15 @@ echo Suggested serving
 echo './paramsVariables first "second element" "and   third"'
 echo
 
+if [[ $# = 0 ]]; then
+	echo 'No params provided'
+	echo 'defaulting to: first "second element" "and   third"'
+	# Set of a variable with multiple elements can be done with an array
+	params=(first 'second element' 'and   third')
+	set -- "${params[@]}"
+	echo
+fi
+
 
 echo 'Inside quotes spaces are respected'
 echo "\"\$@\": $@"
@@ -72,6 +81,8 @@ echo
 
 
 echo 'Setting IFS to | also makes `for` work with $* as with $@'
+# This may be because $* splits by IFS, thus for with IFS works, it is
+# literaly the same split character
 IFS='|'
 for item in $*; do
 	echo "IFS=| \$*: $item"
