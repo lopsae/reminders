@@ -1,13 +1,80 @@
 #!/bin/bash
 
-# How to modify do a for loop with \n as separator
+read -d '' multiline <<"HEREDOC"
+Aperture
+The partially enclosed,
+somewhat       rounded
+negative space in some
+characters.
+HEREDOC
 
-cosa=`ls -al`
-
-IFS=$'\n'
-for item in $cosa; do
-	echo "for> $item"
+# By default the for loop will separate by any space
+for item in $multiline; do
+	echo "for \$multiline: $item"
 done
+echo
 
-echo 'Ended'
+# Quoting will make the for take it as a single item
+for item in "$multiline"; do
+	echo "for \"\$multiline\": $item"
+done
+echo
+
+# Setting IFS to \n will provide the proper separations
+IFS=$'\n'
+for item in $multiline; do
+	echo "IFS \$multiline: $item"
+done
+unset IFS
+echo
+
+# But quoting, even with IFS will again become a single item
+IFS=$'\n'
+for item in "$multiline"; do
+	echo "IFS \"\$multiline\": $item"
+done
+unset IFS
+echo
+
+
+array=(first 'second element') # "and   the\nthird")
+# The things one have to do to add a multiline element
+array+=("$(echo -e "and   the\nthird")")
+# Or this
+newLine=$'\n'
+array+=("fourth${newLine}one")
+
+
+# $array returns only the first element
+for item in $array; do
+	echo "for \$array: $item"
+done
+echo
+
+# This is also an error
+for item in $array[@]; do
+	echo "for \$array[@]: $item"
+done
+echo
+
+# Aaaalso an error, since it will split by all spaces
+for item in ${array[@]}; do
+	echo "for \${array[@]}: $item"
+done
+echo
+
+# Proper syntax with ALL the symbols properly splits by elements
+for item in "${array[@]}"; do
+	echo "for \"\${array[@]}\": $item"
+done
+echo
+
+# With arrays IFS makes no difference
+IFS=$'\n'
+for item in "${array[@]}"; do
+	echo "IFS \"\${array[@]}\": $item"
+done
+unset IFS
+echo
+
 
