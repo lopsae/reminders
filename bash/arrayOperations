@@ -3,66 +3,79 @@
 # an empty array can be initialized with ()
 # there is realy no use to this, it matches equality with non-definied vars
 # and empty strings ''
-cosa=()
+array=()
 
 # it can contain intems separated by spaces or surrounded by quotes
-maic=('maic' 'lopez saenz')
-cosa=(cosa nostra)
+array=(one two)
+yarra=(first 'second element' 'and   the   third')
 
-echo "maic[1]: ${maic[1]}"
-echo "cosa[1]: ${cosa[1]}"
+# $varname returns the first element in an array, same with {} notation
+echo "\$array: $array"
+echo "\${yarra}: ${yarra}"
+echo
+
+# To return all elements use the {} notation and access [@]
+echo "\${array[@]}: ${array[@]}"
+echo "\${yarra[@]}: ${yarra[@]}"
+echo
+
+# Access specific elements with [#]
+echo "\${array[0]}: ${array[0]}"
+echo "\${yarra[1]}: ${yarra[1]}"
+echo "\${yarra[2]}: ${yarra[2]}"
+# Unexisting elements print nothing
+echo "\${array[3]}: ${array[3]}"
 echo
 
 
 # To copy an array surround it in quotes and parenthesis
-goodMaic=("${maic[@]}")
-baadMaic=(${maic[@]})
+goodCopy=("${yarra[@]}")
+baadCopy=(${yarra[@]})
 
 # Otherwise elements with spaces in them will get messed up
-echo "goodMaic[1]: ${goodMaic[1]}"
-echo "baadMaic[1]: ${baadMaic[1]}"
+echo "\${goodCopy}[1]: ${goodCopy[1]}"
+echo "\${baadMaic}[1]: ${baadCopy[1]}"
 echo
 
-# Elements can be pushed into an array
-cosaCopy=("${cosa[@]}")
-cosaCopy+=('internationale')
-
-echo "cosa full: ${cosaCopy[@]}"
-echo "cosa[2]: ${cosaCopy[2]}"
+# Elements can be pushed into an array with += and parenthesis
+arrayCopy=("${array[@]}")
+echo "\${arrayCopy[@]}: ${arrayCopy[@]}"
+arrayCopy+=('internationale')
+echo "\${arrayCopy[@]}: ${arrayCopy[@]}"
+echo "\${arrayCopy[2]}: ${arrayCopy[2]}"
 echo
 
 
 # Or other arrays concatenated, same rules as copying apply
-goodCosa=("${cosa[@]}")
-baadCosa=("${cosa[@]}")
+# Appending one item is actually contatenating a one-element-array
+goodConcat=("${array[@]}")
+baadConcat=("${array[@]}")
 
-goodCosa+=("${maic[@]}")
-baadCosa+=(${maic[@]})
+goodConcat+=("${yarra[@]}")
+baadConcat+=(${yarra[@]})
 
-echo "goodCosa full: ${goodCosa[@]}"
-echo "goodCosa[3]: ${goodCosa[3]}"
+echo "\${goodConcat[@]}: ${goodConcat[@]}"
+echo "\${goodConcat[3]}: ${goodConcat[3]}"
 echo
 
-echo "baadCosa full: ${baadCosa[@]}"
-echo "baadCosa[3]: ${baadCosa[3]}"
+echo "\${baadConcat[@]}: ${baadConcat[@]}"
+echo "\${baadConcat[3]}: ${baadConcat[3]}"
 echo
 
-
-# To get the length use the #
-echo "goodCosa length: ${#goodCosa[@]}"
-echo "baadCosa length: ${#baadCosa[@]}"
+# Length is returned with the weirdest use of #
+echo "\${#goodConcat[@]}: ${#goodConcat[@]}"
+echo "\${#baadConcat[@]}: ${#baadConcat[@]}"
 echo
 
-
-# To do a loop also use quotes
-for value in "${goodMaic[@]}"; do
-	echo "each good value: $value"
+# To do a loop provide the array with quotes
+for value in "${goodConcat[@]}"; do
+	echo "loop with \"\${goodConcat[@]}\": $value"
 done
 echo
 
 # Otherwise values without spaces will get messed up
-for value in ${goodMaic[@]}; do
-	echo "no quotes value: $value"
+for value in ${goodConcat[@]}; do
+	echo "loop with \${goodConcat[@]}: $value"
 done
 echo
 
