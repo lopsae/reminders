@@ -1,0 +1,67 @@
+#!/bin/bash
+
+echo 'Suggested serving'
+echo './paramsPass first "second element" "and   third"'
+echo
+
+if [[ $# = 0 ]]; then
+	echo "Provide some parameters"
+	echo
+else
+
+	echo 'Passing parameters with $@'
+	./paramsPrint $@
+	echo
+
+	echo 'Passing parameters with "$@"'
+	./paramsPrint "$@"
+	echo
+
+	echo 'Copying into an array ("$@")'
+	array=("$@")
+	echo 'Passing "${array[@]}"'
+	./paramsPrint "${array[@]}"
+	echo
+fi
+
+echo 'Suggested serving'
+# Checking if there is piped content
+if [[ ! -t 0 ]]; then
+	piped=$(cat)
+else
+	echo 'Provide some piped conent'
+	exit
+fi
+
+echo "Piped: $piped"
+echo
+
+echo 'Passing $piped as params'
+./paramsPrint $piped
+echo
+
+echo 'Passing "$piped" as params'
+./paramsPrint "$piped"
+echo
+
+echo 'Splitting $piped with `for`'
+for item in $piped; do
+	echo "for \$piped: $item"
+done
+echo
+
+echo 'Splitting needs IFS set correctly to work'
+array=()
+IFS=$'\n'
+for item in $piped; do
+	echo "IFS=\\n for \$piped: $item"
+	array+=("$item")
+done
+unset IFS
+echo
+
+echo 'Using generated array to pass'
+./paramsPrint "${array[@]}"
+
+
+
