@@ -1,49 +1,113 @@
 #!/bin/bash
 
-# try with:
-# ./script uno "  dos   tres"
-
-echo 'Printing just the parameters arrays'
-echo "\$@: $@"
-echo "\$*: $*"
-
-
-
-
+echo Suggested serving
+echo './paramsVariables first "second element" "and   third"'
 echo
-echo 'Printing each value in "$@"'
-counter=1
-for param in "$@"; do
-	echo "\$$counter: $param"
-	counter=$(($counter+1))
-done
-
-echo 'Printing each value in "$*"'
-counter=1
-for param in "$*"; do
-	echo "\$$counter: $param"
-	counter=$(($counter+1))
-done
 
 
-
-
+echo 'Inside quotes spaces are respected'
+echo "\"\$@\": $@"
+echo "\"\$*\": $*"
 echo
-echo 'Printing each value in $@'
-counter=1
-for param in $@; do
-	echo "\$$counter: $param"
-	counter=$(($counter+1))
+
+
+echo 'Setting IFS to | has some intersting properties'
+IFS="|"
+echo "\"\$@\" with IFS: $@"
+echo "\"\$*\" with IFS: $*"
+unset IFS
+echo
+
+
+echo '`for` with unquoted does now wrong with $@'
+for item in $@; do
+	echo "for \$@: $item"
 done
+echo
 
-echo 'Printing each value in $*'
-counter=1
-for param in $*; do
-	echo "\$$counter: $param"
-	counter=$(($counter+1))
+
+echo '`for` with unquoted works does not work with $*'
+for item in $*; do
+	echo "for \$*: $item"
 done
+echo
 
 
+# as per http://tldp.org/LDP/abs/html/internalvariables.html#APPREF
+# $* : All of the positional parameters, seen as a single word
+# $@ : Each parameter is a quoted string, and thus a separate word
+
+echo 'Quoted is the correct use'
+echo 'So `for` with "$@" properly separates parameters'
+for item in "$@"; do
+	echo "for \"\$@\": $item"
+done
+echo
+
+
+echo 'But `for` with "$*" sees still sees it as a single word'
+for item in "$*"; do
+	echo "for \"\$*\": $item"
+done
+echo
+
+
+echo 'Setting IFS to a characted that does not exists in $@, like |'
+echo 'properly splits the var inside a `for`'
+IFS='|'
+for item in $@; do
+	echo "IFS=| \$@: $item"
+done
+unset IFS
+echo
+
+
+echo 'Setting IFS to "r" will do double spliting inside a `for`'
+IFS='r'
+for item in $@; do
+	echo "IFS=r \$@: $item"
+done
+unset IFS
+echo
+
+
+echo 'Setting IFS to | also makes `for` work with $* as with $@'
+IFS='|'
+for item in $*; do
+	echo "IFS=| \$*: $item"
+done
+unset IFS
+echo
+
+
+echo 'Setting IFS to "r" also makes `for` do double spliting with $*'
+IFS='r'
+for item in $*; do
+	echo "IFS=r \$*: $item"
+done
+unset IFS
+echo
+
+
+echo 'Setting IFS with "$@" in `for` makes no difference'
+IFS='r'
+for item in "$@"; do
+	echo "IFS=| \"\$@\": $item"
+done
+unset IFS
+echo
+
+
+echo 'And setting IFS with "$*" just makes it a single word'
+IFS='|'
+for item in "$*"; do
+	echo "IFS=| \"\$*\": $item"
+done
+unset IFS
+echo
+
+
+# Copying around
 
 
 echo
