@@ -71,21 +71,6 @@ echo "\${baadCopy}[1]: ${baadCopy[1]}"
 echo
 
 
-
-# index=0
-# while true; do
-# 	echo "\${array[$index]}: ${array[$index]}"
-# 	index=$(($index+1))
-# 	if [[ $index -ge $((${#array[@]} + 1)) ]]; then
-# 		break
-# 	fi
-# done
-
-
-
-
-
-
 # Elements can be pushed into an array with += and parenthesis
 arrayCopy=("${array[@]}")
 echo "\${#arrayCopy[@]}: ${#arrayCopy[@]}"
@@ -148,5 +133,17 @@ echo "\${fillyStart[@]}: ${fillyStart[@]}"
 echo "\${#nooneStart[@]}: ${#nooneStart[@]}"
 echo "\${nooneStart[@]}: ${nooneStart[@]}"
 echo
+
+
+# Another way to loop an array
+index=0
+while true; do
+	echo "\${yarra[$index]}: ${yarra[$index]}"
+	index=$(($index+1))
+	if [[ $index -ge $((${#yarra[@]} + 1)) ]]; then
+		# Going over one just to see the operation in the if
+		break
+	fi
+done
 
 

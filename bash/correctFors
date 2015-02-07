@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [[ $# = 0 ]]; then
-	echo 'Simulating recomended serving:'
+	echo 'Using suggested serving:'
 	echo "$0 first 'second element' 'and   third'"
 	set -- first 'second element' 'and   third'
 	echo
