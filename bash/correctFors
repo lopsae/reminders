@@ -1,0 +1,67 @@
+#!/bin/bash
+
+if [[ $# = 0 ]]; then
+	echo 'Simulating recomended serving:'
+	echo "$0 first 'second element' 'and   third'"
+	set -- first 'second element' 'and   third'
+	echo
+fi
+
+
+# $@ must be quoted
+for item in "$@"; do
+	echo "for \"\$@\": $item"
+done
+echo
+
+
+# An array, which happens to be a proper copy of $@
+# must be quoted, and {}'ed, and [@]'ed.
+array=("$@")
+for item in "${array[@]}"; do
+	echo "for \"\${array[@]}\": $item"
+done
+echo
+
+
+# Strings go without quotes, if quoted nothing will split them properly
+string='Lorem ipsum dolor'
+for item in $string; do
+	echo "for \$string: $item"
+done
+echo
+
+
+# IFS will modify what character is used to split
+IFS=$'s'
+for item in $string; do
+	echo "for \$string IFS='s': $item"
+done
+unset IFS
+echo
+
+
+read -d '' multiline <<"HEREDOC"
+Aperture              
+The partially enclosed,
+somewhat       rounded
+negative space in some
+characters.
+HEREDOC
+
+
+# Setting ifs is needed to split by newline
+IFS=$'\n'
+for item in $multiline; do
+	echo "for IFS='\\n' \$multiline: [$item]"
+done
+unset IFS
+echo
+
+
+# Without IFS separation will be done with any white space
+# Also whitespace is pruned
+for item in $multiline; do
+	echo "for \$multiline: [$item]"
+done
+
