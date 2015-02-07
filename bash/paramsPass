@@ -1,67 +1,121 @@
 #!/bin/bash
 
-echo 'Suggested serving'
-echo './paramsPass first "second element" "and   third"'
-echo
-
 if [[ $# = 0 ]]; then
-	echo "Provide some parameters"
-	echo
-else
-
-	echo 'Passing parameters with $@'
-	./paramsPrint $@
-	echo
-
-	echo 'Passing parameters with "$@"'
-	./paramsPrint "$@"
-	echo
-
-	echo 'Copying into an array ("$@")'
-	array=("$@")
-	echo 'Passing "${array[@]}"'
-	./paramsPrint "${array[@]}"
+	echo 'Using suggested serving:'
+	echo "$0 first 'second element' 'and   third'"
+	set -- first 'second element' 'and   third'
 	echo
 fi
 
-echo 'Suggested serving'
-# Checking if there is piped content
+
+echo 'Passing $@'
+./paramsPrint $@
+echo
+
+
+echo 'Passing "$@"'
+./paramsPrint "$@"
+echo
+
+
+echo 'Using $single $spaces'
+single='agony'
+spaces='and joy'
+echo "\$single: $single \$spaces: $spaces"
+echo
+
+
+echo 'Passing $single'
+./paramsPrint $single
+echo
+
+
+echo 'Passing $spaces'
+./paramsPrint $spaces
+echo
+
+
+echo 'Passing "$spaces"'
+./paramsPrint "$spaces"
+echo
+
+echo 'Passing $single$spaces'
+./paramsPrint $single$spaces
+echo
+
+
+echo 'Passing "$single$spaces"'
+./paramsPrint "$single$spaces"
+echo
+
+
+echo 'Passing "$single $spaces"'
+./paramsPrint "$single $spaces"
+echo
+
+
+echo 'Copying into an array ("$@")'
+array=("$@")
+echo "\${array[@]}: ${array[@]}"
+echo
+
+echo 'Passing ${array[@]}'
+./paramsPrint ${array[@]}
+echo
+
+echo 'Passing "${array[@]}"'
+./paramsPrint "${array[@]}"
+echo
+
+
+read -d '' piped <<"HEREDOC"
+Lorem    ipsum
+dolor sit amet
+HEREDOC
+
+
 if [[ ! -t 0 ]]; then
 	piped=$(cat)
 else
-	echo 'Provide some piped conent'
-	exit
+	echo 'Using suggested serving:'
+	echo "$piped"
+	echo
 fi
 
-echo "Piped: $piped"
+
+echo 'Piped:'
+echo "$piped"
 echo
 
-echo 'Passing $piped as params'
+
+echo 'Passing $piped'
 ./paramsPrint $piped
 echo
 
-echo 'Passing "$piped" as params'
+
+echo 'Passing "$piped"'
 ./paramsPrint "$piped"
 echo
 
-echo 'Splitting $piped with `for`'
-for item in $piped; do
-	echo "for \$piped: $item"
-done
-echo
 
-echo 'Splitting needs IFS set correctly to work'
-array=()
+echo 'Passing $piped with IFS=\n'
+IFS=$'\n'
+./paramsPrint $piped
+unset IFS
+echo 
+
+
+echo 'Splitting $piped'
 IFS=$'\n'
 for item in $piped; do
-	echo "IFS=\\n for \$piped: $item"
+	echo "for \$piped: $item"
 	array+=("$item")
 done
 unset IFS
 echo
 
-echo 'Using generated array to pass'
-./paramsPrint "${array[@]}"
 
+echo 'Passing "${array[@]}"'
+./paramsPrint "${array[@]}"
 
 

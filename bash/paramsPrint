@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # simply print out the parameters received
-counter=1
-for param in "$@"; do
-	echo "\$$counter: $param"
-	counter=$(($counter+1))
+index=1
+for item in "$@"; do
+	echo "\$$index: $item"
+	index=$(($index+1))
 done

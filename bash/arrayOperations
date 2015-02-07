@@ -30,6 +30,15 @@ echo "\${yarra[@]}: ${yarra[@]}"
 echo
 
 
+# [*] outputs seemingly the same as [@]
+echo "\${yarra[*]}: ${yarra[*]}"
+# Except that it splits by the IFS
+IFS="|"
+echo "IFS=| \${yarra[*]}: ${yarra[*]}"
+unset IFS
+echo
+
+
 # $varname returns the first element in an array, same with {} notation
 echo "\$array: $array"
 echo "\${yarra}: ${yarra}"
