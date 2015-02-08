@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if [[ $# = 0 ]]; then
+	echo 'No parameters'
+	exit
+fi
+
 # simply print out the parameters received
 index=1
 for item in "$@"; do

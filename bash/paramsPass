@@ -9,66 +9,102 @@ fi
 
 
 echo 'Passing $@'
-./paramsPrint $@
+./printParams $@
 echo
 
 
 echo 'Passing "$@"'
-./paramsPrint "$@"
+./printParams "$@"
 echo
 
 
-echo 'Using $single $spaces'
+echo 'Using $empty $single $spaces'
+empty=''
 single='agony'
 spaces='and joy'
-echo "\$single: $single \$spaces: $spaces"
+echo "\$empty: $empty \$single: $single \$spaces: $spaces"
+echo
+
+
+echo 'Passing $empty'
+./printParams $empty
+echo
+
+
+echo 'Passing "$empty"'
+./printParams "$empty"
+echo
+
+
+echo 'Passing $empty "$empty"'
+./printParams $empty "$empty"
+echo
+
+
+echo 'Passing "$empty" "$empty"'
+./printParams "$empty" "$empty"
 echo
 
 
 echo 'Passing $single'
-./paramsPrint $single
+./printParams $single
 echo
 
 
 echo 'Passing $spaces'
-./paramsPrint $spaces
+./printParams $spaces
 echo
 
 
 echo 'Passing "$spaces"'
-./paramsPrint "$spaces"
+./printParams "$spaces"
 echo
 
 echo 'Passing $single$spaces'
-./paramsPrint $single$spaces
+./printParams $single$spaces
 echo
 
 
 echo 'Passing "$single$spaces"'
-./paramsPrint "$single$spaces"
+./printParams "$single$spaces"
 echo
 
 
 echo 'Passing "$single $spaces"'
-./paramsPrint "$single $spaces"
+./printParams "$single $spaces"
 echo
 
 
-echo 'Passing $(./paramsPrint $single)'
-output=$(./paramsPrint $single)
+echo 'Passing $(./printParams $single)'
+output=$(./printParams $single)
 echo "$output"
 echo
 
 
-echo 'Passing $(./paramsPrint $spaces)'
-output=$(./paramsPrint $spaces)
+echo 'Passing $(./printParams $spaces)'
+output=$(./printParams $spaces)
 echo "$output"
 echo
 
 
-echo 'Passing $(./paramsPrint "$spaces")'
-output=$(./paramsPrint "$spaces")
+echo 'Passing $(./printParams "$spaces")'
+output=$(./printParams "$spaces")
 echo "$output"
+echo
+
+
+echo 'Using empty array: ()'
+array=()
+echo "\${array[@]}: ${array[@]}"
+echo
+
+
+echo 'Passing ${array[@]}'
+./printParams ${array[@]}
+echo
+
+echo 'Passing "${array[@]}"'
+./printParams "${array[@]}"
 echo
 
 
@@ -77,12 +113,14 @@ array=("$@")
 echo "\${array[@]}: ${array[@]}"
 echo
 
+
 echo 'Passing ${array[@]}'
-./paramsPrint ${array[@]}
+./printParams ${array[@]}
 echo
 
+
 echo 'Passing "${array[@]}"'
-./paramsPrint "${array[@]}"
+./printParams "${array[@]}"
 echo
 
 
@@ -107,18 +145,18 @@ echo
 
 
 echo 'Passing $piped'
-./paramsPrint $piped
+./printParams $piped
 echo
 
 
 echo 'Passing "$piped"'
-./paramsPrint "$piped"
+./printParams "$piped"
 echo
 
 
 echo 'Passing $piped with IFS=\n'
 IFS=$'\n'
-./paramsPrint $piped
+./printParams $piped
 unset IFS
 echo 
 
@@ -134,6 +172,6 @@ echo
 
 
 echo 'Passing "${array[@]}"'
-./paramsPrint "${array[@]}"
+./printParams "${array[@]}"
 
 
