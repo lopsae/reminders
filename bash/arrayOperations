@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# http://tldp.org/LDP/abs/html/arrays.html
+
 # an empty array can be initialized with ()
 # it matches equality with non-definied vars and empty strings ''
 array=()
@@ -133,6 +135,8 @@ echo
 
 emptyStart+=("pushed to empty")
 fillyStart+=("pushed to filly")
+
+# Apending to a none existent array creates it
 nooneStart+=("pushed to noone")
 
 echo "\${#emptyStart[@]}: ${#emptyStart[@]}"

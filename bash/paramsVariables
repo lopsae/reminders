@@ -43,7 +43,7 @@ echo
 
 
 # as per http://tldp.org/LDP/abs/html/internalvariables.html#APPREF
-# $* : All of the positional parameters, seen as a single word
+# $* : Each parameter is separated by IFS, which is space by default
 # $@ : Each parameter is a quoted string, and thus a separate word
 
 echo 'Quoted is the correct use'
