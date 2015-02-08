@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# http://wiki.bash-hackers.org/syntax/arrays
 # http://tldp.org/LDP/abs/html/arrays.html
 
 # an empty array can be initialized with ()
