@@ -54,6 +54,24 @@ echo 'Passing "$single $spaces"'
 echo
 
 
+echo 'Passing $(./paramsPrint $single)'
+output=$(./paramsPrint $single)
+echo "$output"
+echo
+
+
+echo 'Passing $(./paramsPrint $spaces)'
+output=$(./paramsPrint $spaces)
+echo "$output"
+echo
+
+
+echo 'Passing $(./paramsPrint "$spaces")'
+output=$(./paramsPrint "$spaces")
+echo "$output"
+echo
+
+
 echo 'Copying into an array ("$@")'
 array=("$@")
 echo "\${array[@]}: ${array[@]}"
