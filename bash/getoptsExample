@@ -1,0 +1,29 @@
+#!/bin/bash
+
+# Reading parameters with getopts
+
+# TODO add recomended serving
+# TODO add example with spaces
+
+./printParams "$@"
+
+
+while getopts abc option; do
+	case $option in
+ 		a)
+			echo "Parameter: $option"
+			;;
+		[bc])
+			echo "Parameter: $option"
+			;;
+		?)
+			exit 1
+			;;
+	esac
+done
+
+shift $(( OPTIND - 1 ));
+
+
+./printParams "$@"
+
