@@ -9,8 +9,72 @@
 # TODO add example of how it messes up spaces in the remaining parameters
 
 
-# try with
-# ./script -ac zero -b -d "minus one" one "  two   three"
+if [[ $# = 0 ]]; then
+	echo 'Using suggested serving:'
+	echo "$0 -a -d 'double dparam' -b -c cparam -- first 'second element'"
+	set -- -a -d 'double dparam' -b -c cparam -- first 'second element'
+	echo
+fi
+
+
+echo 'Initial parameters'
+./printParams "$@"
+echo
+
+
+echo 'getopts $*'
+echo $(getopt abc:d: $*)
+echo
+
+echo 'getopts "$@"'
+echo $(getopt abc:d: "$@")
+echo
+
+
+# Options parsing
+# recomende to use is $*
+params=$(getopt abc:d: "$@")
+# params=$(getopt abc:d: $*)
+getoptStatus=$?
+
+echo 'Params parsed'
+echo "$params"
+echo
+
+set -- $params
+
+if [[ $getoptStatus != 0 ]]; then
+	echo 'Invalid options' >&2
+	exit 1
+fi
+
+for param; do
+	case "$param" in
+		-[ab])
+			echo "option: $param"
+			shift
+			;;
+		-[cd])
+			echo "option: $param"
+			echo "argument: $2"
+			shift; shift
+			;;
+		--)
+			echo "dashes: $param"
+			shift
+			break
+			;;
+	esac
+done
+echo
+
+echo 'Remaining parameters'
+./printParams "$@"
+echo
+
+
+exit
+
 
 echo "Original parameters"
 echo "\$@: $@"
