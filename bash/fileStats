@@ -1,0 +1,25 @@
+#!/bin/bash
+
+if [[ $# = 0 ]]; then
+	file="$0"
+else
+	file=("$@")
+fi
+
+
+echo 'File to use:'
+echo "$file"
+echo
+
+
+echo '%N - Filename'
+echo '%A - Permisions (in darwin, in other systems it might be %a)'
+stat -f '%N %A' "${file[@]}"
+echo
+
+
+echo '%p - File type and permitions'
+echo '%z - Size in bytes'
+echo '%l - Number of hardlinks'
+stat -f '%N %p %z %l' "${file[@]}"
+echo
