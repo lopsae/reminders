@@ -3,7 +3,6 @@
 # Reading parameters with getopt
 # DONT USE GETOPT, IT DOES NOT PROPERLY SUPPORT SPACES
 
-# TODO add recomended serving
 # TODO add example code for getopt
 # TODO add example of how it horribly fais with spaces paired with options
 # TODO add example of how it messes up spaces in the remaining parameters
@@ -11,45 +10,43 @@
 
 if [[ $# = 0 ]]; then
 	echo 'Using suggested serving:'
-	echo "$0 -a -d 'double dparam' -b -c cparam -- first 'second element'"
-	set -- -a -d 'double dparam' -b -c cparam -- first 'second element'
+	echo "$0 -ax -d 'double dparam' -y -b -zc cparam -- first 'second element'"
+	set -- -ax -d 'double dparam' -y -b -zc cparam -- first 'second element'
 	echo
 fi
 
 
+originalParams=("$@")
+optstring='abc:d:'
+
+
 echo 'Initial parameters'
+echo "\$@: $@"
 ./printParams "$@"
 echo
 
 
-echo 'getopts $*'
-echo $(getopt abc:d: $*)
-echo
-
-echo 'getopts "$@"'
-echo $(getopt abc:d: "$@")
-echo
-
-
-# Options parsing
-# recomende to use is $*
-params=$(getopt abc:d: "$@")
-# params=$(getopt abc:d: $*)
+echo 'getopt is recomended with $*, but $@ seems to work with spaces'
+echo 'getopt "$@"'
+params=$(getopt $optstring "$@")
 getoptStatus=$?
-
-echo 'Params parsed'
-echo "$params"
 echo
 
+
+echo 'Illegal options are reported, but left out of the output'
+echo "\$params: $params"
+echo
+
+
+echo 'Produced output is to be set as current parameters'
 set -- $params
+echo "\$@: $@"
+echo
 
-if [[ $getoptStatus != 0 ]]; then
-	echo 'Invalid options' >&2
-	exit 1
-fi
 
+echo 'And read with a `for`'
 for param; do
-	case "$param" in
+	case $param in
 		-[ab])
 			echo "option: $param"
 			shift
@@ -57,69 +54,87 @@ for param; do
 		-[cd])
 			echo "option: $param"
 			echo "argument: $2"
-			shift; shift
+			shift 2
 			;;
 		--)
 			echo "dashes: $param"
 			shift
 			break
 			;;
+		*)
+			echo "Something else: $param"
+			shift
+			;;
 	esac
 done
 echo
+
 
 echo 'Remaining parameters'
 ./printParams "$@"
 echo
 
 
-exit
+echo 'Something really messy happened there, parameter were lost or skipped'
+echo
 
 
-echo "Original parameters"
+echo 'Restore original params'
+set -- "${originalParams[@]}"
 echo "\$@: $@"
-
-
+./printParams "$@"
 echo
-echo 'Printing each value in "$@"'
-counter=1
-for param in "$@"; do
-	echo "\$$counter: $param"
-	counter=$(($counter+1))
-done
 
 
-# All whitespace is lost by getopt...
-params=$(getopt abc:d: "$@")
-paramReturn=$?
-
+echo 'getopt is recomended with $*'
+echo 'getopt $*'
+params=$(getopt $optstring $*)
+getoptStatus=$?
 echo
-if [[ $paramReturn = 0 ]]; then
-	echo "Parameters parsed correctly"
-else
-	echo "Parameters parsed failed"
-fi
 
 
-echo 'Parsed params'
+echo 'Illegal options are reported'
+echo 'With $* options end with the first space found'
 echo "\$params: $params"
-echo 'Printing each value in "$params[@]"'
-counter=1
-for param in "${params[@]}"; do
-	echo "\$$counter: $param"
-	counter=$(($counter+1))
-done
-
-
-set -- $params
-
 echo
-echo 'After set -- $params'
-echo 'Printing each value in "$@"'
-counter=1
-for param in "$@"; do
-	echo "\$$counter: $param"
-	counter=$(($counter+1))
-done
 
+
+echo 'Produced output is to be set as current parameters'
+set -- $params
+echo "\$@: $@"
+echo
+
+
+echo 'And read with a `for`'
+for param; do
+	case $param in
+		-[ab])
+			echo "option: $param"
+			shift
+			;;
+		-[cd])
+			echo "option: $param"
+			echo "argument: $2"
+			shift 2
+			;;
+		--)
+			echo "dashes: $param"
+			shift
+			break
+			;;
+		*)
+			echo "Something else: $param"
+			shift
+			;;
+	esac
+done
+echo
+
+
+echo 'Remaining parameters'
+./printParams "$@"
+echo
+
+
+echo 'Please dont use getopt'
 
