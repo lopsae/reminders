@@ -1,0 +1,27 @@
+#!/bin/bash
+
+if [[ $# = 0 ]]; then
+	echo 'No parameters'
+	exit
+fi
+
+
+# First parameter is the optstring
+optstring="$1"
+shift
+
+
+./printParams "$@"
+echo
+
+
+echo "\$OPTERR:$OPTERR"
+
+
+while getopts $optstring option; do
+	echo "\$option:$option \$OPTIND:$OPTIND \$OPTARG:$OPTARG"
+done
+
+
+echo "\$OPTIND: $OPTIND"
+

@@ -1,29 +1,97 @@
 #!/bin/bash
 
 # Reading parameters with getopts
+# This script ignores all parameters and sets its own
 
-# TODO add recomended serving
-# TODO add example with spaces
+# TODO example with error suppresions
 
+
+echo 'Using:'
+echo "-a -b hello dollie"
+set -- -a -b hello dollie
+echo
+
+originalParams=("$@")
+optstring='ab:'
+
+
+echo 'Initial parameters'
+echo "\$@: $@"
 ./printParams "$@"
+echo
 
 
-while getopts abc option; do
+echo "Using optstring: $optstring"
+echo
+
+
+echo 'getopts works by setting a number of varialbles every call'
+echo 'running getopts:'
+getopts $optstring option
+echo "\$option: $option"
+echo "\$OPTIND: $OPTIND"
+echo "\$OPTARG: $OPTARG"
+echo
+
+
+echo 'If run again the next parameter is read'
+echo 'running getopts:'
+getopts $optstring option
+echo "\$option: $option"
+echo "\$OPTIND: $OPTIND"
+echo "\$OPTARG: $OPTARG"
+echo
+
+
+echo 'OPTIND is used to store what parameter will be read next'
+echo 'If modified it can jump or reset getopts order'
+echo 'OPTIND=1'
+OPTIND=1
+echo 'running getopts:'
+getopts $optstring option
+echo "\$option: $option"
+echo "\$OPTIND: $OPTIND"
+echo "\$OPTARG: $OPTARG"
+echo
+
+
+echo 'Using:'
+echo "-a -c -b hello dollie"
+set -- -a -c -b hello dollie
+echo
+
+
+echo 'Unsetting OPTIND'
+unset OPTIND
+echo
+
+
+echo 'Correct usage can be done with a while'
+echo 'getops returns 0 until there are no more params to read'
+while getopts $optstring option; do
 	case $option in
  		a)
-			echo "Parameter: $option"
+			echo 'while: The current option is set in $option'
+			echo "while: \$option:$option"
 			;;
-		[bc])
-			echo "Parameter: $option"
+		b)
+			echo 'while: Options with argument use too OPTARG'
+			echo "while: \$option:$option \$OPTARG:$OPTARG"
 			;;
 		?)
-			exit 1
+			echo 'while: Invalid options are reported with ?'
+			echo "while: \$option:$option"
 			;;
 	esac
 done
+echo
 
+
+echo 'The value ot OPTIND is set to the next available parameter'
+echo "\$OPTIND: $OPTIND"
+echo 
+
+echo 'So shifting up to it, minus one leaves the rest ready'
 shift $(( OPTIND - 1 ));
-
-
 ./printParams "$@"
 
