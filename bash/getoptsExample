@@ -12,7 +12,7 @@ set -- -a -b hello dollie
 echo
 
 originalParams=("$@")
-optstring='ab:'
+optstring='ab:c:'
 
 
 echo 'Initial parameters'
@@ -55,9 +55,13 @@ echo "\$OPTARG: $OPTARG"
 echo
 
 
+echo 'Setting OPTERR=0 will mute errors'
+echo 'But otherwise it is not that usefull'
+
+
 echo 'Using:'
-echo "-a -c -b hello dollie"
-set -- -a -c -b hello dollie
+echo "-a -x -b 'hello dollie' -- 'molie jolie'"
+set -- -a -x -b 'hello dollie' -- 'molie jolie'
 echo
 
 
@@ -68,30 +72,85 @@ echo
 
 echo 'Correct usage can be done with a while'
 echo 'getops returns 0 until there are no more params to read'
+echo
 while getopts $optstring option; do
 	case $option in
  		a)
 			echo 'while: The current option is set in $option'
 			echo "while: \$option:$option"
+			echo
 			;;
-		b)
-			echo 'while: Options with argument use too OPTARG'
+		[bc])
+			echo 'while: Options with argument use also OPTARG'
 			echo "while: \$option:$option \$OPTARG:$OPTARG"
+			echo
 			;;
 		?)
 			echo 'while: Invalid options are reported with ?'
 			echo "while: \$option:$option"
+			echo
 			;;
 	esac
 done
 echo
 
 
-echo 'The value ot OPTIND is set to the next available parameter'
+echo 'Afterwards OPTIND is set to the next available parameter, skipping --'
 echo "\$OPTIND: $OPTIND"
 echo 
 
-echo 'So shifting up to it, minus one leaves the rest ready'
+echo 'So shifting up to it, minus one, leaves the rest ready'
 shift $(( OPTIND - 1 ));
 ./printParams "$@"
+echo
+
+
+echo 'If optstring starts with a colon ":"'
+echo 'getopts will mute errors but provide information about them'
+
+
+echo 'Using:'
+echo "-a -x -b 'hello dollie' -c"
+set -- -a -x -b 'hello dollie' -c
+echo
+
+
+echo 'Unsetting OPTIND'
+unset OPTIND
+echo
+
+
+while getopts ":$optstring" option; do
+	case $option in
+ 		a)
+			echo 'while: The current option is set in $option'
+			echo "while: \$option:$option"
+			echo
+			;;
+		[bc])
+			echo 'while: Options with argument use also OPTARG'
+			echo "while: \$option:$option \$OPTARG:$OPTARG"
+			echo
+			;;
+		:)
+			echo 'while: Options with missing argument are reported with ":"'
+			echo 'while: the incorrect option is present in OPTARG'
+			echo "while: \$option:$option \$OPTARG:$OPTARG"
+			echo
+			;;
+		?)
+			echo 'while: Invalid options are reported with "?"'
+			echo 'while: the invalid option is present in OPTARG'
+			echo "while: \$option:$option \$OPTARG:$OPTARG"
+			echo
+			;;
+	esac
+done
+echo
+
+
+echo 'OPTIND is still advanced as expected'
+echo "\$OPTIND: $OPTIND"
+echo 
+
 

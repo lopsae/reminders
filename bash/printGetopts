@@ -14,7 +14,7 @@ shift
 ./printParams "$@"
 echo
 
-
+# OPTERR=0
 echo "\$OPTERR:$OPTERR"
 
 
