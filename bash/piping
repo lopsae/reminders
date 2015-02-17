@@ -1,0 +1,34 @@
+#!/bin/bash
+
+
+if [ -t 0 ]; then
+    echo stdin is terminal
+else
+	echo stdin is not terminal
+fi
+
+if [ -t 1 ]; then
+	echo stdout is terminal
+else
+	echo stdout is not terminal
+fi
+
+exit 0
+
+
+
+# Temp read also gets blocked if input is from terminal (no pipe)
+read tempRead
+echo $tempRead
+
+exit 0
+
+# Cat gets blocked if no pipe is used
+tempFile=`mktemp /tmp/cosaTemp.XXXX`
+cat >> $tempFile
+
+echo $tempFile
+cat $tempFile
+echo something
+
+echo $@

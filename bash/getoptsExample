@@ -5,7 +5,38 @@
 # TODO add recomended serving
 # TODO add example with spaces
 
+
+if [[ $# = 0 ]]; then
+	echo 'Using suggested serving:'
+	echo "$0 -ax -d 'double dparam' -y -b -zc cparam -- first 'second element'"
+	set -- -ax -d 'double dparam' -y -b -zc cparam -- first 'second element'
+	echo
+fi
+
+
+originalParams=("$@")
+optstring='abc:d:'
+
+
+echo 'Initial parameters'
+echo "\$@: $@"
 ./printParams "$@"
+echo
+
+
+echo "Using optstring: $optstring"
+echo
+
+
+echo 'getopts works by setting a number of varialbles every call'
+getopts $optstring option
+echo "\$option: $option"
+echo "\$OPTIND: $OPTIND"
+echo "\$OPTARG: $OPTARG"
+echo "\$OPTERR: $OPTERR"
+
+exit
+
 
 
 while getopts abc option; do

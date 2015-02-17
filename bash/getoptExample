@@ -3,10 +3,6 @@
 # Reading parameters with getopt
 # DONT USE GETOPT, IT DOES NOT PROPERLY SUPPORT SPACES
 
-# TODO add example code for getopt
-# TODO add example of how it horribly fais with spaces paired with options
-# TODO add example of how it messes up spaces in the remaining parameters
-
 
 if [[ $# = 0 ]]; then
 	echo 'Using suggested serving:'
@@ -23,6 +19,10 @@ optstring='abc:d:'
 echo 'Initial parameters'
 echo "\$@: $@"
 ./printParams "$@"
+echo
+
+
+echo "Using optstring: $optstring"
 echo
 
 
