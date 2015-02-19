@@ -1,26 +1,14 @@
 #!/bin/bash
 
 
-# if used as
-# echo "cosa" | printPipes
-# Receiving piped standart input: cosa
-# output going to terminal
+if [[ -t 0 && -t 1 ]]; then
+	echo 'Suggested servings:'
+	echo "ls | $0"
+	echo "$0 | cat"
+	echo "ls | $0 | cat"
+	echo
+fi
 
-# if used as
-# printPipes
-# No input, cat? read?
-# Output going to terminal
-
-# if used as
-# echo "sumthin sumthin" | printPipes
-# Piped input:
-# sumthin sumthin
-# Output going to terminal
-
-# if used as
-# printPipes | cat
-# No input, lorem ipsum
-# Output going to pipe!
 
 read -d '' loremipsum <<"loremipsum"
 Lorem ipsum dolor
@@ -29,28 +17,33 @@ adipiscing elit
 loremipsum
 
 
-if [[ -t 1 ]]; then
-	echo 'Output going to terminal'
-	outputPrefix='terminal:'
-else
-	echo 'Output going to pipe'
-	outputPrefix='piped-out:'
-fi
-echo
-
-
-if [ -t 0 ]; then
+if [[ -t 0 ]]; then
 	echo 'Input from terminal, using loremipsum'
+	from='term'
 	content="$loremipsum"
 else
 	echo 'Input piped in'
+	from='pipe'
 	content=$(cat)
 fi
 
 
+if [[ -t 1 ]]; then
+	echo 'Output to terminal'
+	to='term'
+else
+	echo 'Output to pipe'
+	to='pipe'
+fi
+echo
+
+
+
+
+
 IFS=$'\n'
 for contentLine in $content; do
-	echo "$outputPrefix $contentLine"
+	echo "$from -> $to: $contentLine"
 done
 unset IFS
 echo
