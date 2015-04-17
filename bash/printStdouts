@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# Outputs a number of lines into stdout and stderr
+
+# First parameter is the number of seconds to wait
+seconds='0'
+if [[ ! -z $1 ]]; then
+	seconds="$1"
+fi
+
+echo "first line to stdout" >&1
+sleep "$seconds"
+echo "first line to stderr" >&2
+sleep "$seconds"
+echo "second line to stdout" >&1
+sleep "$seconds"
+echo "second line to stderr" >&2
+sleep "$seconds"
+echo "third line to stdout" >&1
+sleep "$seconds"
+echo "third line to stderr" >&2
+sleep "$seconds"
+
