@@ -1,25 +1,26 @@
 #!/bin/bash
 
 if [[ $# = 0 ]]; then
-	file="$0"
+	files=("$0")
 else
-	file=("$@")
+	files=("$@")
 fi
 
-
-echo 'File to use:'
-echo "$file"
+echo 'Files to use:'
+IFS=$'\n'
+echo "${files[*]}"
+unset IFS
 echo
-
 
 echo '%N - Filename'
 echo '%A - Permisions (in darwin, in other systems it might be %a)'
-stat -f '%N %A' "${file[@]}"
+stat -f '%N %A' "${files[@]}"
 echo
 
 
 echo '%p - File type and permitions'
 echo '%z - Size in bytes'
 echo '%l - Number of hardlinks'
-stat -f '%N %p %z %l' "${file[@]}"
+stat -f '%N %p %z %l' "${files[@]}"
 echo
+
