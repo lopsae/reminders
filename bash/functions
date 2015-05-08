@@ -1,0 +1,32 @@
+#!/bin/bash
+
+
+someEchoes() {
+	echo 'this echo goes to stdout'
+	echo 'this echo goes to stderr' >&2
+}
+
+
+echo 'Calling the function'
+someEchoes
+echo
+
+
+echo 'Can outputs be redirected?'
+echo 'Dropping stdout'
+someEchoes > /dev/null
+echo 'Dropping stderr'
+someEchoes 2> /dev/null
+echo
+
+
+echo 'Calling from a command substitution'
+output=$(someEchoes)
+echo "$output" | xargs -L 1 -- echo 'echoline:'
+echo
+
+echo 'Just like with normal commands stderr has to be handled'
+output=$(someEchoes 2>&1)
+echo "$output" | xargs -L 1 -- echo 'echoline:'
+echo
+
