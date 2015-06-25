@@ -1,0 +1,31 @@
+#!/bin/bash
+
+# To show that $@ and $# inside the context of a function are independant
+
+echo 'Setting arguments to:'
+set -- first second third
+echo "\$@: $@"
+echo
+
+# exit 0
+
+printAndShift() {
+	echo 'Inside function'
+	echo "\$#:$# \$@:$@"
+	echo 'Shifting once'
+	shift
+	echo "\$#:$# \$@:$@"
+}
+
+printAndShift special thing
+echo
+
+echo 'Outside function'
+echo "\$@: $@"
+echo
+
+printAndShift "$@"
+echo
+
+echo 'Outside function'
+echo "\$@: $@"
