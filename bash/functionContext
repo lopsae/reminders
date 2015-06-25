@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# Variables set outside of functions keep existing inside them
+
+echo 'Setting variable cosa to nostra'
+cosa='nostra'
+echo "\$cosa: $cosa"
+echo
+
+printCosa() {
+	echo 'Inside function'
+	echo "\$cosa: $cosa"
+	echo
+}
+
+printCosa
+
