@@ -1,0 +1,53 @@
+#!/bin/bash
+
+# Content out of a function can be piped normally.
+# Content piped in works normally if the script is called without pipein
+# > ./functionPipes
+# Since stdin is considered terminal, and calling the function without
+# pipein stills considers it terminal
+
+# If script is called with pipein, then all the functions will believe to
+# have pipein, since stdin is not a terminal
+# > echo 'something' | ./functionPipes
+
+# However, if we read the pipein before the function, in the funtions will
+# see an empty pipe. How do we check for an empty pipe?
+
+
+echo 'Checking for piped in content before function'
+if [[ -t 0 ]]; then
+	echo 'No piped content before function'
+else
+	echo 'Input piped in before function: '
+	echo "$(cat)"
+fi
+echo
+
+
+printPiped() {
+	echo 'Inside function'
+	if [[ -t 0 ]]; then
+		echo 'Input from terminal'
+	else
+		echo 'Input piped in: '
+		echo "$(cat)"
+	fi
+	echo
+}
+
+
+echo 'Calling function without pipe'
+printPiped
+echo
+
+
+echo 'Calling function with piped content'
+echo 'Piped content!' | printPiped
+echo
+
+
+echo 'Catching content from function with pipe'
+printPiped | xargs -L 1 echo 'pipedOut: '
+
+
+
