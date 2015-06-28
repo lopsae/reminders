@@ -1,0 +1,38 @@
+#!/bin/bash
+
+# stdin is read through the cat command, whoever what happens if read more
+# that once?
+
+# when stdin is piped cat will read nothing the second time since the pipe
+# is empty. This can be used in functions to know if stdin is passed or not
+
+
+if [[ -t 0 ]]; then
+	echo 'stdin is terminal'
+	echo 'cat will wait for input, finish with ctrl+D'
+	echo
+fi
+
+
+echo 'Reading stdin'
+content=$(cat)
+echo
+
+
+echo 'Read content:'
+echo "\${#content}: ${#content}"
+echo "\$content: $content"
+echo
+
+
+echo 'Reading stdin again'
+content=$(cat)
+echo
+
+
+echo 'Read content:'
+echo "\${#content}: ${#content}"
+echo "\$content: $content"
+echo
+
+
