@@ -1,0 +1,39 @@
+#!/bin/bash
+
+
+# `trap debug` will execute a string for each command run
+# echoes from the debugTrap will print before that echos from the command
+
+# do the debug trap happens actually before the command? or only displays happens before?
+
+
+debugTrap() {
+	# echo "debugTrap: caller: $(caller 1)"
+	# echo "debugTrap: caller 0: $(caller 0)"
+	# echo "debugTrap: caller 1: $(caller 1)"
+
+	frame=$(caller 0)
+	lineNo=${frame%% *} # Remove all tail but the line number
+	file=${frame#* * } # Remove from front line number and subroutine
+
+	# echo "\$lineNo: $lineNo \$file: $file"
+	echo "executed line: $(tail -n +$lineNo "$file" | head -n 1)"
+
+
+}
+
+
+trap 'debugTrap' DEBUG
+
+echo 'some echo'
+echo 'another echo'
+
+echo 'commands split by...'; echo 'semicolon'
+
+if [[ 1 -eq 1 ]]; then
+	echo "inside if"
+fi
+
+if [[ 1 -eq 0 ]]; then
+	echo "inside false if"
+fi
