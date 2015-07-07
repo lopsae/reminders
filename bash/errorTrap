@@ -1,0 +1,59 @@
+#!/bin/bash
+
+# `trap err` will execute a string for a failing command
+
+
+errorTrap() {
+	# echo "debugTrap: caller: $(caller 1)"
+	# echo "debugTrap: caller 0: $(caller 0)"
+	# echo "debugTrap: caller 1: $(caller 1)"
+
+	frame=$(caller 0)
+	lineNo=${frame%% *} # Remove all tail but the line number
+	file=${frame#* * } # Remove from front line number and subroutine
+
+	# echo "\$lineNo: $lineNo \$file: $file"
+	echo "failed line: $(tail -n +$lineNo "$file" | head -n 1)"
+
+
+}
+
+
+trap 'errorTrap' ERR
+
+echo 'some echo'
+( echo 'another echo'; true )
+
+( echo 'parenthesis failing echo'; false ) # NOT CAPTURED!
+
+{ echo 'bracket failing echo'; false; } # is captured
+
+true
+
+false # is captured
+
+[ 1 -eq 0 ] # is captured
+
+[[ 1 -eq 0 ]] # NOT CAPTURED!
+
+[[ 1 -eq 0 ]] ||  false # is captured
+
+
+eval 'true'
+
+
+eval 'false' # captured 2 times? one for false one for the eval?
+
+eval "( exit ${STATUS:-1} )" # is captured
+
+
+if [[ 1 -eq 1 ]]; then
+	false # inside if, captured
+	false
+	false
+fi # but all these three above get captured in this line
+
+if [[ 1 -eq 0 ]]; then
+	echo "inside false if"
+fi
+

@@ -37,3 +37,7 @@ fi
 if [[ 1 -eq 0 ]]; then
 	echo "inside false if"
 fi
+
+true
+false
+
