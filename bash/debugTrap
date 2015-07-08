@@ -24,8 +24,6 @@ debugTrap() {
 	echo
 	echo -e "$RED> [frame]: $ORANGE$frame$NO_COLOR"
 	echo -e "$RED> [exec line]: $ORANGE$codeLine$NO_COLOR"
-
-
 }
 
 
@@ -50,13 +48,14 @@ true
 
 false
 
+# seems like the subshel has its own traps, or traps dont get inherited
 ( echo "inside an subshell, NOT TRAPPED?!" )
 
-{ echo "inside a codeblock"; }
+{ echo "inside a codeblock"; } # codeblock triggers just one trap
 
-eval 'echo "echo inside eval"'
+eval 'echo "echo inside eval"' # two traps, one for eval, one for echo
 
-eval '( echo "inside an eval subshell" )'
+eval '( echo "inside an eval subshell" )' # one trap for eval, and subshell does not get trapped
 
-eval '{ echo "inside a eval codeblock"; }'
+eval '{ echo "inside a eval codeblock"; }' # two traps, one for eval, one for echo
 
