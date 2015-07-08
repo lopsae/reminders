@@ -12,12 +12,18 @@ debugTrap() {
 	# echo "debugTrap: caller 0: $(caller 0)"
 	# echo "debugTrap: caller 1: $(caller 1)"
 
-	frame=$(caller 0)
-	lineNo=${frame%% *} # Remove all tail but the line number
-	file=${frame#* * } # Remove from front line number and subroutine
+	local frame=$(caller 0)
+	local lineNo=${frame%% *} # Remove all tail but the line number
+	local file=${frame#* * } # Remove from front line number and subroutine
 
 	# echo "\$lineNo: $lineNo \$file: $file"
-	echo "executed line: $(tail -n +$lineNo "$file" | head -n 1)"
+	local RED='\033[0;31m'
+	local ORANGE='\033[0;33m'
+	local NO_COLOR='\033[0m'
+	local codeLine="$(tail -n +$lineNo "$file" | head -n 1)"
+	echo
+	echo -e "$RED> [frame]: $ORANGE$frame$NO_COLOR"
+	echo -e "$RED> [exec line]: $ORANGE$codeLine$NO_COLOR"
 
 
 }
@@ -25,13 +31,15 @@ debugTrap() {
 
 trap 'debugTrap' DEBUG
 
+
 echo 'some echo'
+
 echo 'another echo'
 
-echo 'commands split by...'; echo 'semicolon'
+echo 'commands split by...'; echo 'semicolon' # will trigger a trap for each command
 
-if [[ 1 -eq 1 ]]; then
-	echo "inside if"
+if [[ 1 -eq 1 ]]; then # this will trigger one debug trap
+	echo "inside if" # and this one a separate one
 fi
 
 if [[ 1 -eq 0 ]]; then
@@ -39,5 +47,16 @@ if [[ 1 -eq 0 ]]; then
 fi
 
 true
+
 false
+
+( echo "inside an subshell, NOT TRAPPED?!" )
+
+{ echo "inside a codeblock"; }
+
+eval 'echo "echo inside eval"'
+
+eval '( echo "inside an eval subshell" )'
+
+eval '{ echo "inside a eval codeblock"; }'
 
