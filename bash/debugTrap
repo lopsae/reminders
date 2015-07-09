@@ -59,3 +59,5 @@ eval '( echo "inside an eval subshell" )' # one trap for eval, and subshell does
 
 eval '{ echo "inside a eval codeblock"; }' # two traps, one for eval, one for echo
 
+eval '( echo "inside a failed eval subshell"; exit 1; )'
+

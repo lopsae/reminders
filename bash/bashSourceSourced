@@ -1,0 +1,9 @@
+# to be sourced from bashSource
+
+echo 'From inside bashSourceSourced'
+echo "\$BASH_SOURCE: $BASH_SOURCE"
+echo "\${#BASH_SOURCE[@]}: ${#BASH_SOURCE[@]}"
+echo "\${BASH_SOURCE[1]}: ${BASH_SOURCE[1]}"
+echo 'Leaving bashSourceSourced'
+echo
+

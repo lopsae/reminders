@@ -1,0 +1,19 @@
+#!/bin/bash
+
+#
+
+
+echo 'From bashSource'
+echo "\$BASH_SOURCE: $BASH_SOURCE"
+echo "\${#BASH_SOURCE[@]}: ${#BASH_SOURCE[@]}"
+echo 'Sourcing bashSourceSourced'
+echo
+
+source bashSourceSourced
+
+echo 'Back to bashSource'
+echo "\$BASH_SOURCE: $BASH_SOURCE"
+echo "\${#BASH_SOURCE[@]}: ${#BASH_SOURCE[@]}"
+echo 'Finishing up'
+echo
+
