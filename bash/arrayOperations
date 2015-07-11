@@ -68,13 +68,25 @@ echo "\${yarra[3]}: ${yarra[3]}"
 echo
 
 
+# Access can also be done with ${a[@]:start:length}
+# which allows negative indexes
+echo "\${yarra[@]:0:1}: ${yarra[@]:0:1}"
+echo "\${yarra[@]:0:2}: ${yarra[@]:0:2}"
+echo "\${yarra[@]:0}: ${yarra[@]:0}"
+echo "\${yarra[@]:(-1)}: ${yarra[@]:(-1)}"
+echo "\${yarra[@]:(-1):2}: ${yarra[@]:(-1):2}"
+echo "\${yarra[@]:(-2)}: ${yarra[@]:(-2)}"
+echo "\${yarra[@]:(-2):1}: ${yarra[@]:(-2):1}"
+echo
+exit 0
+
 # To copy an array surround it in quotes and parenthesis
 goodCopy=("${yarra[@]}")
 baadCopy=(${yarra[@]})
 
 echo "\${goodCopy}[@]: ${goodCopy[@]}"
 echo "\${baadCopy}[@]: ${baadCopy[@]}"
-echo 
+echo
 
 
 # Otherwise elements with spaces in them will get messed up
