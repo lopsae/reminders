@@ -1,0 +1,15 @@
+#!/bin/bash
+
+if [[ $# -ge 2 ]]; then
+	echo "Error: printRandom can only receive one argument" >&2
+	exit 1
+fi
+
+intRegex='^[0-9]+$'
+if [[ $# -eq 1 && ! $1 =~ $intRegex ]];then
+	echo 'Error: printRandom can only receive an intenger as single argument' >&2
+	exit 1
+fi
+
+
+echo "done~"
