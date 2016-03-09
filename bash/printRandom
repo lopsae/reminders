@@ -11,5 +11,9 @@ if [[ $# -eq 1 && ! $1 =~ $intRegex ]];then
 	exit 1
 fi
 
+length=10
+if [[ $# -eq 1 ]]; then
+	length=$1
+fi
 
-echo "done~"
+cat /dev/urandom | env LC_CTYPE=C tr -dc 'a-z0-9' | fold -w $length | head -n 1
