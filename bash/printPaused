@@ -1,0 +1,29 @@
+#!/bin/bash
+
+# printPaused time repetions
+# use parameters?
+
+if [[ $# -ge 2 ]]; then
+	echo "Error: printRandom can only receive one argument" >&2
+	exit 1
+fi
+
+intRegex='^[0-9]+$'
+if [[ $# -eq 1 && ! $1 =~ $intRegex ]];then
+	echo 'Error: printRandom can only receive an intenger as single argument' >&2
+	exit 1
+fi
+
+length=10
+if [[ $# -eq 1 ]]; then
+	length=$1
+fi
+
+# cat /dev/urandom - reads from unlimited non-blocking random output
+# env LC_CTYPE=C - changes the interpretation of characters, so that this
+#		works on macs
+# tr -dc - delete (-d) the complement (-c) of the given pattern, that is,
+#		keep only the given pattern
+# fold -w - fold long lines at given width (-w)
+# head -n 1 - print a limited number of lines (-n)
+cat /dev/urandom | env LC_CTYPE=C tr -dc 'a-z0-9' | fold -w $length | head -n 1
