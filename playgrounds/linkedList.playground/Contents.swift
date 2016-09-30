@@ -65,32 +65,27 @@ indirect enum Node<Element> {
 }
 
 
-//extension Node: CustomStringConvertible {
-//    var description: String {
-//        get {
-//            var string: String?
-//            var current = self
-//
-//            whileLoop: while true {
-//                switch current {
-//                case .list(let listElement, let listNext):
-//                    if string == nil {
-//                        string = String(listElement)
-//                    } else {
-//                        string! += ", \(String(listElement))"
-//                    }
-//                    current = listNext
-//
-//                case .tail:
-//                    string = ""
-//                    break whileLoop
-//                }
-//            }
-//
-//            return string!
-//        }
-//    }
-//}
+extension Node: CustomStringConvertible {
+    var description: String {
+        get {
+            var contents:String
+
+            switch self {
+            case .tail:
+                contents = ""
+            case .list(let selfElement, let selfNext):
+                switch selfNext {
+                case .tail:
+                    contents = "\(selfElement)"
+                case .list:
+                    contents = "\(selfElement), \(selfNext)"
+                }
+            }
+
+            return "[\(contents)]"
+        }
+    }
+}
 
 
 //var emptyList = Node<String>()
