@@ -1,4 +1,4 @@
-
+// for Swift3
 
 indirect enum Node<Element> {
     case list(element: Element, next: Node)
@@ -46,9 +46,16 @@ indirect enum Node<Element> {
     }
 
     /// Removes and return the first element of the list.
-//    mutating func shift() -> Element {
-//
-//    }
+    mutating func shift() -> Element {
+        switch self {
+        case .tail:
+            // Nothing to shift
+            preconditionFailure()
+        case .list(let selfElement, let selfNext):
+            self = selfNext
+            return selfElement
+        }
+    }
 
     /// Inserts an element as the head of the list.
 //    mutating func unshift(_ element: Element) {
@@ -88,11 +95,14 @@ indirect enum Node<Element> {
 
 //var emptyList = Node<String>()
 
-var list = Node(element: "first")
+var list = Node(element: "1st")
 //var list = Node.list(element: "first", next: .tail)
-list.push("second")
-list.push("third")
+list.push("2nd")
+list.push("3rd")
+list.push("4th")
 
 list.pop()
 list.pop()
+list.shift()
+list.push("2.5th")
 
