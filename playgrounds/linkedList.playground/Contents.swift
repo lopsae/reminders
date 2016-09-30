@@ -51,7 +51,7 @@ indirect enum Node<Element> {
         case .tail:
             // Nothing to shift
             preconditionFailure()
-        case .list(let selfElement, let selfNext):
+        case let .list(selfElement, selfNext):
             self = selfNext
             return selfElement
         }
@@ -66,25 +66,28 @@ indirect enum Node<Element> {
 
 
 extension Node: CustomStringConvertible {
-    var description: String {
+    var unbracketedDescription: String {
         get {
-            var contents:String
-
             switch self {
             case .tail:
-                contents = ""
-            case .list(let selfElement, let selfNext):
+                return ""
+            case let .list(selfElement, selfNext):
                 switch selfNext {
                 case .tail:
-                    contents = "\(selfElement)"
+                    return "\(selfElement)"
                 case .list:
-                    contents = "\(selfElement), \(selfNext)"
+                    return "\(selfElement), \(selfNext.unbracketedDescription)"
                 }
             }
-
-            return "[\(contents)]"
         }
     }
+
+    var description: String {
+        get {
+            return "[\(self.unbracketedDescription)]"
+        }
+    }
+
 }
 
 
