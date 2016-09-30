@@ -58,9 +58,14 @@ indirect enum Node<Element> {
     }
 
     /// Inserts an element as the head of the list.
-//    mutating func unshift(_ element: Element) {
-//
-//    }
+    mutating func unshift(_ element: Element) {
+        switch self {
+        case .tail:
+            self = Node(element: element)
+        case .list:
+            self = .list(element: element, next: self)
+        }
+    }
 
 }
 
@@ -103,4 +108,4 @@ list.pop()
 list.pop()
 list.shift()
 list.push("2.5th")
-
+list.unshift("0th")
