@@ -1,1 +1,7 @@
+
+# TODO: What is this again?
 .vagrant/
+
+
+# XCode Playgrounds
+*.xcuserstate
