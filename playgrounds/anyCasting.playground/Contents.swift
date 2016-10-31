@@ -37,8 +37,7 @@ quadOptional is TestClass
 (quadOptional as? TestClass)?.test() // tested!
 
 
-// However if types are infered, meaning that the whole chain is not Optional<Any>s
-// only double optionals work
+// Previously with infered types, casting did not worked. Now it does.
 
 let typedDoubleOptional: Any? = Optional.some(Optional.some(TestClass()))
 typedDoubleOptional.debugDescription
@@ -47,21 +46,24 @@ type(of: typedDoubleOptional!)
 typedDoubleOptional is TestClass
 (typedDoubleOptional as? TestClass)?.test() // tested!
 
-// But with three levels, the casting breaks...
+// With three levels, casting still works
 
 let typedTripleOptional: Any? = Optional.some(Optional.some(Optional.some(TestClass())))
 typedTripleOptional.debugDescription
 type(of: typedTripleOptional)
 type(of: typedTripleOptional!)
 typedTripleOptional is TestClass
-(typedTripleOptional as? TestClass)?.test() // nil...
+(typedTripleOptional as? TestClass)?.test() // tested!
+(typedTripleOptional! as? TestClass)?.test() // tested!
+(typedTripleOptional! as! TestClass).test() // tested!
 
-// Whoever testing against Optional<TestClass> yields true, but fails on certain cases...
+// Testing agains `Optional<TestClass>` yields true and works
 
 typedDoubleOptional is Optional<TestClass> // true
 (typedDoubleOptional as? Optional<TestClass>)??.test() // tested! tho the `??` almost nonsense
+(typedDoubleOptional as! Optional<TestClass>)?.test() // tested! `as!`
 typedTripleOptional is Optional<TestClass> // true
-typedTripleOptional as? Optional<TestClass> // nil...
+(typedTripleOptional as? Optional<TestClass>)??.test() // tested!
 
 type(of: (typedTripleOptional as? Optional<TestClass>)) // Optional<Optional<Any>>
 
