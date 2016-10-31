@@ -8,7 +8,7 @@ class TestClass {
     }
 }
 
-// Seems like as long as the optionals are casted are created as Optional<Any>
+// Seems like as long as the optionals are casted as `Optional<Any>
 // any number of them can be stacked and the `is` and `as` operators will work
 // properly. All the bellow can successfully cast to `TestClass`
 
@@ -59,7 +59,7 @@ typedTripleOptional is TestClass
 // Whoever testing against Optional<TestClass> yields true, but fails on certain cases...
 
 typedDoubleOptional is Optional<TestClass> // true
-(typedDoubleOptional as? Optional<TestClass>)??.test() // tested! tho its almost nonsense
+(typedDoubleOptional as? Optional<TestClass>)??.test() // tested! tho the `??` almost nonsense
 typedTripleOptional is Optional<TestClass> // true
 typedTripleOptional as? Optional<TestClass> // nil...
 
@@ -92,8 +92,8 @@ simpleAny is Optional<Any>
 // But casting towards an typed optional from an any just cannot be done...
 // All following fail
 
-//typedDoubleOptional! as? Optional<TestClass>
-//simpleAny as? Optional<String>
+//typedDoubleOptional! as? Optional<TestClass> // Cannot downcast Any to more optional type...
+//simpleAny as? Optional<String> // Cannot downcast Any to more optional type...
 
 
 // Types can be actually checked with `==` and `type(of:)`, but still this does not help
@@ -108,10 +108,12 @@ type(of: typedDoubleOptional!) == Optional<TestClass>.self // true
 
 
 /*
-In conclusion, casting cannot be done to Optional<typed> since the wrap/unwrap rules
-seem to disallow it.
- 
-Since casting needs to be done with types available at runtime, and that escape
-from the automatic wrap/unwrap then the OptionalProtocol is necesary.
+ In conclusion:
+ + Casting cannot be done to from `Any` to `Optional<typed>` since the
+   wrap/unwrap behaviour with the `as` seems to disallow it.
+ + Using the `as` operator will try to unwrap optionals, and rewrap them
+   if casting to another optional. This automatic behaviour up the casting.
+ + Casting using the `as` operator needs the right side to be available at
+   runtime, which disallows storying `Type`s in variables for runtime casting.
 */
 
