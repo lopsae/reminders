@@ -50,7 +50,7 @@ d3.select("svg.chart")
 
 d3.tsv("data.tsv")
   .row(function(parsedData) {
-    parsedData.value = +parsedData.value;
+    parsedData.value = parseInt(parsedData.value);
     return parsedData;
   })
   .get(function(error, data) {
