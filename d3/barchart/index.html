@@ -10,7 +10,7 @@ svg.chart rect {
 svg.chart text {
   fill: white;
   font: 10px sans-serif;
-  text-anchor: end;
+  text-anchor: middle;
 }
 
 </style>
@@ -25,13 +25,14 @@ svg.chart text {
 
 <script>
 
-var width = 420, height = 120; // height good for 6 bars
+var width = 960, height = 500;
 
-var xScale = d3.scaleLinear()
-  .range([0, width]);
+var yScale = d3.scaleLinear()
+  .range([height, 0]);
 
 d3.select("svg.chart")
-  .attr("width", width);
+  .attr("width", width)
+  .attr("height", height);
 
 d3.tsv("data.tsv")
   .row(parseData)
@@ -49,29 +50,30 @@ function displayData(error, data) {
     return;
   }
 
-  xScale.domain([0, d3.max(data, function(datum) { return datum.value; })]);
+  yScale.domain([0, d3.max(data, function(datum) { return datum.value; })]);
+  var barWidth = Math.floor(width/data.length);
 
-  var svgChart = d3.select("svg.chart")
-    .attr("height", height);
+  var svgChart = d3.select("svg.chart");
 
   var barContainers = svgChart.selectAll("g")
     .data(data)
     .enter().append("g");
 
-  var barHeight = Math.floor(height/data.length);
+
   barContainers
     .attr("transform", function(datum, index) {
-      return "translate(0," + (barHeight * index) + ")";
+      return "translate(" + (barWidth * index) + ", 0)";
     });
 
   barContainers.append("rect")
-    .attr("width", function(datum) { return xScale(datum.value); })
-    .attr("height", barHeight -1);
+    .attr("y", function(datum) { return yScale(datum.value); })
+    .attr("height", function(datum) { return height - yScale(datum.value); })
+    .attr("width", barWidth -1);
 
   barContainers.append("text")
-    .attr("x", function(datum) { return xScale(datum.value) -3; })
-    .attr("y", barHeight /2)
-    .attr("dy", ".35em")
+    .attr("x", barWidth / 2)
+    .attr("y", function(datum) { return yScale(datum.value) +3; })
+    .attr("dy", ".75em")
     .text(function(datum) { return datum.name + " - " + datum.value; })
 }
 
