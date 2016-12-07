@@ -52,29 +52,27 @@ function displayData(error, data) {
 
   var maxValue = d3.max(data, function(datum) { return datum.value; });
   yScale.domain([0, maxValue]);
+
   var barWidth = Math.floor(width/data.length);
 
-  var svgChart = d3.select("svg.chart");
-
-  var barContainers = svgChart.selectAll("g")
+  var barContainers = d3.select("svg.chart").selectAll("g")
     .data(data)
     .enter().append("g");
-
 
   barContainers
     .attr("transform", function(datum, index) {
       var x = barWidth * index;
-      return `translate(${x},0)`;
+      var y = yScale(datum.value);
+      return `translate(${x},${y})`;
     });
 
   barContainers.append("rect")
-    .attr("y", function(datum) { return yScale(datum.value); })
     .attr("height", function(datum) { return height - yScale(datum.value); })
     .attr("width", barWidth -1);
 
   barContainers.append("text")
     .attr("x", barWidth / 2)
-    .attr("y", function(datum) { return yScale(datum.value) +3; })
+    .attr("y", 3)
     .attr("dy", ".75em")
     .text(function(datum) { return `${datum.letter}-${datum.value}`; })
 }
