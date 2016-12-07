@@ -13,7 +13,7 @@ svg.chart text.value {
   text-anchor: middle;
 }
 
-svg.chart text.letter {
+svg.chart text.name {
   fill: firebrick;
   font: 10px sans-serif;
   text-anchor: middle;
@@ -46,6 +46,7 @@ d3.tsv("data.tsv")
 
 
 function parseData(datum) {
+  datum.name = datum.letter;
   datum.value = parseFloat(datum.frequency);
   return datum;
 }
@@ -84,10 +85,10 @@ function displayData(error, data) {
     .text(function(datum) { return datum.value; })
 
   barContainers.append("text")
-    .attr("class", "letter")
+    .attr("class", "name")
     .attr("x", barWidth / 2)
     .attr("dy", "-.25em")
-    .text(function(datum) { return datum.letter; })
+    .text(function(datum) { return datum.name; })
 }
 
 
