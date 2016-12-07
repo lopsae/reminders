@@ -37,7 +37,7 @@ Manual SVG Chart
 
 <script>
 
-var width = 420, barHeight = 20;
+var width = 420, height = 120; // height good for 6 bars
 
 var xScale = d3.scaleLinear()
   .range([0, width]);
@@ -69,12 +69,13 @@ d3.tsv("data.tsv")
         .text(function(data) { return data.value; });
 
     var svgChart = d3.select("svg.chart")
-      .attr("height", barHeight * data.length);
+      .attr("height", height);
 
     var barContainers = svgChart.selectAll("g")
       .data(data)
       .enter().append("g");
 
+    var barHeight = Math.floor(height/data.length);
     barContainers
       .attr("transform", function(data, index) {
         return "translate(0," + (barHeight * index) + ")";
