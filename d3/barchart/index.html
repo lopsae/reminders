@@ -30,50 +30,50 @@ var width = 420, height = 120; // height good for 6 bars
 var xScale = d3.scaleLinear()
   .range([0, width]);
 
-d3.select("div.chart")
-  .attr("width", width);
-
 d3.select("svg.chart")
   .attr("width", width);
 
 d3.tsv("data.tsv")
-  .row(function(parsedData) {
-    parsedData.value = parseInt(parsedData.value);
-    return parsedData;
-  })
-  .get(function(error, data) {
-    if (error) {
-      console.error("failed to load data file");
-      return;
-    }
-
-    xScale.domain([0, d3.max(data, function(datum) { return datum.value; })]);
-
-    var svgChart = d3.select("svg.chart")
-      .attr("height", height);
-
-    var barContainers = svgChart.selectAll("g")
-      .data(data)
-      .enter().append("g");
-
-    var barHeight = Math.floor(height/data.length);
-    barContainers
-      .attr("transform", function(datum, index) {
-        return "translate(0," + (barHeight * index) + ")";
-      });
-
-    barContainers.append("rect")
-      .attr("width", function(datum) { return xScale(datum.value); })
-      .attr("height", barHeight -1);
-
-    barContainers.append("text")
-      .attr("x", function(datum) { return xScale(datum.value) -3; })
-      .attr("y", barHeight /2)
-      .attr("dy", ".35em")
-      .text(function(datum) { return datum.name + " - " + datum.value; })
-  });
+  .row(parseData)
+  .get(displayData);
 
 
+function parseData(datum) {
+  datum.value = parseInt(datum.value);
+  return datum;
+}
+
+function displayData(error, data) {
+  if (error) {
+    console.error("failed to load data file");
+    return;
+  }
+
+  xScale.domain([0, d3.max(data, function(datum) { return datum.value; })]);
+
+  var svgChart = d3.select("svg.chart")
+    .attr("height", height);
+
+  var barContainers = svgChart.selectAll("g")
+    .data(data)
+    .enter().append("g");
+
+  var barHeight = Math.floor(height/data.length);
+  barContainers
+    .attr("transform", function(datum, index) {
+      return "translate(0," + (barHeight * index) + ")";
+    });
+
+  barContainers.append("rect")
+    .attr("width", function(datum) { return xScale(datum.value); })
+    .attr("height", barHeight -1);
+
+  barContainers.append("text")
+    .attr("x", function(datum) { return xScale(datum.value) -3; })
+    .attr("y", barHeight /2)
+    .attr("dy", ".35em")
+    .text(function(datum) { return datum.name + " - " + datum.value; })
+}
 
 
 
