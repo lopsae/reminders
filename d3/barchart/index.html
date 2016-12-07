@@ -57,7 +57,8 @@ var bandScale = d3.scaleBand()
   .padding(0.1);
 
 var yAxis = d3.axisLeft()
-  .scale(yScale);
+  .scale(yScale)
+  .ticks(10, "%");
 
 var xAxis = d3.axisBottom()
   .scale(bandScale);
@@ -84,7 +85,14 @@ function displayData(error, data) {
   // Axis
   chart.append("g")
     .attr("class", "y axis")
-    .call(yAxis);
+    .call(yAxis)
+    .append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 6)
+      .attr("dy", ".71em")
+      .style("text-anchor", "end")
+      .style("fill", "black")
+      .text("Frequency");
 
   chart.append("g")
     .attr("class", "x axis")
