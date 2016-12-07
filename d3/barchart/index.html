@@ -11,6 +11,10 @@ svg.chart .bar {
   fill: firebrick;
 }
 
+svg.chart .bar:hover {
+  fill: steelblue;
+}
+
 svg.chart .axis text {
   font: 10px sans-serif;
 }
@@ -25,7 +29,7 @@ svg.chart text.name {
 
 
 <div>
-  <svg class="chart"></svg>
+  <svg class="chart" width="960" height="500"></svg>
 </div>
 
 
@@ -33,17 +37,13 @@ svg.chart text.name {
 
 <script>
 
+var svg = d3.select("svg.chart");
 var margin = {top: 20, right: 30, bottom: 30, left: 40};
-var svgWidth = 960;
-var svgHeight = 500;
-var width = svgWidth - margin.left - margin.right;
-var height = svgHeight - margin.top - margin.bottom;
+var width = +svg.attr("width") - margin.left - margin.right;
+var height = svg.attr("height") - margin.top - margin.bottom;
 
-var chart = d3.select("svg.chart")
-  .attr("width", svgWidth)
-  .attr("height", svgHeight)
-  .append("g")
-    .attr("transform", `translate(${margin.left},${margin.top})`);
+var chart = svg.append("g")
+  .attr("transform", `translate(${margin.left},${margin.top})`);
 
 d3.tsv("data.tsv")
   .row(parseData)
