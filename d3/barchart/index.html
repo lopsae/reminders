@@ -63,7 +63,8 @@ function displayData(error, data) {
 
   barContainers
     .attr("transform", function(datum, index) {
-      return "translate(" + (barWidth * index) + ", 0)";
+      var x = barWidth * index;
+      return `translate(${x},0)`;
     });
 
   barContainers.append("rect")
@@ -75,7 +76,7 @@ function displayData(error, data) {
     .attr("x", barWidth / 2)
     .attr("y", function(datum) { return yScale(datum.value) +3; })
     .attr("dy", ".75em")
-    .text(function(datum) { return datum.letter + " - " + datum.value; })
+    .text(function(datum) { return `${datum.letter}-${datum.value}`; })
 }
 
 
