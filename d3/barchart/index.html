@@ -15,13 +15,6 @@ svg.chart .axis text {
   font: 10px sans-serif;
 }
 
-svg.chart .axis path,
-svg.chart .axis line {
-  fill: none;
-  stroke: black;
-  shape-rendering: crispEdges;
-}
-
 svg.chart text.value {
   fill: white;
   font: 10px sans-serif;
@@ -94,6 +87,7 @@ function displayData(error, data) {
   var names = data.map(function(datum) { return datum.name; });
   bandScale.domain(names);
 
+  // Axis
   chart.append("g")
     .attr("class", "y axis")
     .call(yAxis);
@@ -103,6 +97,7 @@ function displayData(error, data) {
     .attr("transform", `translate(0,${height})`)
     .call(xAxis);
 
+  // Bars
   var barSelection = chart.selectAll(".bar")
     .data(data)
     .enter().append("g");
