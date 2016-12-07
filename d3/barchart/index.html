@@ -7,8 +7,14 @@ svg.chart rect {
   fill: firebrick;
 }
 
-svg.chart text {
+svg.chart text.value {
   fill: white;
+  font: 10px sans-serif;
+  text-anchor: middle;
+}
+
+svg.chart text.letter {
+  fill: firebrick;
   font: 10px sans-serif;
   text-anchor: middle;
 }
@@ -71,10 +77,17 @@ function displayData(error, data) {
     .attr("width", barWidth -1);
 
   barContainers.append("text")
+    .attr("class", "value")
     .attr("x", barWidth / 2)
     .attr("y", 3)
     .attr("dy", ".75em")
-    .text(function(datum) { return `${datum.letter}-${datum.value}`; })
+    .text(function(datum) { return datum.value; })
+
+  barContainers.append("text")
+    .attr("class", "letter")
+    .attr("x", barWidth / 2)
+    .attr("dy", "-.25em")
+    .text(function(datum) { return datum.letter; })
 }
 
 
