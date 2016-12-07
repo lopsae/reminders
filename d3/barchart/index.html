@@ -3,15 +3,6 @@
 
 <style>
 
-div.chart div {
-  font: 10px sans-serif;
-  background-color: steelblue;
-  text-align: right;
-  padding: 3px;
-  margin: 1px;
-  color: white;
-}
-
 svg.chart rect {
   fill: firebrick;
 }
@@ -24,10 +15,7 @@ svg.chart text {
 
 </style>
 
-D3 Chart
-<div class="chart"></div>
 
-Manual SVG Chart
 <div>
   <svg class="chart"></svg>
 </div>
@@ -60,13 +48,6 @@ d3.tsv("data.tsv")
     }
 
     xScale.domain([0, d3.max(data, function(datum) { return datum.value; })]);
-
-    d3.select("div.chart")
-      .selectAll("div")
-        .data(data)
-      .enter().append("div")
-        .style("width", function(datum) { return xScale(datum.value) + "px"; })
-        .text(function(datum) { return datum.value; });
 
     var svgChart = d3.select("svg.chart")
       .attr("height", height);
