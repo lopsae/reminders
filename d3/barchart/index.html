@@ -36,6 +36,10 @@ var width = 960, height = 500;
 var yScale = d3.scaleLinear()
   .range([height, 0]);
 
+var bandScale = d3.scaleBand()
+  .range([0, width])
+  .padding(0.1);
+
 d3.select("svg.chart")
   .attr("width", width)
   .attr("height", height);
@@ -60,33 +64,34 @@ function displayData(error, data) {
   var maxValue = d3.max(data, function(datum) { return datum.value; });
   yScale.domain([0, maxValue]);
 
-  var barWidth = Math.floor(width/data.length);
+  var names = data.map(function(datum) { return datum.name; });
+  bandScale.domain(names);
 
   var barContainers = d3.select("svg.chart").selectAll("g")
     .data(data)
     .enter().append("g");
 
   barContainers
-    .attr("transform", function(datum, index) {
-      var x = barWidth * index;
+    .attr("transform", function(datum) {
+      var x = bandScale(datum.name);
       var y = yScale(datum.value);
       return `translate(${x},${y})`;
     });
 
   barContainers.append("rect")
     .attr("height", function(datum) { return height - yScale(datum.value); })
-    .attr("width", barWidth -1);
+    .attr("width", bandScale.bandwidth());
 
   barContainers.append("text")
     .attr("class", "value")
-    .attr("x", barWidth / 2)
+    .attr("x", bandScale.bandwidth() / 2)
     .attr("y", 3)
     .attr("dy", ".75em")
     .text(function(datum) { return datum.value; })
 
   barContainers.append("text")
     .attr("class", "name")
-    .attr("x", barWidth / 2)
+    .attr("x", bandScale.bandwidth() / 2)
     .attr("dy", "-.25em")
     .text(function(datum) { return datum.name; })
 }
