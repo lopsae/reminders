@@ -69,6 +69,9 @@ var bandScale = d3.scaleBand()
   .range([0, width])
   .padding(0.1);
 
+var yAxis = d3.axisLeft()
+  .scale(yScale);
+
 var xAxis = d3.axisBottom()
   .scale(bandScale);
 
@@ -90,6 +93,10 @@ function displayData(error, data) {
 
   var names = data.map(function(datum) { return datum.name; });
   bandScale.domain(names);
+
+  chart.append("g")
+    .attr("class", "y axis")
+    .call(yAxis);
 
   chart.append("g")
     .attr("class", "x axis")
