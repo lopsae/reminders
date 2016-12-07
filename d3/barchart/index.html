@@ -40,7 +40,7 @@ d3.tsv("data.tsv")
 
 
 function parseData(datum) {
-  datum.value = parseInt(datum.value);
+  datum.value = parseFloat(datum.frequency);
   return datum;
 }
 
@@ -50,7 +50,8 @@ function displayData(error, data) {
     return;
   }
 
-  yScale.domain([0, d3.max(data, function(datum) { return datum.value; })]);
+  var maxValue = d3.max(data, function(datum) { return datum.value; });
+  yScale.domain([0, maxValue]);
   var barWidth = Math.floor(width/data.length);
 
   var svgChart = d3.select("svg.chart");
@@ -74,7 +75,7 @@ function displayData(error, data) {
     .attr("x", barWidth / 2)
     .attr("y", function(datum) { return yScale(datum.value) +3; })
     .attr("dy", ".75em")
-    .text(function(datum) { return datum.name + " - " + datum.value; })
+    .text(function(datum) { return datum.letter + " - " + datum.value; })
 }
 
 
