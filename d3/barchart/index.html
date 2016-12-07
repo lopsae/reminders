@@ -15,14 +15,8 @@ svg.chart .axis text {
   font: 10px sans-serif;
 }
 
-svg.chart text.value {
-  fill: white;
-  font: 10px sans-serif;
-  text-anchor: middle;
-}
-
 svg.chart text.name {
-  fill: firebrick;
+  fill: lightgrey;
   font: 10px sans-serif;
   text-anchor: middle;
 }
@@ -115,16 +109,10 @@ function displayData(error, data) {
     .attr("width", bandScale.bandwidth());
 
   barSelection.append("text")
-    .attr("class", "value")
-    .attr("x", bandScale.bandwidth() / 2)
-    .attr("y", 3)
-    .attr("dy", ".75em")
-    .text(function(datum) { return datum.value; })
-
-  barSelection.append("text")
     .attr("class", "name")
     .attr("x", bandScale.bandwidth() / 2)
-    .attr("dy", "-.25em")
+    .attr("y", 5)
+    .attr("dy", ".75em")
     .text(function(datum) { return datum.name; })
 }
 
