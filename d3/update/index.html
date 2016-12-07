@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<style>
+
+svg text {
+  font: bold 48px monospace;
+}
+
+svg text.enter{
+  fill: green;
+}
+
+svg text.update{
+  fill: lightgrey;
+}
+
+</style>
+
+
+<div>
+  <svg class="chart" width="960" height="500"></svg>
+</div>
+
+
+<script src="https://d3js.org/d3.v4.min.js"></script>
+
+<script>
+
+var alphabet = "abcdefghijklmnopqrstuvwxyz".split("");
+var letterSpace = 32
+
+var svg = d3.select("svg.chart");
+var container = svg.append("g")
+  .attr("transform", `translate(${letterSpace},${+svg.attr("height")/2})`);
+
+function update(data) {
+  var boundText = container.selectAll("text")
+    .data(data);
+
+  // Update elements
+  boundText.attr("class", "update");
+
+  // Enter elements
+  boundText.enter()
+    .append("text")
+      .attr("class", "enter")
+      .attr("x", function(datum, index) { return letterSpace * index; })
+      .attr("dy", ".35em")
+    .merge(boundText)
+      .text(function(datum) { return datum; });
+
+  // Exit elements
+  boundText.exit().remove();
+}
+
+update(alphabet);
+
+</script>
+
