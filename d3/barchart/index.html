@@ -7,8 +7,19 @@ svg.chart {
   background: lightgrey;
 }
 
-svg.chart rect {
+svg.chart .bar {
   fill: firebrick;
+}
+
+svg.chart .axis text {
+  font: 10px sans-serif;
+}
+
+svg.chart .axis path,
+svg.chart .axis line {
+  fill: none;
+  stroke: black;
+  shape-rendering: crispEdges;
 }
 
 svg.chart text.value {
@@ -58,6 +69,9 @@ var bandScale = d3.scaleBand()
   .range([0, width])
   .padding(0.1);
 
+var xAxis = d3.axisBottom()
+  .scale(bandScale);
+
 
 function parseData(datum) {
   datum.name = datum.letter;
@@ -77,29 +91,35 @@ function displayData(error, data) {
   var names = data.map(function(datum) { return datum.name; });
   bandScale.domain(names);
 
-  var barContainers = chart.selectAll("g")
+  chart.append("g")
+    .attr("class", "x axis")
+    .attr("transform", `translate(0,${height})`)
+    .call(xAxis);
+
+  var barSelection = chart.selectAll(".bar")
     .data(data)
     .enter().append("g");
 
-  barContainers
+  barSelection
     .attr("transform", function(datum) {
       var x = bandScale(datum.name);
       var y = yScale(datum.value);
       return `translate(${x},${y})`;
     });
 
-  barContainers.append("rect")
+  barSelection.append("rect")
+    .attr("class", "bar")
     .attr("height", function(datum) { return height - yScale(datum.value); })
     .attr("width", bandScale.bandwidth());
 
-  barContainers.append("text")
+  barSelection.append("text")
     .attr("class", "value")
     .attr("x", bandScale.bandwidth() / 2)
     .attr("y", 3)
     .attr("dy", ".75em")
     .text(function(datum) { return datum.value; })
 
-  barContainers.append("text")
+  barSelection.append("text")
     .attr("class", "name")
     .attr("x", bandScale.bandwidth() / 2)
     .attr("dy", "-.25em")
