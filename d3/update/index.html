@@ -12,7 +12,7 @@ svg text.enter{
 }
 
 svg text.update{
-  fill: lightgrey;
+  fill: dimgrey;
 }
 
 </style>
@@ -55,6 +55,16 @@ function update(data) {
 }
 
 update(alphabet);
+
+d3.interval(function() {
+  var random = Math.floor(Math.random() * alphabet.length);
+  var slice = d3.shuffle(alphabet)
+    .slice(0, random)
+    .sort();
+
+  update(slice);
+}, 1000);
+
 
 </script>
 
