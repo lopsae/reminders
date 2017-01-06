@@ -5,3 +5,6 @@
 
 # XCode Playgrounds
 *.xcuserstate
+
+# osx stuff
+.DS_Store
