@@ -24,11 +24,13 @@ class TouchView: UIView {
         let documentCenter = CGPoint(x: bounds.width / 2, y: bounds.height / 4)
         let trashCenter = CGPoint(x: bounds.width / 2, y: bounds.height * 3 / 4)
 
-        let documentView = UIView(frame: CGRect(center: documentCenter, size: iconSize))
-        documentView.backgroundColor = UIColor.lightGray
+        let documentView = UIImageView(frame: CGRect(center: documentCenter, size: iconSize))
+        documentView.contentMode = .scaleAspectFit
+        documentView.image = UIImage(named: "file.png")
 
-        let trashView = UIView(frame: CGRect(center: trashCenter, size: iconSize))
-        trashView.backgroundColor = UIColor.darkGray
+        let trashView = UIImageView(frame: CGRect(center: trashCenter, size: iconSize))
+        trashView.contentMode = .scaleAspectFit
+        trashView.image = UIImage(named: "delete.png")
 
         addSubview(documentView)
         addSubview(trashView)
