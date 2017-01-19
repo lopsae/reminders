@@ -3,8 +3,40 @@
 import UIKit
 import PlaygroundSupport
 
+extension CGRect {
+    init(center: CGPoint, size: CGSize) {
+        let origin = CGPoint(
+            x: center.x - (size.width / 2),
+            y: center.y - (size.height / 2)
+        )
+        self = CGRect(origin: origin, size:size)
+    }
+}
+
 class TouchView: UIView {
     private var touchPoints: [CGPoint] = []
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        backgroundColor = UIColor.orange
+
+        let iconSize = CGSize(width: 100, height: 100)
+        let documentCenter = CGPoint(x: bounds.width / 2, y: bounds.height / 4)
+        let trashCenter = CGPoint(x: bounds.width / 2, y: bounds.height * 3 / 4)
+
+        let documentView = UIView(frame: CGRect(center: documentCenter, size: iconSize))
+        documentView.backgroundColor = UIColor.lightGray
+
+        let trashView = UIView(frame: CGRect(center: trashCenter, size: iconSize))
+        trashView.backgroundColor = UIColor.darkGray
+
+        addSubview(documentView)
+        addSubview(trashView)
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         updateTouchPoints(touches)
@@ -65,6 +97,5 @@ class TouchView: UIView {
 }
 
 let view = TouchView(frame: CGRect(x: 0, y: 0, width: 300, height: 500))
-view.backgroundColor = UIColor.orange
 
 PlaygroundPage.current.liveView = view
