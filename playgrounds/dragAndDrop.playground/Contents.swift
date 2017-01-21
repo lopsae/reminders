@@ -15,15 +15,15 @@ class TouchView: UIView {
         super.init(frame: frame)
         backgroundColor = UIColor.orange
 
-        let iconSize = CGSize(width: 100, height: 100)
+        let iconSide: CGFloat = 100
         let documentCenter = CGPoint(x: bounds.width / 2, y: bounds.height / 4)
         let trashCenter = CGPoint(x: bounds.width / 2, y: bounds.height * 3 / 4)
 
-        let documentView = UIImageView(frame: CGRect(center: documentCenter, size: iconSize))
+        let documentView = UIImageView(frame: CGRect(center: documentCenter, side: iconSide))
         documentView.contentMode = .scaleAspectFit
         documentView.image = UIImage(named: "file.png")
 
-        let trashView = UIImageView(frame: CGRect(center: trashCenter, size: iconSize))
+        let trashView = UIImageView(frame: CGRect(center: trashCenter, side: iconSide))
         trashView.contentMode = .scaleAspectFit
         trashView.image = UIImage(named: "delete.png")
 
@@ -60,6 +60,6 @@ class TouchView: UIView {
 
 }
 
-let view = TouchView(frame: CGRect(x: 0, y: 0, width: 300, height: 500))
+let view = TouchView(frame: CGRect(width: 300, height: 500))
 
 PlaygroundPage.current.liveView = view

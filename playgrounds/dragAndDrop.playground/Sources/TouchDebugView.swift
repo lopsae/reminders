@@ -32,7 +32,7 @@ public class TouchDebugView: UIView {
             let ellipseDiameter: CGFloat = 44
             let pointRect = CGRect(
                 center: point,
-                size: CGSize(width: ellipseDiameter, height: ellipseDiameter)
+                side: ellipseDiameter
             )
 
             context.setFillColor(UIColor.white.withAlphaComponent(0.3).cgColor)
