@@ -3,59 +3,6 @@
 import UIKit
 import PlaygroundSupport
 
-extension CGRect {
-    init(center: CGPoint, size: CGSize) {
-        let origin = CGPoint(
-            x: center.x - (size.width / 2),
-            y: center.y - (size.height / 2)
-        )
-        self = CGRect(origin: origin, size:size)
-    }
-}
-
-
-class TouchDebugView: UIView {
-
-    public var touchPoints: [CGPoint] = [] {
-        didSet {
-            self.setNeedsDisplay()
-        }
-    }
-
-
-    init() {
-        super.init(frame: CGRect.zero)
-        isUserInteractionEnabled = false
-        isOpaque = false
-    }
-
-    
-    convenience required init?(coder aDecoder: NSCoder) {
-        self.init()
-    }
-
-
-    override func draw(_ rect: CGRect) {
-        let context = UIGraphicsGetCurrentContext()!
-        context.saveGState()
-
-        for point in touchPoints {
-            context.move(to: point)
-
-            let ellipseDiameter: CGFloat = 30
-            let pointRect = CGRect(
-                center: point,
-                size: CGSize(width: ellipseDiameter, height: ellipseDiameter)
-            )
-
-            context.setFillColor(UIColor.white.withAlphaComponent(0.3).cgColor)
-            context.fillEllipse(in: pointRect)
-        }
-
-        context.restoreGState()
-    }
-}
-
 
 class TouchView: UIView {
 
