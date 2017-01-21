@@ -16,21 +16,24 @@ extension CGRect {
 
 class TouchDebugView: UIView {
 
-    init() {
-        super.init(frame: CGRect.zero)
-        isUserInteractionEnabled = false
-        isOpaque = false
-    }
-    
-    convenience required init?(coder aDecoder: NSCoder) {
-        self.init()
-    }
-
     public var touchPoints: [CGPoint] = [] {
         didSet {
             self.setNeedsDisplay()
         }
     }
+
+
+    init() {
+        super.init(frame: CGRect.zero)
+        isUserInteractionEnabled = false
+        isOpaque = false
+    }
+
+    
+    convenience required init?(coder aDecoder: NSCoder) {
+        self.init()
+    }
+
 
     override func draw(_ rect: CGRect) {
         let context = UIGraphicsGetCurrentContext()!
@@ -41,10 +44,9 @@ class TouchDebugView: UIView {
 
             let ellipseDiameter: CGFloat = 30
             let pointRect = CGRect(
-                x: point.x - ellipseDiameter / 2,
-                y: point.y - ellipseDiameter / 2,
-                width: ellipseDiameter,
-                height: ellipseDiameter)
+                center: point,
+                size: CGSize(width: ellipseDiameter, height: ellipseDiameter)
+            )
 
             context.setFillColor(UIColor.white.withAlphaComponent(0.3).cgColor)
             context.fillEllipse(in: pointRect)
@@ -56,7 +58,9 @@ class TouchDebugView: UIView {
 
 
 class TouchView: UIView {
+
     private let touchesView: TouchDebugView
+
 
     override init(frame: CGRect) {
         touchesView = TouchDebugView()
@@ -89,25 +93,21 @@ class TouchView: UIView {
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         touchesView.touchPoints = touches.map({ $0.location(in: self) })
-
         super.touchesBegan(touches, with: event)
     }
 
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         touchesView.touchPoints = touches.map({ $0.location(in: self) })
-
         super.touchesMoved(touches, with: event)
     }
 
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         touchesView.touchPoints = []
-
         super.touchesEnded(touches, with: event)
     }
 
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
         touchesView.touchPoints = []
-
         super.touchesCancelled(touches, with: event)
     }
 
