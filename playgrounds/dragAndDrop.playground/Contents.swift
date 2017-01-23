@@ -10,6 +10,7 @@ class DragAndDropView: UIView {
     private let documentView, trashView: UIImageView
 
     private var dragOffset: CGPoint?
+    private var documentOrigin: CGPoint!
 
     override init(frame: CGRect) {
         touchesView = TouchDebugView()
@@ -26,6 +27,7 @@ class DragAndDropView: UIView {
         documentView.frame = CGRect(center: documentCenter, side: iconSide)
         documentView.contentMode = .scaleAspectFit
         documentView.image = UIImage(named: "file.png")
+        documentOrigin = documentView.frame.origin
 
         trashView.frame = CGRect(center: trashCenter, side: iconSide)
         trashView.contentMode = .scaleAspectFit
@@ -67,6 +69,12 @@ class DragAndDropView: UIView {
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         touchesView.touchPoints = []
         dragOffset = nil
+
+        UIView.animate(withDuration: 0.5) {
+            [weak weakSelf = self] in
+            weakSelf?.documentView.frame.origin = weakSelf!.documentOrigin
+        }
+
         super.touchesEnded(touches, with: event)
     }
 
