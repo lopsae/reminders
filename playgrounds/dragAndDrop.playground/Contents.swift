@@ -10,7 +10,9 @@ class DragAndDropView: UIView {
     private let documentView, trashView: UIImageView
 
     private var dragOffset: CGPoint?
-    private var documentOrigin: CGPoint!
+
+    private var draggedIconOrigin: CGPoint!
+    private var draggedIconAnimation: UIViewPropertyAnimator?
 
     override init(frame: CGRect) {
         touchesView = TouchDebugView()
@@ -27,7 +29,7 @@ class DragAndDropView: UIView {
         documentView.frame = CGRect(center: documentCenter, side: iconSide)
         documentView.contentMode = .scaleAspectFit
         documentView.image = UIImage(named: "file.png")
-        documentOrigin = documentView.frame.origin
+        draggedIconOrigin = documentView.frame.origin
 
         trashView.frame = CGRect(center: trashCenter, side: iconSide)
         trashView.contentMode = .scaleAspectFit
@@ -46,6 +48,10 @@ class DragAndDropView: UIView {
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         touchesView.touchPoints = touches.map({ $0.location(in: self) })
+
+        draggedIconAnimation?.stopAnimation(false)
+        draggedIconAnimation?.finishAnimation(at: UIViewAnimatingPosition.end)
+        draggedIconAnimation = nil
 
         let touchLocation = touches.first!.location(in: self)
         if (documentView.frame.contains(touchLocation)) {
@@ -68,11 +74,19 @@ class DragAndDropView: UIView {
 
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         touchesView.touchPoints = []
-        dragOffset = nil
 
-        UIView.animate(withDuration: 0.5) {
-            [weak weakSelf = self] in
-            weakSelf?.documentView.frame.origin = weakSelf!.documentOrigin
+        if (dragOffset != nil) {
+            draggedIconAnimation = UIViewPropertyAnimator(
+                duration: 1,
+                curve: .easeIn
+            ) {
+                [weak weakSelf = self] in
+                guard let weakSelf = weakSelf else {return}
+                weakSelf.documentView.frame.origin = weakSelf.draggedIconOrigin
+            }
+            draggedIconAnimation?.startAnimation()
+
+            dragOffset = nil
         }
 
         super.touchesEnded(touches, with: event)
@@ -81,6 +95,11 @@ class DragAndDropView: UIView {
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
         touchesView.touchPoints = []
         dragOffset = nil
+
+        draggedIconAnimation?.stopAnimation(false)
+        draggedIconAnimation?.finishAnimation(at: UIViewAnimatingPosition.end)
+        draggedIconAnimation = nil
+
         super.touchesCancelled(touches, with: event)
     }
 
