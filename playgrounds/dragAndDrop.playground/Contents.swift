@@ -75,19 +75,24 @@ class DragAndDropView: UIView {
         touchesView.touchPoints = []
 
         if (dragOffset != nil) {
-            draggedIconAnimation = UIViewPropertyAnimator(
-                duration: 0.3,
-                curve: .easeIn
-            ) {
-                [weak weakSelf = self] in
-                guard let weakSelf = weakSelf else {return}
-                weakSelf.documentView.frame.origin = weakSelf.draggedIconOrigin
+            let touchLocation = touches.first!.location(in: self)
+            if (trashView.frame.contains(touchLocation)) {
+                documentView.isHidden = true
+            } else {
+                draggedIconAnimation = UIViewPropertyAnimator(
+                    duration: 0.3,
+                    curve: .easeIn
+                ) {
+                    [weak weakSelf = self] in
+                    guard let weakSelf = weakSelf else {return}
+                    weakSelf.documentView.frame.origin = weakSelf.draggedIconOrigin
+                }
+                draggedIconAnimation?.addCompletion() {
+                    [weak weakSelf = self] (_) in
+                    weakSelf?.draggedIconAnimation = nil
+                }
+                draggedIconAnimation?.startAnimation()
             }
-            draggedIconAnimation?.addCompletion() {
-                [weak weakSelf = self] (_) in
-                weakSelf?.draggedIconAnimation = nil
-            }
-            draggedIconAnimation?.startAnimation()
 
             dragOffset = nil
         }
