@@ -49,13 +49,12 @@ class DragAndDropView: UIView {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         touchesView.touchPoints = touches.map({ $0.location(in: self) })
 
-        draggedIconAnimation?.stopAnimation(false)
-        draggedIconAnimation?.finishAnimation(at: UIViewAnimatingPosition.end)
-        draggedIconAnimation = nil
-
-        let touchLocation = touches.first!.location(in: self)
-        if (documentView.frame.contains(touchLocation)) {
-            dragOffset = documentView.frame.origin - touchLocation
+        if draggedIconAnimation == nil {
+            // No animation is running!
+            let touchLocation = touches.first!.location(in: self)
+            if (documentView.frame.contains(touchLocation)) {
+                dragOffset = documentView.frame.origin - touchLocation
+            }
         }
 
         super.touchesBegan(touches, with: event)
@@ -77,12 +76,16 @@ class DragAndDropView: UIView {
 
         if (dragOffset != nil) {
             draggedIconAnimation = UIViewPropertyAnimator(
-                duration: 1,
+                duration: 0.3,
                 curve: .easeIn
             ) {
                 [weak weakSelf = self] in
                 guard let weakSelf = weakSelf else {return}
                 weakSelf.documentView.frame.origin = weakSelf.draggedIconOrigin
+            }
+            draggedIconAnimation?.addCompletion() {
+                [weak weakSelf = self] (_) in
+                weakSelf?.draggedIconAnimation = nil
             }
             draggedIconAnimation?.startAnimation()
 
