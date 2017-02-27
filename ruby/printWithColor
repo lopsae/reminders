@@ -4,8 +4,8 @@
 
 puts "tty? #{STDOUT.tty?}"
 if STDOUT.tty?
-	puts "\033[1;31mhello"
+	puts "\033[1;31mhello in red"
 else
-	puts "hello"
+	puts "color only printed when stdout is the console"
 end
 
