@@ -5,8 +5,8 @@ import re
 alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".lower()
 
 letters = []
-for index in range(len(alphabet)):
-	letters.append(alphabet[index])
+for letter in alphabet:
+	letters.append(letter)
 
 tabula = []
 for shift in range(len(letters)):
@@ -23,8 +23,7 @@ cypher = "tuccnimechlxbguhvpesyvbsuxihryccmcptwkxcfmbpemvjvhahxdwvqmbrfwfkkiiwbi
 
 keys = "Any attempts to sabotage, disrupt, delay, repurpose, alter, or otherwise interfere with the operations of the aforementioned transport, regardless of whether or not said sabotage, disruption, delay, repurposing, alteration, or interference is within the bounds of the signatory State or any other State, including both signatories and non-signatories, shall incur a penalty commensurate with the number of preceding penalties already incurred, according to the chart of Appendix B, and as determined by an impartial vote of representatives of all signatory States."
 
-keys = keys.lower()
-keys = re.sub("[^a-z]", "", keys)
+keys = re.sub("[^a-z]", "", keys.lower())
 
 decodedLetters = []
 
