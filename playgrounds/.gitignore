@@ -1,0 +1,6 @@
+
+# xcode playgrounds stuff
+xcuserdata/
+DerivedData/
+
+# *.xcworkspace/ is commited for playgrounds
