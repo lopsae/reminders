@@ -3,40 +3,79 @@ import UIKit
 import PlaygroundSupport
 
 
+struct CellItem {
+    let reuseIdentifier = "playgroundCell"
+    let cellClass = UICollectionViewCell.self
+
+    let size: CGSize
+
+    init(_ width: CGFloat, _ height: CGFloat) {
+        size = CGSize(width: width, height: height)
+    }
+}
+
 class CollectionViewController: UICollectionViewController {
 
-    private let reuseIdentifier = "playgroundCell"
+    internal var sections: [[CellItem]] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView?.backgroundColor = .orange
-        collectionView?.register(
-            UICollectionViewCell.self,
-            forCellWithReuseIdentifier: reuseIdentifier
-        )
+
+        sections.append([
+            CellItem(100, 100),
+            CellItem(100, 100),
+            CellItem(100, 100),
+            CellItem(100, 100),
+            CellItem(100, 100),
+            CellItem(100, 100),
+            CellItem(100, 100)
+        ])
+
+        sections.append([
+            CellItem(100, 100),
+            CellItem(100, 100),
+            CellItem(100, 100),
+            CellItem(100, 100),
+            CellItem(100, 100),
+            CellItem(100, 100),
+            CellItem(100, 100)
+        ])
+
+        // register all cells
+        for singleSection in sections {
+            for singleCell in singleSection {
+                collectionView?.register(
+                    singleCell.cellClass,
+                    forCellWithReuseIdentifier: singleCell.reuseIdentifier
+                )
+            }
+        }
     }
 
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 2
+        return sections.count
     }
 
     override func collectionView(
         _ collectionView: UICollectionView,
-        numberOfItemsInSection section: Int
+        numberOfItemsInSection sectionIndex: Int
     ) -> Int {
-        return 10
+        return sections[sectionIndex].count
     }
 
     override func collectionView(
         _ collectionView: UICollectionView,
         cellForItemAt indexPath: IndexPath
     ) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: reuseIdentifier,
+        let cellItem = sections[indexPath.section][indexPath.row]
+
+        let cellView = collectionView.dequeueReusableCell(
+            withReuseIdentifier: cellItem.reuseIdentifier,
             for: indexPath
         )
-        cell.backgroundColor = .white
-        return cell
+        cellView.backgroundColor = .white
+        return cellView
     }
 
 }
@@ -49,7 +88,8 @@ extension CollectionViewController: UICollectionViewDelegateFlowLayout {
         layout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        return CGSize(width: 100, height: 100)
+        let cellItem = sections[indexPath.section][indexPath.row]
+        return cellItem.size
     }
 
 }
