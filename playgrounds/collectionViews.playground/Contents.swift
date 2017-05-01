@@ -41,9 +41,29 @@ class CollectionViewController: UICollectionViewController {
 
 }
 
+
+extension CollectionViewController: UICollectionViewDelegateFlowLayout {
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout: UICollectionViewLayout,
+        sizeForItemAt indexPath: IndexPath
+    ) -> CGSize {
+        return CGSize(width: 100, height: 100)
+    }
+
+}
+
+
+let layout = UICollectionViewFlowLayout()
+layout.minimumInteritemSpacing = 10
+layout.minimumLineSpacing = 10
+layout.sectionInset = UIEdgeInsets(top: 10, left: 10, bottom: 0, right: 10)
+
 let liveView = CollectionViewController(
-    collectionViewLayout: UICollectionViewFlowLayout()
+    collectionViewLayout: layout
 )
 
+// Default size for controllers: 375 x 668
 PlaygroundPage.current.liveView = liveView
 
