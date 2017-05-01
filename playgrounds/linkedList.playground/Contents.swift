@@ -99,7 +99,6 @@ extension Node: CustomStringConvertible {
 //var emptyList = Node<String>()
 
 var list = Node(element: "1st")
-//var list = Node.list(element: "first", next: .tail)
 list.push("2nd")
 list.push("3rd")
 list.push("4th")

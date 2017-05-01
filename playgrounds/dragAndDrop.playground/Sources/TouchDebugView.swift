@@ -35,7 +35,7 @@ public class TouchDebugView: UIView {
                 side: ellipseDiameter
             )
 
-            context.setFillColor(UIColor.white.withAlphaComponent(0.3).cgColor)
+            context.setFillColor(UIColor.black.withAlphaComponent(0.3).cgColor)
             context.fillEllipse(in: pointRect)
         }
         
