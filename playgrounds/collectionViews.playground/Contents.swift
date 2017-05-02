@@ -78,6 +78,18 @@ class CollectionViewController: UICollectionViewController {
         return cellView
     }
 
+    override func collectionView(
+        _ collectionView: UICollectionView,
+        willDisplay cell: UICollectionViewCell,
+        forItemAt indexPath: IndexPath
+    ) {
+//        print("Will display: \(indexPath)")
+    }
+
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+//        print("scroll offset: \(scrollView.contentOffset.y)")
+    }
+
 }
 
 
@@ -99,10 +111,20 @@ extension CollectionViewController: UICollectionViewDelegateFlowLayout {
     ) -> UIEdgeInsets {
         let baseInset: CGFloat = 10
         if sectionIndex <= sections.endIndex - 2 {
-            return UIEdgeInsets(top: baseInset, left: baseInset, bottom: 0, right: baseInset)
+            return UIEdgeInsets(
+                top: baseInset,
+                left: baseInset,
+                bottom: 0,
+                right: baseInset
+            )
         } else {
             // Last section has full insets to give space to the bottom edge
-            return UIEdgeInsets(top: baseInset, left: baseInset, bottom: baseInset, right: baseInset)
+            return UIEdgeInsets(
+                top: baseInset,
+                left: baseInset,
+                bottom: baseInset,
+                right: baseInset
+            )
         }
     }
 
