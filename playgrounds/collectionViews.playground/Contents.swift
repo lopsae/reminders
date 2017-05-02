@@ -7,7 +7,7 @@ let layout = UICollectionViewFlowLayout()
 layout.minimumInteritemSpacing = 10
 layout.minimumLineSpacing = 10
 
-let liveView = CollectionViewController(
+let liveView = ViewController(
     collectionViewLayout: layout
 )
 

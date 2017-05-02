@@ -2,10 +2,10 @@
 import UIKit
 
 
-public class CollectionViewController: UICollectionViewController {
+public class ViewController: UICollectionViewController {
 
-    internal var sections: [[CellItem]] = []
-    internal var backgroundView: UIView = UIView()
+    fileprivate var sections: [[CellItem]] = []
+    fileprivate var backgroundView: UIView = UIView()
 
     override public func viewDidLoad() {
         super.viewDidLoad()
@@ -19,7 +19,7 @@ public class CollectionViewController: UICollectionViewController {
             CellItem(100, 200),
             CellItem(100, 100),
             CellItem(100, 200)
-            ])
+        ])
 
         sections.append([
             CellItem(100, 100),
@@ -29,7 +29,7 @@ public class CollectionViewController: UICollectionViewController {
             CellItem(100, 100),
             CellItem(100, 200),
             CellItem(100, 100)
-            ])
+        ])
 
         // Cell registration
         for singleSection in sections {
@@ -63,21 +63,20 @@ public class CollectionViewController: UICollectionViewController {
     override public func collectionView(
         _ collectionView: UICollectionView,
         numberOfItemsInSection sectionIndex: Int
-        ) -> Int {
+    ) -> Int {
         return sections[sectionIndex].count
     }
 
     override public func collectionView(
         _ collectionView: UICollectionView,
         cellForItemAt indexPath: IndexPath
-        ) -> UICollectionViewCell {
+    ) -> UICollectionViewCell {
         let cellItem = sections[indexPath.section][indexPath.row]
 
         let cellView = collectionView.dequeueReusableCell(
             withReuseIdentifier: cellItem.reuseIdentifier,
             for: indexPath
         )
-        cellView.backgroundColor = .orange
         return cellView
     }
 
@@ -85,24 +84,24 @@ public class CollectionViewController: UICollectionViewController {
         _ collectionView: UICollectionView,
         willDisplay cell: UICollectionViewCell,
         forItemAt indexPath: IndexPath
-        ) {
-        //        print("Will display: \(indexPath)")
+    ) {
+        //print("Will display: \(indexPath)")
     }
 
     override public func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        //        print("scroll offset: \(scrollView.contentOffset.y)")
+        //print("scroll offset: \(scrollView.contentOffset.y)")
     }
 
 }
 
 
-extension CollectionViewController: UICollectionViewDelegateFlowLayout {
+extension ViewController: UICollectionViewDelegateFlowLayout {
 
     public func collectionView(
         _ collectionView: UICollectionView,
         layout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
-        ) -> CGSize {
+    ) -> CGSize {
         let cellItem = sections[indexPath.section][indexPath.row]
         return cellItem.size
     }
@@ -111,7 +110,7 @@ extension CollectionViewController: UICollectionViewDelegateFlowLayout {
         _ collectionView: UICollectionView,
         layout: UICollectionViewLayout,
         insetForSectionAt sectionIndex: Int
-        ) -> UIEdgeInsets {
+    ) -> UIEdgeInsets {
         let baseInset: CGFloat = 10
         if sectionIndex <= sections.endIndex - 2 {
             return UIEdgeInsets(
