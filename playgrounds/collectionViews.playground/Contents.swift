@@ -17,11 +17,12 @@ struct CellItem {
 class CollectionViewController: UICollectionViewController {
 
     internal var sections: [[CellItem]] = []
+    internal var backgroundView: UIView = UIView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        collectionView?.backgroundColor = .orange
 
+        // Sections model
         sections.append([
             CellItem(100, 200),
             CellItem(100, 100),
@@ -42,7 +43,7 @@ class CollectionViewController: UICollectionViewController {
             CellItem(100, 100)
         ])
 
-        // register all cells
+        // Cell registration
         for singleSection in sections {
             for singleCell in singleSection {
                 collectionView?.register(
@@ -51,6 +52,20 @@ class CollectionViewController: UICollectionViewController {
                 )
             }
         }
+
+        // Background image
+        backgroundView.backgroundColor = UIColor(
+            patternImage: UIImage(named: "hextile.png")!
+        )
+        collectionView?.backgroundColor = .clear
+        view.insertSubview(backgroundView, at: 0)
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        backgroundView.frame = CGRect(
+            origin: .zero,
+            size: view.frame.size
+        )
     }
 
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -74,7 +89,7 @@ class CollectionViewController: UICollectionViewController {
             withReuseIdentifier: cellItem.reuseIdentifier,
             for: indexPath
         )
-        cellView.backgroundColor = .white
+        cellView.backgroundColor = .orange
         return cellView
     }
 
