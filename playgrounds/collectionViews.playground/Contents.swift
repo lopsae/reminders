@@ -23,22 +23,22 @@ class CollectionViewController: UICollectionViewController {
         collectionView?.backgroundColor = .orange
 
         sections.append([
+            CellItem(100, 200),
             CellItem(100, 100),
+            CellItem(100, 200),
             CellItem(100, 100),
+            CellItem(100, 200),
             CellItem(100, 100),
-            CellItem(100, 100),
-            CellItem(100, 100),
-            CellItem(100, 100),
-            CellItem(100, 100)
+            CellItem(100, 200)
         ])
 
         sections.append([
             CellItem(100, 100),
+            CellItem(100, 200),
             CellItem(100, 100),
+            CellItem(100, 200),
             CellItem(100, 100),
-            CellItem(100, 100),
-            CellItem(100, 100),
-            CellItem(100, 100),
+            CellItem(100, 200),
             CellItem(100, 100)
         ])
 
@@ -92,13 +92,26 @@ extension CollectionViewController: UICollectionViewDelegateFlowLayout {
         return cellItem.size
     }
 
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout: UICollectionViewLayout,
+        insetForSectionAt sectionIndex: Int
+    ) -> UIEdgeInsets {
+        let baseInset: CGFloat = 10
+        if sectionIndex <= sections.endIndex - 2 {
+            return UIEdgeInsets(top: baseInset, left: baseInset, bottom: 0, right: baseInset)
+        } else {
+            // Last section has full insets to give space to the bottom edge
+            return UIEdgeInsets(top: baseInset, left: baseInset, bottom: baseInset, right: baseInset)
+        }
+    }
+
 }
 
 
 let layout = UICollectionViewFlowLayout()
 layout.minimumInteritemSpacing = 10
 layout.minimumLineSpacing = 10
-layout.sectionInset = UIEdgeInsets(top: 10, left: 10, bottom: 0, right: 10)
 
 let liveView = CollectionViewController(
     collectionViewLayout: layout
