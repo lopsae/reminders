@@ -36,10 +36,10 @@ protocol CellView {
 
 
 struct SomeCellItem: CellItem {
-    typealias Item = SomeCellItem
-    typealias View = SomeCellView
+    // Not required since it can be inferred from `reuseToken`
+    // typealias View = SomeCellView
 
-    var reuseToken: ReuseToken<Item, View> {
+    var reuseToken: ReuseToken<SomeCellItem, SomeCellView> {
         return ReuseToken(
             item: SomeCellItem.self,
             source: .type(SomeCellView.self),
@@ -51,7 +51,8 @@ struct SomeCellItem: CellItem {
 
 
 struct SomeCellView: CellView {
-    typealias Item = SomeCellItem
+    // Not required since it can be inferred from `update`
+    // typealias Item = SomeCellItem
 
     func update(with item: SomeCellItem) {
         print("updated!")
