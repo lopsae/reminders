@@ -4,9 +4,22 @@ import UIKit
 
 struct ReuseToken<Item: CellItem, View: CellView> {
 
+    // item exists to use type inference
+    // TODO: could it be removed? how would it infer it?
+    // TODO: item is missing what is lost? auto identifier with String(Item.self)?
     var item: Item.Type
+
     var source: Source<View>
     var kind: Kind
+
+    // indentifier has been though to always be related to Kind, so
+    // an option could be to include identifier in Kind.
+    // However this would remove the option of layouts to provide
+    // their supplementary kinds of the specific cells these handled
+    // which does not require the identifier
+    // removal of supplementary views from a sections collection also
+    // seems cleaner without the indentifier
+    // For now it remains outside
     var identifier: String
 
     enum Source<View: CellView> {
@@ -27,6 +40,19 @@ protocol CellItem {
     var reuseToken: ReuseToken<Self, View> { get }
 }
 
+// Caveat: not all CellItems are for `.cell`
+// TODO: maybe this would be better as an children of CellItem?
+extension CellItem {
+    static var cellReuseToken: ReuseToken<Self, View> {
+        return ReuseToken(
+            item: Self.self,
+            source: .type(View.self),
+            kind: .cell,
+            identifier: String(describing: Self.self)
+        )
+    }
+}
+
 
 protocol CellView {
     associatedtype Item
@@ -34,30 +60,27 @@ protocol CellView {
 }
 
 
-struct SomeCellItem: CellItem {
+// CellItem that uses a cellView extending CellView, which means that `update` can be called
+// in the views returned by dequeue
+struct StrictCellItem: CellItem {
     // Not required since it can be inferred from `reuseToken`
     // typealias View = SomeCellView
 
-    var reuseToken: ReuseToken<SomeCellItem, SomeCellView> {
-        return ReuseToken(
-            item: SomeCellItem.self,
-            source: .type(SomeCellView.self),
-            kind: .cell,
-            identifier: "SomeCellItem"
-        )
+    var reuseToken: ReuseToken<StrictCellItem, StrictCellView> {
+        return type(of: self).cellReuseToken
     }
 }
 
 
+// Intended to be a CellItem that uses a cellView that does not extend CellView
+// which means that the cellView can still be instantiated but it is not updated
+// automatically.
+// TODO: still figuring out how this can work
+// important so that the model can be used with previously existing clases like UICollectionViewCell
 struct LooseCellItem: CellItem {
 
     var reuseToken: ReuseToken<LooseCellItem, UICollectionViewCell> {
-        return ReuseToken(
-            item: LooseCellItem.self,
-            source: .type(UICollectionViewCell.self),
-            kind: .cell,
-            identifier: "LooseCellItem"
-        )
+        return type(of: self).cellReuseToken
     }
 
 }
@@ -73,31 +96,31 @@ extension UICollectionViewCell: CellView {
 }
 
 
-struct SomeCellView: CellView {
-    // Not required since it can be inferred from `update`
-    // typealias Item = SomeCellItem
+struct StrictCellView: CellView {
 
-    func update(with item: SomeCellItem) {
+    func update(with item: StrictCellItem) {
         print("updated!")
     }
 }
 
 
 func register<Item, View>(token: ReuseToken<Item, View>) {
-    print("registering \(token.identifier): \(token.item), \(token.source)")
+    print("register reuseid:\(token.identifier) item:\(token.item), source:\(token.source)")
 }
 
 
 func dequeue<Item, View>(token: ReuseToken<Item, View>) -> View{
     var cellView: Any!
 
+    // Fake dequeue, this are the tokens supposedly registered
+    // TODO: actually matching by reuseId not done yet
     switch Item.self {
-    case is SomeCellItem.Type:
-        cellView = SomeCellView()
+    case is StrictCellItem.Type:
+        cellView = StrictCellView()
     case is LooseCellItem.Type:
         cellView = UICollectionViewCell()
     default:
-        preconditionFailure()
+        preconditionFailure("token not registered")
     }
 
     return cellView as! View
@@ -105,8 +128,8 @@ func dequeue<Item, View>(token: ReuseToken<Item, View>) -> View{
 
 
 let strictToken = ReuseToken(
-    item: SomeCellItem.self,
-    source: .type(SomeCellView.self),
+    item: StrictCellItem.self,
+    source: .type(StrictCellView.self),
     kind: .cell,
     identifier: "strictToken"
 )
@@ -121,10 +144,16 @@ let looseToken = ReuseToken(
 
 register(token: strictToken)
 let strictView = dequeue(token: strictToken)
-strictView.update(with: SomeCellItem())
+strictView.update(with: StrictCellItem())
+
+// Not possible due to type safety
+// strictView.update(with: LooseCellItem())
 
 let looseView = dequeue(token: looseToken)
 looseView.update(with: LooseCellItem())
+
+// Not possible due to type safety
+// looseView.update(with: StrictCellItem())
 
 
 print("all good~")
