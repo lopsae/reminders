@@ -35,6 +35,7 @@ extension UIColor {
 
 let liveView = UIView(frame: CGRect(x: 0, y: 0, width: 300, height: 600))
 liveView.backgroundColor = .orange
+PlaygroundPage.current.liveView = liveView
 
 // MARK:- Gradients
 let alphaViews = (0 ..< 8).map { _ in return UIView() }
@@ -73,5 +74,28 @@ blendViews.enumerated().forEach {
 }
 
 
-PlaygroundPage.current.liveView = liveView
+// MARK:- Overlayed
+let backAlpha = UIView(frame: CGRect(x: 50, y: 400, width: 100, height: 100))
+backAlpha.backgroundColor = UIColor.white.withAlphaComponent(0.6)
+liveView.addSubview(backAlpha)
+
+let backBlend = UIView(frame: CGRect(x: 150, y: 400, width: 100, height: 100))
+backBlend.backgroundColor = UIColor.white.transition(to: .orange, progress: 0.4)
+liveView.addSubview(backBlend)
+
+let middleAlpha = UIView(frame: CGRect(x: 70, y: 420, width: 60, height: 100))
+middleAlpha.backgroundColor = UIColor.white.withAlphaComponent(0.8)
+liveView.addSubview(middleAlpha)
+
+let middleBlend = UIView(frame: CGRect(x: 170, y: 420, width: 60, height: 100))
+middleBlend.backgroundColor = UIColor.white.transition(to: .orange, progress: 0.2)
+liveView.addSubview(middleBlend)
+
+let topAlpha = UIView(frame: CGRect(x: 90, y: 440, width: 20, height: 100))
+topAlpha.backgroundColor = UIColor.white.withAlphaComponent(0.8)
+liveView.addSubview(topAlpha)
+
+let topBlend = UIView(frame: CGRect(x: 190, y: 440, width: 20, height: 100))
+topBlend.backgroundColor = UIColor.white.transition(to: .orange, progress: 0.2)
+liveView.addSubview(topBlend)
 
