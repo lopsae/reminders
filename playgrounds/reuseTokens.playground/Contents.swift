@@ -40,27 +40,28 @@ extension ReuseToken {
 }
 
 
+// ReuseToken can be extended with convenience functions that create
+// the appropiate ReuseToken for the most common cases. Most of the
+// properties can be inferred out of `Item`, and `View`
+extension ReuseToken {
+
+	// Convenience initialized that populates all fields, except
+	// `kind` with the suggested values inferred from `Item` and `View`
+	static func forKind(_ kind: Kind) -> ReuseToken {
+		return ReuseToken(
+			item: Item.self,
+			source: .type(View.self),
+			kind: kind,
+			identifier: String(describing: Item.self)
+		)
+	}
+
+}
+
+
 protocol CellItem {
 	associatedtype View: CellView
 	var reuseToken: ReuseToken<Self, View> { get }
-}
-
-
-// Convenience extension that provides a default generic based implementation
-// for cells reuseTokens
-protocol CellKindCellItem: CellItem {
-	static var cellReuseToken: ReuseToken<Self, View> { get }
-}
-
-extension CellKindCellItem {
-	static var cellReuseToken: ReuseToken<Self, View> {
-		return ReuseToken(
-			item: Self.self,
-			source: .type(View.self),
-			kind: .cell,
-			identifier: String(describing: Self.self)
-		)
-	}
 }
 
 
@@ -76,12 +77,12 @@ protocol CellView {
 
 
 // CellItem that uses a cellView extending CellView
-struct StrictCellItem: CellKindCellItem {
+struct StrictCellItem: CellItem {
 	// associatedtype not required, inferred through `reuseToken`
 	// typealias View = StrictCellView
 
 	var reuseToken: ReuseToken<StrictCellItem, StrictCellView> {
-		return type(of: self).cellReuseToken
+		return .forKind(.cell)
 	}
 
 }
@@ -100,10 +101,10 @@ struct StrictCellView: CellView {
 
 // LooseCellItem uses as CellView a previously existing class. This can be done
 // as long as the CellView is extended to support the `CellView.update` method.
-struct LooseCellItem: CellKindCellItem {
+struct LooseCellItem: CellItem {
 
 	var reuseToken: ReuseToken<LooseCellItem, UICollectionViewCell> {
-		return type(of: self).cellReuseToken
+		return .forKind(.cell)
 	}
 
 }
