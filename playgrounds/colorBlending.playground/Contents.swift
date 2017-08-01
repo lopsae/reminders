@@ -33,16 +33,25 @@ extension UIColor {
 	}
 }
 
-
-let liveView = UIView(frame: CGRect(x: 0, y: 0, width: 300, height: 500))
+let liveView = UIView(frame: CGRect(x: 0, y: 0, width: 300, height: 600))
 liveView.backgroundColor = .orange
 
+// MARK:- Gradients
 let alphaViews = (0 ..< 8).map { _ in return UIView() }
 let blendViews = (0 ..< 8).map { _ in return UIView() }
 
+let gradientHeight = 40
+
 alphaViews.enumerated().forEach {
 	let (index, view) = $0
-	view.frame = CGRect(x: 50, y: 50+50*index, width: 100, height: 50)
+	view.frame = CGRect(
+		x: 50,
+		y: gradientHeight * index + gradientHeight,
+		width: 100,
+		height: gradientHeight + 2
+	)
+	view.layer.borderWidth = 2
+	view.layer.borderColor = UIColor.white.cgColor
 	let alpha = CGFloat(index) * 0.2 - 0.2
 	view.backgroundColor = UIColor.black.withAlphaComponent(alpha)
 	liveView.addSubview(view)
@@ -50,11 +59,19 @@ alphaViews.enumerated().forEach {
 
 blendViews.enumerated().forEach {
 	let (index, view) = $0
-	view.frame = CGRect(x: 150, y: 50+50*index, width: 100, height: 50)
+	view.frame = CGRect(
+		x: 150,
+		y: gradientHeight * index + gradientHeight,
+		width: 100,
+		height: gradientHeight + 2
+	)
+	view.layer.borderWidth = 2
+	view.layer.borderColor = UIColor.white.cgColor
 	let alpha = CGFloat(index) * 0.2 - 0.2
 	view.backgroundColor = UIColor.orange.transition(to: .black, progress: alpha)
 	liveView.addSubview(view)
 }
+
 
 PlaygroundPage.current.liveView = liveView
 
