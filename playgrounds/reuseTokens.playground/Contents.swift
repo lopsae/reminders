@@ -46,9 +46,13 @@ protocol CellItem {
 }
 
 
-// Caveat: not all CellItems are for `.cell`
-// TODO: maybe this would be better as an children of CellItem?
-extension CellItem {
+// Convenience extension that provides a default generic based implementation
+// for cells reuseTokens
+protocol CellKindCellItem: CellItem {
+	static var cellReuseToken: ReuseToken<Self, View> { get }
+}
+
+extension CellKindCellItem {
 	static var cellReuseToken: ReuseToken<Self, View> {
 		return ReuseToken(
 			item: Self.self,
@@ -72,7 +76,7 @@ protocol CellView {
 
 
 // CellItem that uses a cellView extending CellView
-struct StrictCellItem: CellItem {
+struct StrictCellItem: CellKindCellItem {
 	// associatedtype not required, inferred through `reuseToken`
 	// typealias View = StrictCellView
 
@@ -96,7 +100,7 @@ struct StrictCellView: CellView {
 
 // LooseCellItem uses as CellView a previously existing class. This can be done
 // as long as the CellView is extended to support the `CellView.update` method.
-struct LooseCellItem: CellItem {
+struct LooseCellItem: CellKindCellItem {
 
 	var reuseToken: ReuseToken<LooseCellItem, UICollectionViewCell> {
 		return type(of: self).cellReuseToken
