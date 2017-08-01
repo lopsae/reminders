@@ -61,14 +61,17 @@ extension CellItem {
 
 
 protocol CellView {
-	// TODO: why is item not :CellItem?
+	// The Item associatedtype cannot be defined as a CellItem because
+	// that would cause a circular reference. The cell view using a proper
+	// Item:CellItem is enforced by ReuseToken.
+	// associatedtype Item: CellItem // will break if uncommented!
+
 	associatedtype Item
 	func update(with item: Item)
 }
 
 
-// CellItem that uses a cellView extending CellView, which means that `update` can be called
-// in the views returned by dequeue
+// CellItem that uses a cellView extending CellView
 struct StrictCellItem: CellItem {
 	// associatedtype not required, inferred through `reuseToken`
 	// typealias View = StrictCellView
@@ -91,11 +94,8 @@ struct StrictCellView: CellView {
 }
 
 
-// Intended to be a CellItem that uses a cellView that does not extend CellView
-// which means that the cellView can still be instantiated but it is not updated
-// automatically.
-// TODO: still figuring out how this can work
-// important so that the model can be used with previously existing clases like UICollectionViewCell
+// LooseCellItem uses as CellView a previously existing class. This can be done
+// as long as the CellView is extended to support the `CellView.update` method.
 struct LooseCellItem: CellItem {
 
 	var reuseToken: ReuseToken<LooseCellItem, UICollectionViewCell> {
@@ -105,13 +105,14 @@ struct LooseCellItem: CellItem {
 }
 
 
-// Extension of UICollectionViewCell is required in order to use it along LooseCellItem
-// TODO: how can it be done that this extension is not necesary?
-// View has to loose its type constraint?
+// In order to use UICollectionViewCell as a CellView an extension has to be provided
+// for each CellItem to be used
 extension UICollectionViewCell: CellView {
+
 	func update(with item: LooseCellItem) {
 		print("\(UICollectionViewCell.self) updated with \(type(of: item))")
 	}
+
 }
 
 
@@ -159,15 +160,13 @@ let strictView = dequeue(token: strictToken)
 strictView.update(with: StrictCellItem())
 
 // As desired `update` is not possible due to type safety
-// following will break!
-// strictView.update(with: LooseCellItem())
+// strictView.update(with: LooseCellItem()) // will break if uncommented!
 
 let looseView = dequeue(token: looseToken)
 looseView.update(with: LooseCellItem())
 
 // As desired `update` is not possible due to type safety
-// following will break!
-// looseView.update(with: StrictCellItem())
+// looseView.update(with: StrictCellItem()) // will break if uncommented!
 
 
 print("\n" + "all good~")
