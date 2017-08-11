@@ -18,22 +18,15 @@ let label = UILabel(frame: CGRect(
 	width: 300, height: 100
 ))
 
-label.text = "maic"
+label.text = "touch to transition text"
 liveView.addSubview(label)
 
-class Cosa {
+var touchCount = 0
 
-	init() {
-		let gesture = UITapGestureRecognizer(target: self, action: #selector(transitionText))
-		liveView.addGestureRecognizer(gesture)
-	}
-
-	var touchCount = 0
+class SelTarget {
 
 	@objc
-	func transitionText() {
-		print("tapped")
-
+	func action() {
 		let names = ["ciam", "icam", "satanas", "ayende", "maic", "madre"]
 		touchCount += 1
 		touchCount %= names.endIndex
@@ -43,37 +36,33 @@ class Cosa {
 			transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
 			transition.type = kCATransitionFade
 			transition.duration = 1.0
-			//		liveView.layer.add(transition, forKey: names[touchCount])
+			// Even with different names, a new transition will replace the previous
 			label.layer.add(transition, forKey: names[touchCount])
 		}
 
-
-		// TODO try with attributedText
-		//		label.text = names[touchCount]
-		let nameString = NSMutableAttributedString()
-		nameString.append(
-			NSAttributedString(
-				string: names[touchCount],
-				attributes: [NSFontAttributeName: UIFont(name: "HelveticaNeue", size: 20)!,
-				             NSForegroundColorAttributeName: UIColor.purple
-				]
-			)
-		)
 		if touchCount % 2 == 0 {
 			label.text = names[touchCount]
 		} else {
+			let nameString = NSMutableAttributedString()
+			nameString.append(
+				NSAttributedString(
+					string: names[touchCount],
+					attributes: [NSFontAttributeName: UIFont(name: "HelveticaNeue", size: 20)!,
+					             NSForegroundColorAttributeName: UIColor.purple
+					]
+				)
+			)
 			label.attributedText = nameString
 		}
-		print("changed to: \(names[touchCount])")
 
+		print("changed to: \(names[touchCount])")
 	}
+
 }
 
-
-let cosa = Cosa()
-
-
-
+let target = SelTarget()
+let gesture = UITapGestureRecognizer(target: target, action: #selector(SelTarget.action))
+liveView.addGestureRecognizer(gesture)
 
 
 PlaygroundPage.current.liveView = liveView
