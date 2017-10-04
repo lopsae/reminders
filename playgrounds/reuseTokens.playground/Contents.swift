@@ -174,5 +174,5 @@ looseView.update(with: LooseCellItem())
 // looseView.update(with: StrictCellItem()) // will break if uncommented!
 
 
-print("\n" + "all good~")
+print("finis coronat opus~")
 

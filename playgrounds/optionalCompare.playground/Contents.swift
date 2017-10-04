@@ -60,3 +60,6 @@ maybeTwo < nothing // false
 nothing < nothing // false
 nothing > nothing // false
 
+
+print("finis coronat opus~")
+

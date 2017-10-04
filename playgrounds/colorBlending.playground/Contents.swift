@@ -99,3 +99,6 @@ let topBlend = UIView(frame: CGRect(x: 190, y: 440, width: 20, height: 100))
 topBlend.backgroundColor = UIColor.white.transition(to: .orange, progress: 0.2)
 liveView.addSubview(topBlend)
 
+
+print("finis coronat opus~")
+
