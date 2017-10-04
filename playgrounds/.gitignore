@@ -1,6 +1,9 @@
 
-# xcode playgrounds stuff
-xcuserdata/
-DerivedData/
+# Based on
+# https://github.com/github/gitignore/blob/master/Swift.gitignore
 
-# *.xcworkspace/ is commited for playgrounds
+
+## Playgrounds
+timeline.xctimeline
+playground.xcworkspace
+
