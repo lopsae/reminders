@@ -1,55 +1,79 @@
 
-
+// Class defines some required initializers
 class SomeRequired {
 	let text: String
 
-	required init() {
+	init() {
 		text = "nothing"
 	}
 
-	required init(stringo: String) {
-		text = stringo
+	required init(one: String) {
+		text = one
 	}
 
-	required init(matango: String) {
-		text = matango
+	required init(two: String) {
+		text = two
 	}
 
 }
+
+// A class that defines no new inits automatically inherits all parent inits
+class NoOverrides: SomeRequired {}
+
+NoOverrides()
+NoOverrides(one: "one")
+NoOverrides(two: "two")
 
 
 class MakeConvenience: SomeRequired {
 
-	convenience required init() {
-		preconditionFailure()
-	}
-
-	required init(stringo: String) {
-		super.init(matango: stringo)
-	}
-
-	convenience required init(matango: String) {
-		self.init(convenient: matango)
-	}
-
+	// Adding any additional inits breaks the automatic init inheritance
+	// Which means that all required inits must be provided again
 	init(convenient: String) {
 		super.init()
 	}
 
+	required init(one: String) {
+		super.init(one: one)
+	}
+
+	// Required inits can be marked as `convenience`, which can be used to later
+	// override all designated inits, instead of all required
+	convenience required init(two: String) {
+		self.init(convenient: two)
+	}
+
 }
+
+// All new and required initializers are available
+MakeConvenience(convenient: "conv")
+MakeConvenience(one: "one")
+MakeConvenience(two: "two")
 
 
 class ExtendedConvenience: MakeConvenience {
 
+	init (extra: String) {
+		super.init(convenient: extra)
+	}
+
+	// By overriding and providing again all designated init, all convenience
+	// inits are inherited
 	override init(convenient: String) {
 		super.init(convenient: convenient)
 	}
 
-	required init(stringo: String) {
-		super.init(stringo: stringo)
+	required init(one: String) {
+		super.init(one: one)
 	}
 
 }
+
+ExtendedConvenience(extra: "extra")
+ExtendedConvenience(convenient: "conv")
+ExtendedConvenience(one: "one")
+// init(two:) is available, even if it was not provided again
+ExtendedConvenience(two: "two")
 
 
 print("finis coronat opus~")
