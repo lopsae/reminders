@@ -26,26 +26,26 @@ extension NotificationEmitter where Self: RawRepresentable, Self.RawValue == Str
   }
 
   func addObserver(closure: @escaping (Notification) -> Void) {
-    print("adding \(name) observer")
+    print("adding observer to \(name.rawValue)")
     NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil, using: closure)
   }
 
   func post() {
-    print("posting \(name) observer")
+    print("posting notif to \(name.rawValue)")
     NotificationCenter.default.post(Notification(name: name))
   }
 
 }
 
 
-NotificationCenter.default.addObserver(forName: Notification.Name("maicNotif"), object: nil, queue: nil) { _ in
-  print("notif receiveddd")
+NotificationCenter.default.addObserver(forName: Notification.Name("normalNotif"), object: nil, queue: nil) { _ in
+  print("normal closure notif received")
 }
+NotificationCenter.default.post(Notification(name: Notification.Name("normalNotif")))
 
-NotificationCenter.default.post(Notification(name: Notification.Name("maicNotif")))
 
 SomeNotif.one.addObserver { _ in
-  print("fancy notif!")
+  print("emitter one notif received!")
 }
 
 SomeNotif.one.post()
