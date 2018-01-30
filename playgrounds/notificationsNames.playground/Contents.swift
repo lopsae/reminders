@@ -4,13 +4,14 @@
 import Foundation
 
 
-enum SomeNotif: String {
+enum TestEmitter: String {
   case one = "one"
   case two = "two"
+  case normal = "normal"
 }
 
 
-extension SomeNotif: NotificationEmitter {}
+extension TestEmitter: NotificationEmitter {}
 
 
 protocol NotificationEmitter {
@@ -38,19 +39,53 @@ extension NotificationEmitter where Self: RawRepresentable, Self.RawValue == Str
 }
 
 
-NotificationCenter.default.addObserver(forName: Notification.Name("normalNotif"), object: nil, queue: nil) { _ in
-  print("normal closure notif received")
+
+print("⭕️ Checking anonymous closure notifications")
+let anonymousToken = NotificationCenter.default.addObserver(forName: TestEmitter.normal.name, object: nil, queue: nil) { _ in
+  print("anonymous closure notif received")
 }
-NotificationCenter.default.post(Notification(name: Notification.Name("normalNotif")))
+TestEmitter.normal.post()
+NotificationCenter.default.removeObserver(anonymousToken)
+TestEmitter.normal.post()
 
 
-SomeNotif.one.addObserver { _ in
+
+print("⭕️ Checking notifications with object and after deinit")
+class NormalObserver {
+  init() {
+    NotificationCenter.default.addObserver(self, selector: #selector(onNotification), name: TestEmitter.normal.name, object: nil)
+    NotificationCenter.default.addObserver(forName: TestEmitter.normal.name, object: nil, queue: nil) { _ in
+      print("NormalObserver closure notif received")
+    }
+  }
+
+  deinit {
+    print("NormalObserver deinitialized")
+  }
+
+  @objc func onNotification(_ notification: Notification) {
+    print("NormalObserver selector notif received")
+  }
+}
+
+var maybeNormal: NormalObserver? = NormalObserver()
+TestEmitter.normal.post()
+maybeNormal = nil
+TestEmitter.normal.post()
+
+
+
+print("⭕️ Checking notifications through NotificationEmitter interfaces")
+
+
+
+TestEmitter.one.addObserver { _ in
   print("emitter one notif received!")
 }
 
-SomeNotif.one.post()
-SomeNotif.two.post()
+TestEmitter.one.post()
+TestEmitter.two.post()
 
 
-print("finis coronat opus~")
+print("👑 finis coronat opus~")
 
