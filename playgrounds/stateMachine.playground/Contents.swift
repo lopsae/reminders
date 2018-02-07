@@ -17,10 +17,20 @@ enum Event {
 //  case rest
 //}
 
-struct Transformation {
+struct Transition {
   let source: State
-  let end: State
-  let transitionEvents: Set<Event>
+  let events: Set<Event>
+  let result: State
+
+  init(
+    from source: State,
+    with events: Set<Event>,
+    to result: State
+  ) {
+    self.source = source
+    self.events = events
+    self.result = result
+  }
 }
 
 class Machine {
@@ -29,7 +39,7 @@ class Machine {
     resetState: State,
     allStates: Set<State>,
     alEvents: Set<Event>,
-    transformations: [Transformation]
+    transformations: [Transition]
   ) {
     self.resetState = resetState
     self.allStates = allStates
@@ -42,7 +52,7 @@ class Machine {
   let resetState: State
   let allStates: Set<State>
   let alEvents: Set<Event>
-  let transformations: [Transformation]
+  let transformations: [Transition]
 
   private(set) var currentState: State
 
@@ -52,7 +62,7 @@ class Machine {
       $0.source == currentState
     }
     let transformation = possibleTransformations.first {
-      $0.transitionEvents.contains(event)
+      $0.events.contains(event)
     }
 
     guard transformation != nil else {
@@ -60,7 +70,7 @@ class Machine {
       return false
     }
 
-    currentState = transformation!.end
+    currentState = transformation!.result
     return true
   }
 }
@@ -70,20 +80,20 @@ let machine = Machine(
   allStates: [.idle, .possible, .ended, .failed],
   alEvents: [.firstTouch, .endedEvent, .failedEvent],
   transformations: [
-    Transformation(
-      source: .idle,
-      end: .possible,
-      transitionEvents: [.firstTouch]
+    Transition(
+      from: .idle,
+      with: [.firstTouch],
+      to: .possible
     ),
-    Transformation(
-      source: .possible,
-      end: .ended,
-      transitionEvents: [.endedEvent]
+    Transition(
+      from: .possible,
+      with: [.endedEvent],
+      to: .ended
     ),
-    Transformation(
-      source: .possible,
-      end: .failed,
-      transitionEvents: [.firstTouch]
+    Transition(
+      from: .possible,
+      with: [.firstTouch],
+      to: .failed
     )
   ]
 )
