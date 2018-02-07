@@ -11,12 +11,12 @@ enum DummyEvent {
 }
 
 struct Transition<State: Hashable, Event: Hashable> {
-  let source: State
+  let source: Set<State>
   let result: State
   let events: Set<Event>
 
   init(
-    from source: State,
+    from source: Set<State>,
     to result: State,
     with events: Set<Event>
   ) {
@@ -50,20 +50,20 @@ class Machine<State: Hashable, Event: Hashable> {
 
   /// Returns true if successful
   func transition(event: Event) -> Bool {
-    let possibleTransitions = transitions.filter {
-      $0.source == currentState
+    let sourceTransitions = transitions.filter {
+      $0.source.contains(currentState)
     }
-    let transition = possibleTransitions.first {
+    let eventTransition = sourceTransitions.first {
       $0.events.contains(event)
     }
 
-    guard transition != nil else {
+    guard eventTransition != nil else {
       // no availble transformation for this state/event
       invalidTransitionHandler?(currentState, event)
       return false
     }
 
-    currentState = transition!.result
+    currentState = eventTransition!.result
     validTransitionHandler?(currentState)
     return true
   }
@@ -78,17 +78,17 @@ let machine = Machine<DummyState, DummyEvent>(
   resetState: .idle,
   transitions: [
     Transition(
-      from: .idle,
+      from: [.idle],
       to: .possible,
       with: [.firstTouch]
     ),
     Transition(
-      from: .possible,
+      from: [.possible],
       to: .ended,
       with: [.endedEvent]
     ),
     Transition(
-      from: .possible,
+      from: [.possible],
       to: .failed,
       with: [.firstTouch]
     )
