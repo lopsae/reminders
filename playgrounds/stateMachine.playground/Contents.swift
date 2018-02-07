@@ -10,19 +10,17 @@ enum Event {
   case firstTouch, endedEvent, failedEvent
 }
 
-enum EventGroup {
-  case none
-  case some(Set<Event>)
-  case all
-  case rest
-}
+//enum EventGroup {
+//  case none
+//  case some(Set<Event>)
+//  case all
+//  case rest
+//}
 
 struct Transformation {
   let source: State
   let end: State
-  let transitionEvents: EventGroup
-  let ignoredEvents: EventGroup
-  let warningEvents: EventGroup
+  let transitionEvents: Set<Event>
 }
 
 class Machine {
@@ -48,10 +46,26 @@ class Machine {
 
   private(set) var currentState: State
 
-//  func feed(Event: Event)
+  /// Returns true if successful
+  func feed(event: Event) -> Bool {
+    let possibleTransformations = transformations.filter {
+      $0.source == currentState
+    }
+    let transformation = possibleTransformations.first {
+      $0.transitionEvents.contains(event)
+    }
+
+    guard transformation != nil else {
+      // no availble transformation for this state/event
+      return false
+    }
+
+    currentState = transformation!.end
+    return true
+  }
 }
 
-Machine(
+let machine = Machine(
   resetState: .idle,
   allStates: [.idle, .possible, .ended, .failed],
   alEvents: [.firstTouch, .endedEvent, .failedEvent],
@@ -59,26 +73,34 @@ Machine(
     Transformation(
       source: .idle,
       end: .possible,
-      transitionEvents: .some([.firstTouch]),
-      ignoredEvents: .none,
-      warningEvents: .rest
+      transitionEvents: [.firstTouch]
     ),
     Transformation(
       source: .possible,
       end: .ended,
-      transitionEvents: .some([.endedEvent]),
-      ignoredEvents: .none,
-      warningEvents: .rest
+      transitionEvents: [.endedEvent]
     ),
     Transformation(
       source: .possible,
       end: .failed,
-      transitionEvents: .some([.firstTouch]),
-      ignoredEvents: .none,
-      warningEvents: .rest
+      transitionEvents: [.firstTouch]
     )
   ]
 )
+
+
+machine.currentState
+machine.feed(event: .firstTouch)
+machine.currentState
+machine.feed(event: .endedEvent)
+machine.currentState
+machine.feed(event: .failedEvent)
+machine.currentState
+machine.feed(event: .firstTouch)
+machine.currentState
+
+
+
 
 
 print("👑 finis coronat opus~")
