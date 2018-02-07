@@ -6,13 +6,13 @@ enum State {
   case possible, ended, failed, idle
 }
 
-enum Action {
+enum Event {
   case firstTouch, endedEvent, failedEvent
 }
 
-enum ActionGroup {
+enum EventGroup {
   case none
-  case some(Set<Action>)
+  case some(Set<Event>)
   case all
   case rest
 }
@@ -20,9 +20,9 @@ enum ActionGroup {
 struct Transformation {
   let source: State
   let end: State
-  let transitionActions: ActionGroup
-  let ignoredActions: ActionGroup
-  let warningActions: ActionGroup
+  let transitionEvents: EventGroup
+  let ignoredEvents: EventGroup
+  let warningEvents: EventGroup
 }
 
 class Machine {
@@ -30,12 +30,12 @@ class Machine {
   init (
     resetState: State,
     allStates: Set<State>,
-    allActions: Set<Action>,
+    alEvents: Set<Event>,
     transformations: [Transformation]
   ) {
     self.resetState = resetState
     self.allStates = allStates
-    self.allActions = allActions
+    self.alEvents = alEvents
     self.transformations = transformations
 
     currentState = resetState
@@ -43,37 +43,39 @@ class Machine {
 
   let resetState: State
   let allStates: Set<State>
-  let allActions: Set<Action>
+  let alEvents: Set<Event>
   let transformations: [Transformation]
 
   private(set) var currentState: State
+
+//  func feed(Event: Event)
 }
 
 Machine(
   resetState: .idle,
   allStates: [.idle, .possible, .ended, .failed],
-  allActions: [.firstTouch, .endedEvent, .failedEvent],
+  alEvents: [.firstTouch, .endedEvent, .failedEvent],
   transformations: [
     Transformation(
       source: .idle,
       end: .possible,
-      transitionActions: .some([.firstTouch]),
-      ignoredActions: .none,
-      warningActions: .rest
+      transitionEvents: .some([.firstTouch]),
+      ignoredEvents: .none,
+      warningEvents: .rest
     ),
     Transformation(
       source: .possible,
       end: .ended,
-      transitionActions: .some([.endedEvent]),
-      ignoredActions: .none,
-      warningActions: .rest
+      transitionEvents: .some([.endedEvent]),
+      ignoredEvents: .none,
+      warningEvents: .rest
     ),
     Transformation(
       source: .possible,
       end: .failed,
-      transitionActions: .some([.firstTouch]),
-      ignoredActions: .none,
-      warningActions: .rest
+      transitionEvents: .some([.firstTouch]),
+      ignoredEvents: .none,
+      warningEvents: .rest
     )
   ]
 )
