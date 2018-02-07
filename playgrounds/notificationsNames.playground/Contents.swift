@@ -1,4 +1,5 @@
 //: in Swift 4
+print("⭕️ Notification Names and Emitters")
 
 
 import Foundation
