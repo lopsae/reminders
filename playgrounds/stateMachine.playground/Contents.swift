@@ -2,22 +2,15 @@
 print("⭕️ StateMachine playground")
 
 
-enum State {
+enum DummyState {
   case possible, ended, failed, idle
 }
 
-enum Event {
+enum DummyEvent {
   case firstTouch, endedEvent, failedEvent
 }
 
-//enum EventGroup {
-//  case none
-//  case some(Set<Event>)
-//  case all
-//  case rest
-//}
-
-struct Transition {
+struct Transition<State: Hashable, Event: Hashable> {
   let source: State
   let events: Set<Event>
   let result: State
@@ -33,12 +26,10 @@ struct Transition {
   }
 }
 
-class Machine {
+class Machine<State: Hashable, Event: Hashable> {
 
   let resetState: State
-  let allStates: Set<State>
-  let alEvents: Set<Event>
-  let transformations: [Transition]
+  let transitions: [Transition<State, Event>]
 
   private(set) var currentState: State
 
@@ -48,14 +39,10 @@ class Machine {
 
   init (
     resetState: State,
-    allStates: Set<State>,
-    alEvents: Set<Event>,
-    transformations: [Transition]
+    transitions: [Transition<State, Event>]
     ) {
     self.resetState = resetState
-    self.allStates = allStates
-    self.alEvents = alEvents
-    self.transformations = transformations
+    self.transitions = transitions
 
     currentState = resetState
   }
@@ -63,20 +50,20 @@ class Machine {
 
   /// Returns true if successful
   func transition(event: Event) -> Bool {
-    let possibleTransformations = transformations.filter {
+    let possibleTransitions = transitions.filter {
       $0.source == currentState
     }
-    let transformation = possibleTransformations.first {
+    let transition = possibleTransitions.first {
       $0.events.contains(event)
     }
 
-    guard transformation != nil else {
+    guard transition != nil else {
       // no availble transformation for this state/event
       invalidTransitionHandler?(currentState, event)
       return false
     }
 
-    currentState = transformation!.result
+    currentState = transition!.result
     validTransitionHandler?(currentState)
     return true
   }
@@ -85,14 +72,11 @@ class Machine {
   func reset() {
     currentState = resetState
   }
-
 }
 
-let machine = Machine(
+let machine = Machine<DummyState, DummyEvent>(
   resetState: .idle,
-  allStates: [.idle, .possible, .ended, .failed],
-  alEvents: [.firstTouch, .endedEvent, .failedEvent],
-  transformations: [
+  transitions: [
     Transition(
       from: .idle,
       with: [.firstTouch],
