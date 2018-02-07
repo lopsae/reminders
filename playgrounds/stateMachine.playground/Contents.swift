@@ -35,12 +35,23 @@ struct Transition {
 
 class Machine {
 
+  let resetState: State
+  let allStates: Set<State>
+  let alEvents: Set<Event>
+  let transformations: [Transition]
+
+  private(set) var currentState: State
+
+  var validTransitionHandler: ((State) -> Void)?
+  var invalidTransitionHandler: ((State, Event) -> Void)?
+
+
   init (
     resetState: State,
     allStates: Set<State>,
     alEvents: Set<Event>,
     transformations: [Transition]
-  ) {
+    ) {
     self.resetState = resetState
     self.allStates = allStates
     self.alEvents = alEvents
@@ -49,15 +60,9 @@ class Machine {
     currentState = resetState
   }
 
-  let resetState: State
-  let allStates: Set<State>
-  let alEvents: Set<Event>
-  let transformations: [Transition]
-
-  private(set) var currentState: State
 
   /// Returns true if successful
-  func feed(event: Event) -> Bool {
+  func transition(event: Event) -> Bool {
     let possibleTransformations = transformations.filter {
       $0.source == currentState
     }
@@ -67,10 +72,12 @@ class Machine {
 
     guard transformation != nil else {
       // no availble transformation for this state/event
+      invalidTransitionHandler?(currentState, event)
       return false
     }
 
     currentState = transformation!.result
+    validTransitionHandler?(currentState)
     return true
   }
 }
@@ -98,19 +105,21 @@ let machine = Machine(
   ]
 )
 
+machine.validTransitionHandler = {
+  state in
+  print("transitioned to \(state)")
+}
 
-machine.currentState
-machine.feed(event: .firstTouch)
-machine.currentState
-machine.feed(event: .endedEvent)
-machine.currentState
-machine.feed(event: .failedEvent)
-machine.currentState
-machine.feed(event: .firstTouch)
-machine.currentState
-
+machine.invalidTransitionHandler = {
+  state, event in
+  print("invalid transition from:\(state) with:\(event)")
+}
 
 
+machine.transition(event: .firstTouch)
+machine.transition(event: .endedEvent)
+machine.transition(event: .failedEvent)
+machine.transition(event: .firstTouch)
 
 
 print("👑 finis coronat opus~")
