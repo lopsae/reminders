@@ -12,13 +12,13 @@ enum DummyEvent {
 
 struct Transition<State: Hashable, Event: Hashable> {
   let source: State
-  let events: Set<Event>
   let result: State
+  let events: Set<Event>
 
   init(
     from source: State,
-    with events: Set<Event>,
-    to result: State
+    to result: State,
+    with events: Set<Event>
   ) {
     self.source = source
     self.events = events
@@ -79,18 +79,18 @@ let machine = Machine<DummyState, DummyEvent>(
   transitions: [
     Transition(
       from: .idle,
-      with: [.firstTouch],
-      to: .possible
+      to: .possible,
+      with: [.firstTouch]
     ),
     Transition(
       from: .possible,
-      with: [.endedEvent],
-      to: .ended
+      to: .ended,
+      with: [.endedEvent]
     ),
     Transition(
       from: .possible,
-      with: [.firstTouch],
-      to: .failed
+      to: .failed,
+      with: [.firstTouch]
     )
   ]
 )
