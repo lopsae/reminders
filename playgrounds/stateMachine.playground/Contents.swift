@@ -10,21 +10,6 @@ enum DummyEvent {
   case firstTouch, endedEvent, failedEvent
 }
 
-struct Transition<State: Hashable, Event: Hashable> {
-  let source: Set<State>
-  let result: State
-  let events: Set<Event>
-
-  init(
-    from source: Set<State>,
-    to result: State,
-    with events: Set<Event>
-  ) {
-    self.source = source
-    self.events = events
-    self.result = result
-  }
-}
 
 class Machine<State: Hashable, Event: Hashable> {
 
@@ -74,20 +59,51 @@ class Machine<State: Hashable, Event: Hashable> {
   }
 }
 
+
+extension Machine {
+  struct Transition<State: Hashable, Event: Hashable> {
+    let source: Set<State>
+    let result: State
+    let events: Set<Event>
+
+    init(
+      from source: Set<State>,
+      to result: State,
+      with events: Set<Event>
+      ) {
+      self.source = source
+      self.events = events
+      self.result = result
+    }
+  }
+}
+
+
+
+
+
+
+//==============================================================================
+//==============================================================================
+//==============================================================================
+
+
 let machine = Machine<DummyState, DummyEvent>(
   resetState: .idle,
-  transitions: [
-    Transition(
+  transitions:
+  // .idle + .firstTouch => .possible
+  [
+    Machine.Transition(
       from: [.idle],
       to: .possible,
       with: [.firstTouch]
     ),
-    Transition(
+    Machine.Transition(
       from: [.possible],
       to: .ended,
       with: [.endedEvent]
     ),
-    Transition(
+    Machine.Transition(
       from: [.possible],
       to: .failed,
       with: [.firstTouch]
