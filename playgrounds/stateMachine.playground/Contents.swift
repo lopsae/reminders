@@ -80,6 +80,12 @@ class Machine {
     validTransitionHandler?(currentState)
     return true
   }
+
+
+  func reset() {
+    currentState = resetState
+  }
+
 }
 
 let machine = Machine(
@@ -120,6 +126,11 @@ machine.transition(event: .firstTouch)
 machine.transition(event: .endedEvent)
 machine.transition(event: .failedEvent)
 machine.transition(event: .firstTouch)
+machine.reset()
+machine.transition(event: .endedEvent)
+machine.transition(event: .firstTouch)
+
+
 
 
 print("👑 finis coronat opus~")
