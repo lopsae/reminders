@@ -24,8 +24,8 @@ class Machine<State: MachineState, Event: MachineEvent> {
 
   init (
     resetState: State,
-    transitions: [Transition]
-    ) {
+    transitions: Transition...
+  ) {
     self.resetState = resetState
     self.transitions = transitions
 
@@ -125,23 +125,21 @@ let machine = Machine<DummyState, DummyEvent>(
   resetState: .idle,
   transitions:
   // .idle + .firstTouch => .possible
-  [
-    Machine.Transition(
-      from: [.idle],
-      to: .possible,
-      with: [.firstTouch]
-    ),
-    Machine.Transition(
-      from: [.possible],
-      to: .ended,
-      with: [.endedEvent]
-    ),
-    Machine.Transition(
-      from: [.possible],
-      to: .failed,
-      with: [.firstTouch]
-    )
-  ]
+  Machine.Transition(
+    from: [.idle],
+    to: .possible,
+    with: [.firstTouch]
+  ),
+  Machine.Transition(
+    from: [.possible],
+    to: .ended,
+    with: [.endedEvent]
+  ),
+  Machine.Transition(
+    from: [.possible],
+    to: .failed,
+    with: [.firstTouch]
+  )
 )
 
 machine.validTransitionHandler = {
