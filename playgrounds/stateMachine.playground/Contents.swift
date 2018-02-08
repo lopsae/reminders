@@ -2,19 +2,19 @@
 print("⭕️ StateMachine playground")
 
 
-enum DummyState {
+enum DummyState: MachineState {
   case possible, ended, failed, idle
 }
 
-enum DummyEvent {
+enum DummyEvent: MachineEvent {
   case firstTouch, endedEvent, failedEvent
 }
 
 
-class Machine<State: Hashable, Event: Hashable> {
+class Machine<State: MachineState, Event: MachineEvent> {
 
   let resetState: State
-  let transitions: [Transition<State, Event>]
+  let transitions: [Transition]
 
   private(set) var currentState: State
 
@@ -24,7 +24,7 @@ class Machine<State: Hashable, Event: Hashable> {
 
   init (
     resetState: State,
-    transitions: [Transition<State, Event>]
+    transitions: [Transition]
     ) {
     self.resetState = resetState
     self.transitions = transitions
@@ -36,7 +36,7 @@ class Machine<State: Hashable, Event: Hashable> {
   /// Returns true if successful
   func transition(event: Event) -> Bool {
     let sourceTransitions = transitions.filter {
-      $0.source.contains(currentState)
+      $0.sources.contains(currentState)
     }
     let eventTransition = sourceTransitions.first {
       $0.events.contains(event)
@@ -60,27 +60,60 @@ class Machine<State: Hashable, Event: Hashable> {
 }
 
 
+protocol MachineStateType {}
+protocol MachineState: Hashable, MachineStateType {}
+
+protocol MachineEventType {}
+protocol MachineEvent: Hashable, MachineEventType {}
+
+
 extension Machine {
-  struct Transition<State: Hashable, Event: Hashable> {
-    let source: Set<State>
+  struct Transition {
+    let sources: Set<State>
     let result: State
     let events: Set<Event>
 
     init(
-      from source: Set<State>,
+      from sources: Set<State>,
       to result: State,
       with events: Set<Event>
-      ) {
-      self.source = source
-      self.events = events
+    ) {
+      self.sources = sources
       self.result = result
+      self.events = events
+    }
+
+    init(
+      from source: State,
+      to result: State,
+      with event: Event
+    ) {
+      self.sources = [source]
+      self.result = result
+      self.events = [event]
     }
   }
 }
 
 
+func > <State: MachineState, Event: MachineEvent> (
+  sourceAndEvent: (State, Event),
+  result: State
+) -> Machine<State, Event>.Transition {
+  let (source, event) = sourceAndEvent
+  return Machine<State, Event>.Transition(from: source, to: result, with: event)
+}
 
 
+func + <State: MachineState, Event: MachineEvent> (
+  source: State,
+  event: Event
+) -> (State, Event) {
+  return (source, event)
+}
+
+DummyState.idle + DummyEvent.firstTouch
+DummyState.idle + DummyEvent.firstTouch > DummyState.possible
 
 
 //==============================================================================
