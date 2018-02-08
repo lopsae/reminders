@@ -124,22 +124,9 @@ DummyState.idle + DummyEvent.firstTouch > DummyState.possible
 let machine = Machine<DummyState, DummyEvent>(
   resetState: .idle,
   transitions:
-  // .idle + .firstTouch => .possible
-  Machine.Transition(
-    from: [.idle],
-    to: .possible,
-    with: [.firstTouch]
-  ),
-  Machine.Transition(
-    from: [.possible],
-    to: .ended,
-    with: [.endedEvent]
-  ),
-  Machine.Transition(
-    from: [.possible],
-    to: .failed,
-    with: [.firstTouch]
-  )
+  .idle     + .firstTouch  > .possible,
+  .possible + .endedEvent  > .ended,
+  .possible + .failedEvent > .failed
 )
 
 machine.validTransitionHandler = {
