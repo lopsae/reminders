@@ -60,11 +60,9 @@ class Machine<State: MachineState, Event: MachineEvent> {
 }
 
 
-protocol MachineStateType {}
-protocol MachineState: Hashable, MachineStateType {}
+protocol MachineState: Hashable {}
 
-protocol MachineEventType {}
-protocol MachineEvent: Hashable, MachineEventType {}
+protocol MachineEvent: Hashable {}
 
 
 extension Machine {
