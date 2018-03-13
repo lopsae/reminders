@@ -99,7 +99,7 @@ func > <State: MachineState, Event: MachineEvent> (
   result: State
 ) -> Machine<State, Event>.Transition {
   let (source, event) = sourceAndEvent
-  return Machine<State, Event>.Transition(from: source, to: result, with: event)
+  return .init(from: source, to: result, with: event)
 }
 
 
