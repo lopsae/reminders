@@ -19,3 +19,7 @@ DerivedData/
 !default.perspectivev3
 xcuserdata/
 
+
+## CocoaPods
+Pods/
+
