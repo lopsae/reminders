@@ -7,32 +7,37 @@ struct TupleGrouper<Tuple> {
   let tuple: Tuple
   let list: [Any]
 
+
   private init(tuple: Tuple, list: [Any]) {
     self.tuple = tuple
     self.list = list
   }
 
-  static func group(registration: (TupleRegister) -> Tuple) -> TupleGrouper {
-    let registerer = TupleRegister()
+
+  static func group(registration: (Register) -> Tuple) -> TupleGrouper {
+    let registerer = Register()
     let tuple = registration(registerer)
     return TupleGrouper(tuple: tuple, list: registerer.things)
   }
 
-}
 
+  class Register {
 
-class TupleRegister {
+    var things: [Any] = []
 
-  var things: [Any] = []
+    func register<T>(_ thing: T) -> T {
+      things.append(thing)
+      return thing
+    }
 
-  func register<T>(_ thing: T) -> T {
-    things.append(thing)
-    return thing
+    static func < <T> (rhs: Register, lhs: T) -> T {
+      return rhs.register(lhs)
+    }
+
   }
 
-  static func < <T> (rhs: TupleRegister, lhs: T) -> T {
-    return rhs.register(lhs)
-  }
+
+
 
 }
 
