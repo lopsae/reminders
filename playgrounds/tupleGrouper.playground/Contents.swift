@@ -30,16 +30,19 @@ class TupleRegister {
     return thing
   }
 
+  static func < <T> (rhs: TupleRegister, lhs: T) -> T {
+    return rhs.register(lhs)
+  }
+
 }
 
 
-let group = TupleGrouper.group { registerer in
-  return (
-    first: registerer.register(3),
-    second: registerer.register(3.5),
-    third: registerer.register("string")
-  )
-}
+let group = TupleGrouper.group {(
+  first:  $0 < 3,
+  second: $0 < 3.5,
+  third:  $0 < "string"
+)}
+
 
 group.tuple.first
 group.tuple.second
