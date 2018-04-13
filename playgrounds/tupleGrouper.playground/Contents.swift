@@ -14,30 +14,27 @@ struct TupleGrouper<Tuple> {
   }
 
 
-  static func group(registration: (Register) -> Tuple) -> TupleGrouper {
-    let registerer = Register()
-    let tuple = registration(registerer)
+  static func group(registration: (inout Register) -> Tuple) -> TupleGrouper {
+    var registerer = Register()
+    let tuple = registration(&registerer)
     return TupleGrouper(tuple: tuple, list: registerer.things)
   }
 
 
-  class Register {
+  struct Register {
 
     var things: [Any] = []
 
-    func register<T>(_ thing: T) -> T {
+    mutating func register<T>(_ thing: T) -> T {
       things.append(thing)
       return thing
     }
 
-    static func < <T> (rhs: Register, lhs: T) -> T {
+    static func < <T> (rhs: inout Register, lhs: T) -> T {
       return rhs.register(lhs)
     }
 
   }
-
-
-
 
 }
 
