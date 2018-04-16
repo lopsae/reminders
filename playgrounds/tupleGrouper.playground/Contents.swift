@@ -5,10 +5,10 @@ print("⭕️ TupleGrouper playground")
 struct TupleGrouper<Tuple> {
 
   let tuple: Tuple
-  let list: [Any]
+  let list: [Printable]
 
 
-  private init(tuple: Tuple, list: [Any]) {
+  private init(tuple: Tuple, list: [Printable]) {
     self.tuple = tuple
     self.list = list
   }
@@ -23,15 +23,11 @@ struct TupleGrouper<Tuple> {
 
   struct Register {
 
-    var things: [Any] = []
+    private(set) var things: [Printable] = []
 
-    mutating func register<T>(_ thing: T) -> T {
-      things.append(thing)
-      return thing
-    }
-
-    static func < <T> (rhs: inout Register, lhs: T) -> T {
-      return rhs.register(lhs)
+    static func < <T: Printable> (rhs: inout Register, lhs: T) -> T {
+      rhs.things.append(lhs)
+      return lhs
     }
 
   }
@@ -39,17 +35,30 @@ struct TupleGrouper<Tuple> {
 }
 
 
+protocol Printable {
+  func print()
+}
+
+extension String: Printable {
+  func print() { Swift.print("string-print! \(self)") }
+}
+
+extension Int: Printable {
+  func print() { Swift.print("int-print! \(self)") }
+}
+
+
+
 let group = TupleGrouper.group {(
   first:  $0 < 3,
-  second: $0 < 3.5,
-  third:  $0 < "string"
+  second: $0 < "string"
 )}
 
 
 group.tuple.first
 group.tuple.second
 
-group.list
+group.list.forEach { $0.print() }
 
 
 print("👑 finis coronat opus~")
