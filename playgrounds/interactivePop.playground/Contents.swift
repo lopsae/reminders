@@ -38,12 +38,15 @@ class Presented: UIViewController {
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     trackFunction()
-    print("☑️========== view appeared!")
+    // `viewDidAppear` always ends the sequence of disappear/appear functions
+    print("⏹========== viewDidAppear!")
   }
 
 
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
+    // `viewWillDisappear` always starts the sequence of disappear/appear functions
+    print("▶️========== viewWillDisappear!")
     trackFunction()
   }
 
@@ -73,11 +76,11 @@ class Tap: UITapGestureRecognizer {
 
 
 let root = Presented(title: "✴️ Root", background: .orange)
-let presented = Presented(title: "🔴 Presented", background: .red)
+let presented = Presented(title: "⚛️ Presented", background: .purple)
 let navigator = Navigator(rootViewController: root)
 
 let tap = Tap {
-  print("☑️========== pushing view controller")
+  print("☑️ Pushing view controller")
   navigator.pushViewController(presented, animated: true)
 }
 root.view.addGestureRecognizer(tap)
