@@ -2,31 +2,36 @@
 print("⭕️ TupleGrouper playground")
 
 
-struct TupleGrouper<Tuple> {
+struct TupleGrouper<Tuple, Grouper> {
 
   let tuple: Tuple
-  let list: [Printable]
+  let list: [Grouper]
 
 
-  private init(tuple: Tuple, list: [Printable]) {
+  private init(tuple: Tuple, list: [Grouper]) {
     self.tuple = tuple
     self.list = list
   }
 
 
-  static func group(registration: (inout Register) -> Tuple) -> TupleGrouper {
-    var registerer = Register()
+  static func group(type: Grouper.Type, registration: (inout Register<Grouper>) -> Tuple) -> TupleGrouper {
+    var registerer = Register<Grouper>()
     let tuple = registration(&registerer)
     return TupleGrouper(tuple: tuple, list: registerer.things)
   }
 
 
-  struct Register {
+  struct Register<Grouper> {
 
-    private(set) var things: [Printable] = []
+    private(set) var things: [Grouper] = []
 
-    static func < <T: Printable> (rhs: inout Register, lhs: T) -> T {
-      rhs.things.append(lhs)
+    static func < <T> (rhs: inout Register, lhs: T) -> T {
+      if let lhs = lhs as? Grouper {
+        rhs.things.append(lhs)
+      } else {
+        assertionFailure("Element cannot be casted to \(Grouper.self)")
+      }
+
       return lhs
     }
 
@@ -49,7 +54,7 @@ extension Int: Printable {
 
 
 
-let group = TupleGrouper.group {(
+let group = TupleGrouper.group(type: Printable.self) {(
   first:  $0 < 3,
   second: $0 < "string"
 )}
