@@ -26,10 +26,30 @@ class Presented: UIViewController {
 }
 
 
+class Tap: UITapGestureRecognizer {
+
+  let closure: () -> Void
+
+  init(closure: @escaping () -> Void) {
+    self.closure = closure
+    super.init(target: self, action: #selector(performClosure))
+  }
+
+  @objc func performClosure() {
+    closure()
+  }
+
+}
+
+
 let root = Presented(title: "Root", background: .orange)
 let presented = Presented(title: "Presented", background: .red)
-
 let navigator = Navigator(rootViewController: root)
+
+let tap = Tap {
+  navigator.pushViewController(presented, animated: true)
+}
+root.view.addGestureRecognizer(tap)
 
 
 PlaygroundPage.current.liveView = navigator
