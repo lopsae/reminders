@@ -23,6 +23,36 @@ class Presented: UIViewController {
     fatalError("\(#function) not supported")
   }
 
+
+  func trackFunction(functionName: String = #function) {
+    print("\(title!): \(functionName)")
+  }
+
+
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    trackFunction()
+  }
+
+
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    trackFunction()
+    print("☑️========== view appeared!")
+  }
+
+
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    trackFunction()
+  }
+
+
+  override func viewDidDisappear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
+    trackFunction()
+  }
+
 }
 
 
@@ -42,11 +72,12 @@ class Tap: UITapGestureRecognizer {
 }
 
 
-let root = Presented(title: "Root", background: .orange)
-let presented = Presented(title: "Presented", background: .red)
+let root = Presented(title: "✴️ Root", background: .orange)
+let presented = Presented(title: "🔴 Presented", background: .red)
 let navigator = Navigator(rootViewController: root)
 
 let tap = Tap {
+  print("☑️========== pushing view controller")
   navigator.pushViewController(presented, animated: true)
 }
 root.view.addGestureRecognizer(tap)
