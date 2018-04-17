@@ -11,6 +11,9 @@ class Navigator: UINavigationController {
 
 
 class Presented: UIViewController {
+  private typealias `Self` = Presented
+
+  static var sharedTransitionCoord: UIViewControllerTransitionCoordinator?
 
   init(title: String, background: UIColor) {
     super.init(nibName: nil, bundle: nil)
@@ -25,21 +28,7 @@ class Presented: UIViewController {
 
 
   func trackFunction(functionName: String = #function) {
-    print("\(title!): \(functionName)")
-  }
-
-
-  override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
-    trackFunction()
-  }
-
-
-  override func viewDidAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
-    trackFunction()
-    // `viewDidAppear` always ends the sequence of disappear/appear functions
-    print("⏹========== viewDidAppear!")
+    print("\(title!): \(functionName) \(transitionCoordinator == nil ? "⭕️" : "✅")transCoord")
   }
 
 
@@ -51,9 +40,23 @@ class Presented: UIViewController {
   }
 
 
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    trackFunction()
+  }
+
+
   override func viewDidDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
     trackFunction()
+  }
+
+
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    trackFunction()
+    // `viewDidAppear` always ends the sequence of disappear/appear functions
+    print("⏹========== viewDidAppear!")
   }
 
 }
