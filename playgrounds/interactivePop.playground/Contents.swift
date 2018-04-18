@@ -28,7 +28,19 @@ class Presented: UIViewController {
 
 
   func trackFunction(functionName: String = #function) {
-    print("\(title!): \(functionName) \(transitionCoordinator == nil ? "⭕️" : "✅")transCoord")
+    print("\(title!): \(functionName)")
+
+    if transitionCoordinator != nil {
+      if Self.sharedTransitionCoord != nil {
+        let sameCoord = Self.sharedTransitionCoord! === transitionCoordinator!
+        print("   ✅transitionCoord shared:\(sameCoord ? "✅same" : "❌diff")")
+      } else {
+        Self.sharedTransitionCoord = transitionCoordinator!
+        print("   ✅transitionCoord shared:🚸set")
+      }
+    } else {
+      print("   ⭕️transitionCoord")
+    }
   }
 
 
@@ -56,6 +68,7 @@ class Presented: UIViewController {
     super.viewDidAppear(animated)
     trackFunction()
     // `viewDidAppear` always ends the sequence of disappear/appear functions
+    Self.sharedTransitionCoord = nil
     print("⏹========== viewDidAppear!")
   }
 
