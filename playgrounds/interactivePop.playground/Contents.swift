@@ -49,6 +49,21 @@ class Presented: UIViewController {
     // `viewWillDisappear` always starts the sequence of disappear/appear functions
     print("▶️========== viewWillDisappear!")
     trackFunction()
+
+    if let transitionCoordinator = transitionCoordinator {
+      print("     transitionCoord adding animate")
+      transitionCoordinator.animate(
+        alongsideTransition: {
+          context in
+          print("     transitionCoord interactive:\(context.isInteractive ? "✅" : "❌" )")
+        },
+        completion: {
+          context in
+
+          print("     transitionCoord completed cancelled:\(context.isCancelled ? "✅" : "❌")")
+        }
+      )
+    }
   }
 
 
