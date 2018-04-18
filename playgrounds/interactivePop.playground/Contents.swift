@@ -51,16 +51,20 @@ class Presented: UIViewController {
     trackFunction()
 
     if let transitionCoordinator = transitionCoordinator {
-      print("     transitionCoord adding animate")
+      print("     transitionCoord queue animateAlong")
       transitionCoordinator.animate(
         alongsideTransition: {
           context in
-          print("     transitionCoord interactive:\(context.isInteractive ? "✅" : "❌" )")
+          print("     transitionCoord alongsideTransition:")
+          print("        \(context.isInteractive ? "✅" : "❌" )isInteractive")
+          print("          from:\(context.viewController(forKey: .from)!.title!)")
+          print("          to:\(context.viewController(forKey: .to)!.title!)")
         },
         completion: {
           context in
 
-          print("     transitionCoord completed cancelled:\(context.isCancelled ? "✅" : "❌")")
+          print("     transitionCoord completed")
+          print("       \(context.isCancelled ? "✅" : "❌")isCancelled")
         }
       )
     }
