@@ -8,5 +8,5 @@ project 'ObjectMapperPlaygrounds'
 target 'Tests'
 
 
-pod 'RxSwift'
+pod 'ObjectMapper'
 
