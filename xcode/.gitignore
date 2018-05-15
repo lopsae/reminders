@@ -28,3 +28,7 @@ Pods/
 timeline.xctimeline
 playground.xcworkspace
 
+
+## Misc - Added by myself
+xcshareddata/
+
