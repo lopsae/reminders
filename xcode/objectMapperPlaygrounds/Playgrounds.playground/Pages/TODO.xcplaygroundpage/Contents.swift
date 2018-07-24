@@ -65,5 +65,58 @@ test?.integer
 test?.toJSON()
 
 
+
+//============================================================
+//============================================================
+//============================================================
+
+
+
+enum Enumerated: String, Mappable {
+  case uno, dos
+
+  init(map: Map) {
+    self = .uno
+  }
+
+  mutating func mapping(map: Map) {
+    let value:String = map.value() ?? ""
+    self = Enumerated(rawValue: value) ?? .uno
+  }
+
+}
+
+class TestEnumer: Mappable {
+
+  var first: Enumerated = .uno
+  var second: Enumerated = .uno
+  var third: Enumerated = .uno
+
+  required init?(map: Map) {
+  }
+
+  func mapping(map: Map) {
+//    first  = try! map.value("first")
+    first  <- map["first"]
+    second <- map["second"]
+    third  <- map["third"]
+  }
+
+}
+
+
+var testEnumer = TestEnumer(JSON: [
+  "first": "uno",
+  "second": "dos",
+  "third": "tres"
+])
+
+testEnumer
+testEnumer?.first
+testEnumer?.second
+testEnumer?.third
+
+
+
 print("👑 finis coronat opus~")
 
