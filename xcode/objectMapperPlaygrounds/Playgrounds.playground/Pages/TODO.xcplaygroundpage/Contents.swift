@@ -5,7 +5,8 @@ import ObjectMapperPlaygrounds
 
 import ObjectMapper
 
-// Dont forget to compile tests to make Pods available
+
+// Build first (⌘+B) to make pods available to playgrounds
 
 
 struct TestObject: Mappable {
@@ -72,17 +73,8 @@ test?.toJSON()
 
 
 
-enum Enumerated: String, Mappable {
+enum Enumerated: String {
   case uno, dos
-
-  init(map: Map) {
-    self = .uno
-  }
-
-  mutating func mapping(map: Map) {
-    let value:String = map.value() ?? ""
-    self = Enumerated(rawValue: value) ?? .uno
-  }
 
 }
 
