@@ -1,4 +1,9 @@
-//: in Swift 4
+/*:
+ Preview of different present animations available with
+ `modalTransitionStyle`.
+
+ Written in Swift 4
+*/
 print("⭕️ PresentAnimations playground")
 
 import UIKit
