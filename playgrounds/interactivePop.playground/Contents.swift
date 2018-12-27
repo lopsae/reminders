@@ -96,11 +96,22 @@ class Presented: UIViewController {
 
 class Tap: UITapGestureRecognizer {
 
+  let closurer: Closurer
+
+  init(closure: @escaping () -> Void) {
+    closurer = Closurer(closure: closure)
+    super.init(target: closurer, action: #selector(Closurer.performClosure))
+  }
+
+}
+
+
+class Closurer: NSObject {
   let closure: () -> Void
 
   init(closure: @escaping () -> Void) {
     self.closure = closure
-    super.init(target: self, action: #selector(performClosure))
+    super.init()
   }
 
   @objc func performClosure() {
