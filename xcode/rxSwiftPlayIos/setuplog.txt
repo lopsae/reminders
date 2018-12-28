@@ -1,0 +1,5 @@
+Setup of a Playground Workspace
+===============================
+
++ Create default `Single View` iOS project in Xcode.
++ Move project one folder up, to leave xcode files at root
