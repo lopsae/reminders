@@ -1,25 +1,28 @@
 //
-//  ViewController.swift
-//  rxSwiftPlaygrounds
-//
-//  Created by Maic Lopez Saenz on 12/27/18.
-//  Copyright © 2018 LopSae. All rights reserved.
+// rxSwiftPlaygrounds
+// Copyright © 2018 LopSae. All rights reserved.
 //
 
 import UIKit
 
 class ViewController: UIViewController {
 
+
+  init() {
+    super.init(nibName: nil, bundle: nil)
+  }
+
+  
+  @available(*, unavailable)
+  convenience required init?(coder: NSCoder) {
+    fatalError("\(#function) is not available")
+  }
+
+
   override func viewDidLoad() {
     super.viewDidLoad()
-    // Do any additional setup after loading the view, typically from a nib.
+    view.backgroundColor = .orange
   }
-
-  override func didReceiveMemoryWarning() {
-    super.didReceiveMemoryWarning()
-    // Dispose of any resources that can be recreated.
-  }
-
 
 }
 

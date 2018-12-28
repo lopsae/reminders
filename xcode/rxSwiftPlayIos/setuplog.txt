@@ -3,3 +3,6 @@ Setup of a Playground Workspace
 
 + Create default `Single View` iOS project in Xcode.
 + Move project one folder up, to leave xcode files at root
++ Add label to LaunchScreen for startup visibility
++ Delete `Main.storyboard` and remove from project `Main Interface`
++ Create window and rootViewController in `didFinishLaunchingWithOptions`
