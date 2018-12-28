@@ -11,3 +11,6 @@ Setup of a Playground Workspace
 + Rename main folder to Sources
 + Move support files to new folder Support
 + update `Project/Build Settings/Info.plist` File with new location
+
++ create new Podfile and install
++ run workspace and use pod
