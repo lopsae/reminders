@@ -36,7 +36,9 @@
 		E52E2A6421D5A70A00E37135 = {
 			isa = PBXGroup;
 			children = (
-				E52E2A6F21D5A70A00E37135 /* rxSwiftPlaygrounds */,
+				E52E2A8321D5AEAA00E37135 /* Support */,
+				E52E2A6F21D5A70A00E37135 /* Sources */,
+				E52E2A7721D5A70C00E37135 /* Assets.xcassets */,
 				E52E2A6E21D5A70A00E37135 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -49,16 +51,22 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		E52E2A6F21D5A70A00E37135 /* rxSwiftPlaygrounds */ = {
+		E52E2A6F21D5A70A00E37135 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
 				E52E2A7021D5A70A00E37135 /* AppDelegate.swift */,
 				E52E2A7221D5A70A00E37135 /* ViewController.swift */,
-				E52E2A7721D5A70C00E37135 /* Assets.xcassets */,
-				E52E2A7921D5A70C00E37135 /* LaunchScreen.storyboard */,
-				E52E2A7C21D5A70C00E37135 /* Info.plist */,
 			);
-			path = rxSwiftPlaygrounds;
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		E52E2A8321D5AEAA00E37135 /* Support */ = {
+			isa = PBXGroup;
+			children = (
+				E52E2A7C21D5A70C00E37135 /* Info.plist */,
+				E52E2A7921D5A70C00E37135 /* LaunchScreen.storyboard */,
+			);
+			path = Support;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -269,7 +277,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = rxSwiftPlaygrounds/Info.plist;
+				INFOPLIST_FILE = Support/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -286,7 +294,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = rxSwiftPlaygrounds/Info.plist;
+				INFOPLIST_FILE = Support/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
