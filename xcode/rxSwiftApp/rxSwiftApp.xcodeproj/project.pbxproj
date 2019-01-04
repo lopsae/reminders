@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		32DD9D1F9C0B40C73199DF3A /* Pods_rxSwiftPlaygrounds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C13D4C6EAD166A583E47C361 /* Pods_rxSwiftPlaygrounds.framework */; };
+		B72DB2CD37B92BF99F119542 /* Pods_rxSwiftApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48C66FB2FA142A4AB7A0CF25 /* Pods_rxSwiftApp.framework */; };
 		E52E2A7121D5A70A00E37135 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52E2A7021D5A70A00E37135 /* AppDelegate.swift */; };
 		E52E2A7321D5A70A00E37135 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52E2A7221D5A70A00E37135 /* ViewController.swift */; };
 		E52E2A7821D5A70C00E37135 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E52E2A7721D5A70C00E37135 /* Assets.xcassets */; };
@@ -15,9 +15,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		AB71C6D4D806CD942AB6535C /* Pods-rxSwiftPlaygrounds.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-rxSwiftPlaygrounds.debug.xcconfig"; path = "Pods/Target Support Files/Pods-rxSwiftPlaygrounds/Pods-rxSwiftPlaygrounds.debug.xcconfig"; sourceTree = "<group>"; };
-		B070B590E612A29068C9CFDE /* Pods-rxSwiftPlaygrounds.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-rxSwiftPlaygrounds.release.xcconfig"; path = "Pods/Target Support Files/Pods-rxSwiftPlaygrounds/Pods-rxSwiftPlaygrounds.release.xcconfig"; sourceTree = "<group>"; };
-		C13D4C6EAD166A583E47C361 /* Pods_rxSwiftPlaygrounds.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_rxSwiftPlaygrounds.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		0164BBA3C2F18711CDABEB09 /* Pods-rxSwiftApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-rxSwiftApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-rxSwiftApp/Pods-rxSwiftApp.debug.xcconfig"; sourceTree = "<group>"; };
+		48C66FB2FA142A4AB7A0CF25 /* Pods_rxSwiftApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_rxSwiftApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BC492DA34B95AC1EA4E8C473 /* Pods-rxSwiftApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-rxSwiftApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-rxSwiftApp/Pods-rxSwiftApp.release.xcconfig"; sourceTree = "<group>"; };
 		E52E2A6D21D5A70A00E37135 /* rxSwiftApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = rxSwiftApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E52E2A7021D5A70A00E37135 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E52E2A7221D5A70A00E37135 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -31,7 +31,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				32DD9D1F9C0B40C73199DF3A /* Pods_rxSwiftPlaygrounds.framework in Frameworks */,
+				B72DB2CD37B92BF99F119542 /* Pods_rxSwiftApp.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -41,7 +41,7 @@
 		642E8A39B618B675442A1FE6 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				C13D4C6EAD166A583E47C361 /* Pods_rxSwiftPlaygrounds.framework */,
+				48C66FB2FA142A4AB7A0CF25 /* Pods_rxSwiftApp.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -87,8 +87,8 @@
 		F2A1ADD0C17893C72C598C17 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				AB71C6D4D806CD942AB6535C /* Pods-rxSwiftPlaygrounds.debug.xcconfig */,
-				B070B590E612A29068C9CFDE /* Pods-rxSwiftPlaygrounds.release.xcconfig */,
+				0164BBA3C2F18711CDABEB09 /* Pods-rxSwiftApp.debug.xcconfig */,
+				BC492DA34B95AC1EA4E8C473 /* Pods-rxSwiftApp.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -172,7 +172,7 @@
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-rxSwiftPlaygrounds-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-rxSwiftApp-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -185,7 +185,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-rxSwiftPlaygrounds/Pods-rxSwiftPlaygrounds-frameworks.sh",
+				"${SRCROOT}/Pods/Target Support Files/Pods-rxSwiftApp/Pods-rxSwiftApp-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/RxAtomic/RxAtomic.framework",
 				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
 			);
@@ -196,7 +196,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-rxSwiftPlaygrounds/Pods-rxSwiftPlaygrounds-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-rxSwiftApp/Pods-rxSwiftApp-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -341,7 +341,7 @@
 		};
 		E52E2A8021D5A70C00E37135 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = AB71C6D4D806CD942AB6535C /* Pods-rxSwiftPlaygrounds.debug.xcconfig */;
+			baseConfigurationReference = 0164BBA3C2F18711CDABEB09 /* Pods-rxSwiftApp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -359,7 +359,7 @@
 		};
 		E52E2A8121D5A70C00E37135 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B070B590E612A29068C9CFDE /* Pods-rxSwiftPlaygrounds.release.xcconfig */;
+			baseConfigurationReference = BC492DA34B95AC1EA4E8C473 /* Pods-rxSwiftApp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
