@@ -5,7 +5,7 @@
       location = "group:playgrounds.playground">
    </FileRef>
    <FileRef
-      location = "group:rxSwiftPlaygrounds.xcodeproj">
+      location = "group:rxSwiftApp.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Pods/Pods.xcodeproj">
