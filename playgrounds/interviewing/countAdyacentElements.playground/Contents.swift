@@ -6,10 +6,13 @@
 
 
 func findStartBoundary(target: Int, array: [Int]) -> Int? {
+//    print("▶️ checking: \(array)")
     if (array.isEmpty) {
+//        print("⚙️ checking empty, returning nil")
         return nil
     }
     if (array.count == 1) {
+//        print("⚙️ checking single: \(array)")
         if array[0] == target {
             return 0
         } else {
@@ -17,27 +20,32 @@ func findStartBoundary(target: Int, array: [Int]) -> Int? {
         }
     }
 
+
     let middleIndex = array.count / 2
-    // print("middle: \(middleIndex)")
+//    print("⚙️ middleIndex: \(middleIndex), value: \(array[middleIndex])")
 
     if array[middleIndex] == target {
         if middleIndex == 0 {
+            // First element is always boundary
             return 0
         }
         if array[middleIndex - 1] != target {
+            // Previous element is different, middle is boundary
             return middleIndex
         }
-        // search at lower half
-        // print("searching: \(Array(array[0..<middleIndex]))")
+
+        // Otherwise earch at lower half
         return findStartBoundary(target: target, array: Array(array[0..<middleIndex]))
+
     } else if array[middleIndex] > target {
-        // print("searching: \(Array(array[0..<middleIndex]))")
+        // middle is larger, search lower half
         return findStartBoundary(target: target, array: Array(array[0..<middleIndex]))
 
     } else {
-        // print("searching: \(Array(array[middleIndex..<array.count]))")
+        // middle is smaller, search higher half
         let maybeFound = findStartBoundary(target: target, array: Array(array[middleIndex..<array.count]))
         if let found = maybeFound {
+            // Adjust for array slice position
             return middleIndex + found
         }
     }
@@ -55,7 +63,7 @@ print("find 4, expected nil: \(findStartBoundary(target: 4, array: array).orNil)
 print("find 5, expected 7:   \(findStartBoundary(target: 5, array: array).orNil)")
 print("find 7, expected 10:  \(findStartBoundary(target: 8, array: array).orNil)")
 print("find 8, expected 14:  \(findStartBoundary(target: 8, array: array).orNil)")
-print("find 9, expected nil: \(findStartBoundary(target: 8, array: array).orNil)")
+print("find 9, expected nil: \(findStartBoundary(target: 9, array: array).orNil)")
 
 
 //func foundEndBoundary(target: Int, array: [Int]) -> Int? {
