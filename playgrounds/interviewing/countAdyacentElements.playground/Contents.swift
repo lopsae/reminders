@@ -50,10 +50,12 @@ func findStartBoundary<T: Comparable>(target: T, slice: ArraySlice<T>) -> ArrayS
 
     } else {
         // middle is smaller, search higher half
+        // TODO: Can this be middleIndex+1
         return findStartBoundary(target: target, slice: slice[middleIndex...])
     }
 }
 
+print("Start boundaries")
 //            0  1  2  3  4  5  6  7  8  9  10 11 12 13 14
 let sArray = [1, 1, 1, 2, 2, 2, 2, 5, 5, 5, 7, 7, 7, 7, 8]
 print("find 0, expected nil: \(findStartBoundary(target: 0, array: sArray).orNil)")
@@ -66,64 +68,60 @@ print("find 8, expected 14:  \(findStartBoundary(target: 8, array: sArray).orNil
 print("find 9, expected nil: \(findStartBoundary(target: 9, array: sArray).orNil)")
 
 
-func findEndBoundary(target: Int, array: [Int]) -> Int? {
+
+func findEndBoundary<T: Comparable>(target: T, array: [T]) -> [T].Index? {
+    return findEndBoundary(target: target, slice: array[...])
+}
+
+func findEndBoundary<T: Comparable>(target: T, slice: ArraySlice<T>) -> ArraySlice.Index? {
     let log = Logger(enabled: false)
-    log("▶️ target: \(target) checking: \(array)")
-    if (array.isEmpty) {
+    log("▶️ target: \(target) slice: \(slice) s/e: \(slice.startIndex)/\(slice.endIndex) c: \(slice.count)" )
+    if (slice.isEmpty) {
         log("⚙️ checking empty, returning nil")
         return nil
     }
-    if (array.count == 1) {
-        log("⚙️ checking single: \(array)")
-        if array[0] == target {
-            return 0
+    if (slice.count == 1) {
+        log("⚙️ checking single: \(slice)")
+        if slice.first == target {
+            return slice.startIndex
         } else {
             return nil
         }
     }
 
 
-    let middleIndex = array.count / 2
-    log("⚙️ middleIndex: \(middleIndex), value: \(array[middleIndex])")
+    let middleIndex = slice.startIndex + (slice.count / 2)
+    log("⚙️ middleIndex: \(middleIndex), value: \(slice[middleIndex])")
 
-    if array[middleIndex] == target {
-        if middleIndex == array.endIndex - 1 {
+    if slice[middleIndex] == target {
+        if middleIndex == slice.endIndex - 1 {
             // Last element is always boundary
-            return array.endIndex - 1
+            log("⏹️ last element at: \(middleIndex)")
+            return slice.endIndex - 1
         }
-        if array[middleIndex + 1] != target {
+        if slice[middleIndex + 1] != target {
             // Next element is different, middle is boundary
+            log("⏹️ boundary element at: \(middleIndex)")
             return middleIndex
         }
 
         // Otherwise search at higher half
-        let maybeFound = findEndBoundary(target: target, array: Array(array[middleIndex...]))
-        if let found = maybeFound {
-            // Adjust for array slice position
-            return middleIndex + found
-        }
+        return findEndBoundary(target: target, slice: slice[middleIndex...])
 
-    } else if array[middleIndex] > target {
+    } else if slice[middleIndex] > target {
         // middle is larger, search lower half
-        return findEndBoundary(target: target, array: Array(array[0..<middleIndex]))
+        return findEndBoundary(target: target, slice: slice[..<middleIndex])
 
     } else {
         // middle is smaller, search higher half
-        let maybeFound = findEndBoundary(target: target, array: Array(array[middleIndex..<array.count]))
-        if let found = maybeFound {
-            // Adjust for array slice position
-            return middleIndex + found
-        }
+        return findEndBoundary(target: target, slice: slice[middleIndex...])
     }
-
-    // Not found
-    return nil
 }
 
 
+print("End boundaries")
 //            0  1  2  3  4  5  6  7  8  9  10 11 12 13 14
 let eArray = [1, 1, 1, 2, 2, 2, 2, 5, 5, 5, 7, 7, 7, 7, 8]
-print("array.count: \(eArray.count)")
 print("find 0, expected nil: \(findEndBoundary(target: 0, array: eArray).orNil)")
 print("find 1, expected 2:   \(findEndBoundary(target: 1, array: eArray).orNil)")
 print("find 2, expected 6:   \(findEndBoundary(target: 2, array: eArray).orNil)")
