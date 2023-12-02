@@ -5,14 +5,15 @@
 // Target `3` returns a count of 3
 
 
-func findStartBoundary(target: Int, array: [Int]) -> Int? {
-//    print("▶️ checking: \(array)")
+func findStartBoundary<T: Comparable>(target: T, array: [T]) -> Int? {
+    let log = Logger(enabled: false)
+    log("▶️ target: \(target) checking: \(array)")
     if (array.isEmpty) {
-//        print("⚙️ checking empty, returning nil")
+        log("⚙️ checking empty, returning nil")
         return nil
     }
     if (array.count == 1) {
-//        print("⚙️ checking single: \(array)")
+        log("⚙️ checking single: \(array)")
         if array[0] == target {
             return 0
         } else {
@@ -22,7 +23,7 @@ func findStartBoundary(target: Int, array: [Int]) -> Int? {
 
 
     let middleIndex = array.count / 2
-//    print("⚙️ middleIndex: \(middleIndex), value: \(array[middleIndex])")
+    log("⚙️ middleIndex: \(middleIndex), value: \(array[middleIndex])")
 
     if array[middleIndex] == target {
         if middleIndex == 0 {
