@@ -55,8 +55,7 @@ func findStartBoundary<T: Comparable>(target: T, slice: ArraySlice<T>) -> ArrayS
 
     } else {
         // middle is smaller, search higher half
-        // TODO: Can this be middleIndex+1
-        return findStartBoundary(target: target, slice: slice[middleIndex...])
+        return findStartBoundary(target: target, slice: slice[(middleIndex + 1)...])
     }
 }
 
@@ -115,7 +114,7 @@ func findEndBoundary<T: Comparable>(target: T, slice: ArraySlice<T>) -> ArraySli
         }
 
         // Otherwise search at higher half
-        return findEndBoundary(target: target, slice: slice[middleIndex...])
+        return findEndBoundary(target: target, slice: slice[(middleIndex + 1)...])
 
     } else if slice[middleIndex] > target {
         // middle is larger, search lower half
@@ -123,7 +122,7 @@ func findEndBoundary<T: Comparable>(target: T, slice: ArraySlice<T>) -> ArraySli
 
     } else {
         // middle is smaller, search higher half
-        return findEndBoundary(target: target, slice: slice[middleIndex...])
+        return findEndBoundary(target: target, slice: slice[(middleIndex + 1)...])
     }
 }
 
