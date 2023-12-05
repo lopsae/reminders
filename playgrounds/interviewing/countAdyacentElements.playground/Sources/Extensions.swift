@@ -1,6 +1,6 @@
 
 
-public extension Optional where Wrapped == Int {
+public extension Optional {
 
     var orNil: String {
         switch self {

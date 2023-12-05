@@ -65,6 +65,7 @@ let startLog = Logger(prefix: "🍊", enabled: true)
 startLog("Start boundaries")
 //            0  1  2  3  4  5  6  7  8  9  10 11 12 13 14
 let sArray = [1, 1, 1, 2, 2, 2, 2, 5, 5, 5, 7, 7, 7, 7, 8]
+startLog.test("expected miss", expected: 0, test: findStartBoundary(target: 9, array: sArray))
 startLog.test(expected: nil, test: findStartBoundary(target: 0, array: sArray))
 startLog.test(expected: 0,   test: findStartBoundary(target: 1, array: sArray))
 startLog.test(expected: 3,   test: findStartBoundary(target: 2, array: sArray))
@@ -73,7 +74,7 @@ startLog.test(expected: 7,   test: findStartBoundary(target: 5, array: sArray))
 startLog.test(expected: 10,  test: findStartBoundary(target: 7, array: sArray))
 startLog.test(expected: 14,  test: findStartBoundary(target: 8, array: sArray))
 startLog.test(expected: nil, test: findStartBoundary(target: 9, array: sArray))
-startLog.test("Miss", expected: 0, test: findStartBoundary(target: 9, array: sArray))
+
 
 
 
@@ -131,6 +132,7 @@ let endLog = Logger(prefix: "🍋", enabled: true)
 endLog("End boundaries")
 //            0  1  2  3  4  5  6  7  8  9  10 11 12 13 14
 let eArray = [1, 1, 1, 2, 2, 2, 2, 5, 5, 5, 7, 7, 7, 7, 8]
+endLog.test("expected miss", expected: 0, test: findEndBoundary(target: 9, array: sArray))
 endLog.test(expected: nil, test: findEndBoundary(target: 0, array: eArray))
 endLog.test(expected: 2,   test: findEndBoundary(target: 1, array: eArray))
 endLog.test(expected: 6,   test: findEndBoundary(target: 2, array: eArray))
@@ -139,6 +141,9 @@ endLog.test(expected: 9,   test: findEndBoundary(target: 5, array: eArray))
 endLog.test(expected: 13,  test: findEndBoundary(target: 7, array: eArray))
 endLog.test(expected: 14,  test: findEndBoundary(target: 8, array: eArray))
 endLog.test(expected: nil, test: findEndBoundary(target: 9, array: eArray))
-endLog.test("Miss", expected: 0, test: findEndBoundary(target: 9, array: sArray))
+
+
+
+print("👑 finis coronat opus~")
 
 

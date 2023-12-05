@@ -28,8 +28,8 @@ public struct Logger {
 
     public func test<T: Equatable>(
         _ message: @autoclosure ()->String = String(),
-        expected: @autoclosure ()->T,
-        test: @autoclosure ()->T)
+        expected: @autoclosure ()->T?,
+        test: @autoclosure ()->T?)
     {
         guard enabled else { return }
 
@@ -40,10 +40,25 @@ public struct Logger {
 
         let testValue = test()
         let expectedValue = expected()
-        if testValue == expectedValue {
-            log("\(header)✅ match: \(testValue)")
+
+        let testString: String
+        if let unwrapped = testValue {
+            testString = String(describing: unwrapped)
         } else {
-            log("\(header)⛔️ miss: expected: \(expectedValue) test: \(testValue)")
+            testString = "nil"
+        }
+
+        let expectedString: String
+        if let unwrapped = expectedValue {
+            expectedString = String(describing: unwrapped)
+        } else {
+            expectedString = "nil"
+        }
+
+        if testValue == expectedValue {
+            log("\(header)✅ match: \(testString)")
+        } else {
+            log("\(header)⛔️ miss: expected: \(expectedString) test: \(testString)")
         }
 
     }
