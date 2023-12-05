@@ -41,19 +41,8 @@ public struct Logger {
         let testValue = test()
         let expectedValue = expected()
 
-        let testString: String
-        if let unwrapped = testValue {
-            testString = String(describing: unwrapped)
-        } else {
-            testString = "nil"
-        }
-
-        let expectedString: String
-        if let unwrapped = expectedValue {
-            expectedString = String(describing: unwrapped)
-        } else {
-            expectedString = "nil"
-        }
+        let testString = testValue.orNil
+        let expectedString = expectedValue.orNil
 
         if testValue == expectedValue {
             log("\(header)✅ match: \(testString)")
