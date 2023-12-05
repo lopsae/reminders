@@ -5,6 +5,11 @@
 // Target `3` returns a count of 3
 
 
+let testLogger = Logger(prefix: "🗄️", enabled: true)
+testLogger.test("Match test", expected: 0, test: 0)
+testLogger.test("Miss test ", expected: 0, test: 5)
+
+
 func findStartBoundary<T: Comparable>(target: T, array: [T]) -> [T].Index? {
     return findStartBoundary(target: target, slice: array[...])
 }
@@ -55,18 +60,20 @@ func findStartBoundary<T: Comparable>(target: T, slice: ArraySlice<T>) -> ArrayS
     }
 }
 
+
 let startLog = Logger(prefix: "🍊", enabled: true)
 startLog("Start boundaries")
 //            0  1  2  3  4  5  6  7  8  9  10 11 12 13 14
 let sArray = [1, 1, 1, 2, 2, 2, 2, 5, 5, 5, 7, 7, 7, 7, 8]
-startLog("find 0, expected nil: \(findStartBoundary(target: 0, array: sArray).orNil)")
-startLog("find 1, expected 0:   \(findStartBoundary(target: 1, array: sArray).orNil)")
-startLog("find 2, expected 3:   \(findStartBoundary(target: 2, array: sArray).orNil)")
-startLog("find 4, expected nil: \(findStartBoundary(target: 4, array: sArray).orNil)")
-startLog("find 5, expected 7:   \(findStartBoundary(target: 5, array: sArray).orNil)")
-startLog("find 7, expected 10:  \(findStartBoundary(target: 7, array: sArray).orNil)")
-startLog("find 8, expected 14:  \(findStartBoundary(target: 8, array: sArray).orNil)")
-startLog("find 9, expected nil: \(findStartBoundary(target: 9, array: sArray).orNil)")
+startLog.test(expected: nil, test: findStartBoundary(target: 0, array: sArray))
+startLog.test(expected: 0,   test: findStartBoundary(target: 1, array: sArray))
+startLog.test(expected: 3,   test: findStartBoundary(target: 2, array: sArray))
+startLog.test(expected: nil, test: findStartBoundary(target: 4, array: sArray))
+startLog.test(expected: 7,   test: findStartBoundary(target: 5, array: sArray))
+startLog.test(expected: 10,  test: findStartBoundary(target: 7, array: sArray))
+startLog.test(expected: 14,  test: findStartBoundary(target: 8, array: sArray))
+startLog.test(expected: nil, test: findStartBoundary(target: 9, array: sArray))
+startLog.test("Miss", expected: 0, test: findStartBoundary(target: 9, array: sArray))
 
 
 
@@ -124,15 +131,14 @@ let endLog = Logger(prefix: "🍋", enabled: true)
 endLog("End boundaries")
 //            0  1  2  3  4  5  6  7  8  9  10 11 12 13 14
 let eArray = [1, 1, 1, 2, 2, 2, 2, 5, 5, 5, 7, 7, 7, 7, 8]
-endLog("find 0, expected nil: \(findEndBoundary(target: 0, array: eArray).orNil)")
-endLog("find 1, expected 2:   \(findEndBoundary(target: 1, array: eArray).orNil)")
-endLog("find 2, expected 6:   \(findEndBoundary(target: 2, array: eArray).orNil)")
-endLog("find 4, expected nil: \(findEndBoundary(target: 4, array: eArray).orNil)")
-endLog("find 5, expected 9:   \(findEndBoundary(target: 5, array: eArray).orNil)")
-endLog("find 7, expected 13:  \(findEndBoundary(target: 8, array: eArray).orNil)")
-endLog("find 8, expected 14:  \(findEndBoundary(target: 8, array: eArray).orNil)")
-endLog("find 9, expected nil: \(findEndBoundary(target: 9, array: eArray).orNil)")
-
-
+endLog.test(expected: nil, test: findEndBoundary(target: 0, array: eArray))
+endLog.test(expected: 2,   test: findEndBoundary(target: 1, array: eArray))
+endLog.test(expected: 6,   test: findEndBoundary(target: 2, array: eArray))
+endLog.test(expected: nil, test: findEndBoundary(target: 4, array: eArray))
+endLog.test(expected: 9,   test: findEndBoundary(target: 5, array: eArray))
+endLog.test(expected: 13,  test: findEndBoundary(target: 7, array: eArray))
+endLog.test(expected: 14,  test: findEndBoundary(target: 8, array: eArray))
+endLog.test(expected: nil, test: findEndBoundary(target: 9, array: eArray))
+endLog.test("Miss", expected: 0, test: findEndBoundary(target: 9, array: sArray))
 
 
