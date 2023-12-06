@@ -22,7 +22,12 @@ public struct Logger {
 
     func log(closure: ()->String) {
         guard enabled else { return }
-        print("\(prefix) \(closure())" )
+        if prefix.isEmpty {
+            print(closure())
+        } else {
+            print("\(prefix) \(closure())" )
+        }
+
     }
 
 
