@@ -34,11 +34,16 @@ let package = Package(
             ]
         )
     ],
+    dependencies: [
+        .package(path: "../ResourcesPackage")
+    ],
     targets: [
         .executableTarget(
             name: "AppModule",
+            dependencies: [
+                .product(name: "ResourcesPackage", package: "resourcespackage")
+            ],
             path: "."
         )
-    ],
-    swiftLanguageVersions: [.version("6")]
+    ]
 )

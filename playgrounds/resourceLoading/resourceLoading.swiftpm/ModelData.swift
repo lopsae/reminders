@@ -5,17 +5,15 @@
 
 
 import Foundation
-
-// TODO: Add ResourcesPackage
-//import ResourcesPackage
+import ResourcesPackage
 import UIKit
 
 
 @Observable
 class ModelData {
 
-//    var landmarks: [Landmark] = loadFromResourcePackage()
-    var landmarks: [Landmark] = loadFromAssetsCatalog()
+    var landmarksFromResourcesPackage: [Landmark] = loadFromResourcePackage()
+    var landmarksFromAssetsCatalog: [Landmark] = loadFromAssetsCatalog()
 //    var landmarks: [Landmark] = load("localLandmarkData.json")
 
 }
@@ -59,20 +57,19 @@ func loadFromAssetsCatalog<D: Decodable>() -> D {
 }
 
 
-// TODO: Add ResourcesPackage
-//func loadFromResourcePackage<D: Decodable>() -> D {
-//
-//    let data: Data
-//    do {
-//        data = try LandmarkResource.getLandmarkData()
-//    } catch {
-//        fatalError("Couldn't load models from LandmarkResource bundle:\n\(error)")
-//    }
-//
-//    do {
-//        let decoder = JSONDecoder()
-//        return try decoder.decode(D.self, from: data)
-//    } catch {
-//        fatalError("Couldn't parse models as \(D.self):\n\(error)")
-//    }
-//}
+func loadFromResourcePackage<D: Decodable>() -> D {
+
+    let data: Data
+    do {
+        data = try LandmarkResource.getLandmarkData()
+    } catch {
+        fatalError("Couldn't load models from LandmarkResource bundle:\n\(error)")
+    }
+
+    do {
+        let decoder = JSONDecoder()
+        return try decoder.decode(D.self, from: data)
+    } catch {
+        fatalError("Couldn't parse models as \(D.self):\n\(error)")
+    }
+}

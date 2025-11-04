@@ -14,6 +14,13 @@ struct ContentView: View {
                 } label: {
                     Text("Load from Assets Catalog")
                 }
+
+                NavigationLink {
+                    resourcesPackagList
+                        .navigationTitle("From Resources Package")
+                } label: {
+                    Text("Load from Resources Package")
+                }
             }
             .navigationTitle("Load Options")
             .navigationBarTitleDisplayMode(.inline)
@@ -24,7 +31,17 @@ struct ContentView: View {
     @ViewBuilder
     private var assetCatalogList: some View {
         List {
-            ForEach(modelData.landmarks) { landmark in
+            ForEach(modelData.landmarksFromAssetsCatalog) { landmark in
+                Text(landmark.name)
+            }
+        }
+    }
+
+
+    @ViewBuilder
+    private var resourcesPackagList: some View {
+        List {
+            ForEach(modelData.landmarksFromResourcesPackage) { landmark in
                 Text(landmark.name)
             }
         }
