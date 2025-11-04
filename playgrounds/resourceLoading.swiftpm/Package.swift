@@ -8,13 +8,13 @@ import PackageDescription
 import AppleProductTypes
 
 let package = Package(
-    name: "resourceLoading",
+    name: "Resource Loading",
     platforms: [
-        .iOS("16.0")
+        .iOS("26.0")
     ],
     products: [
         .iOSApplication(
-            name: "resourceLoading",
+            name: "Resource Loading",
             targets: ["AppModule"],
             bundleIdentifier: "com.lopsae.resourceLoading",
             teamIdentifier: "BDK5WHBJY2",
@@ -40,5 +40,5 @@ let package = Package(
             path: "."
         )
     ],
-    swiftLanguageVersions: [.v6]
+    swiftLanguageVersions: [.version("6")]
 )
