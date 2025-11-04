@@ -14,7 +14,7 @@ class ModelData {
 
     var landmarksFromResourcesPackage: [Landmark] = loadFromResourcePackage()
     var landmarksFromAssetsCatalog: [Landmark] = loadFromAssetsCatalog()
-//    var landmarks: [Landmark] = load("localLandmarkData.json")
+    var landmarksFromTargetResources: [Landmark] = load("targetLandmarkData.json")
 
 }
 

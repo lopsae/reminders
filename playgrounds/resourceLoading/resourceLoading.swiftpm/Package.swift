@@ -43,7 +43,10 @@ let package = Package(
             dependencies: [
                 .product(name: "ResourcesPackage", package: "resourcespackage")
             ],
-            path: "."
+            path: ".",
+            resources: [
+                .process("resources")
+            ]
         )
     ]
 )
