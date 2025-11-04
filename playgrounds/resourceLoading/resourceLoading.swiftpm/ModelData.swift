@@ -19,6 +19,9 @@ class ModelData {
 }
 
 
+// To read from target resources, the resources files or folders have to be manually added to the
+// App Playground `Package.swift` file, which can be accessed through Finder. Xcode does not provide
+// access to the `Package.swift` file, but it seems to respect the manual changes done there.
 func load<D: Decodable>(_ filename: String) -> D {
     // Files in Assets.xcassets catalog cannot be read using Bundle.url
     guard let fileUrl = Bundle.main.url(forResource: filename, withExtension: nil)
@@ -42,6 +45,8 @@ func load<D: Decodable>(_ filename: String) -> D {
 }
 
 
+// To read from the Assets Catalog the asset has to be retrieved using `NSDataAsset` to access its
+// data.
 func loadFromAssetsCatalog<D: Decodable>() -> D {
     guard let dataAsset = NSDataAsset(name: "assetsLandmarkData", bundle: .main)
     else {
@@ -57,6 +62,8 @@ func loadFromAssetsCatalog<D: Decodable>() -> D {
 }
 
 
+// To read from a Package Dependency use the APIs defined by the package. Internally in the Package
+// the read is the same as reading from the target resources.
 func loadFromResourcePackage<D: Decodable>() -> D {
 
     let data: Data
