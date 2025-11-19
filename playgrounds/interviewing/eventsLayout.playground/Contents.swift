@@ -1,21 +1,25 @@
-//: A UIKit based Playground for presenting user interface
-  
-import UIKit
+//: # Event Layout
+//: You receive a collection of events, each event has a start and end date.
+//: Arrange all the events in a column layout, so that events are laid out vertically according to
+//: their start and end time, and horizontally they split the space with conflicting events.
+
+
 import PlaygroundSupport
+import SwiftUI
 
-class MyViewController : UIViewController {
-    override func loadView() {
-        let view = UIView()
-        view.backgroundColor = .white
 
-        let label = UILabel()
-        label.frame = CGRect(x: 150, y: 200, width: 200, height: 20)
-        label.text = "Hello World!"
-        label.textColor = .black
-        
-        view.addSubview(label)
-        self.view = view
+struct ContentView: View {
+
+    var body: some View {
+        VStack {
+            Text("Xcode playground")
+                .padding()
+            Image(systemName: "wrench.and.screwdriver")
+        }
+        .frame(width: 300, height: 500)
     }
+
 }
-// Present the view controller in the Live View window
-PlaygroundPage.current.liveView = MyViewController()
+
+
+PlaygroundPage.current.setLiveView(ContentView())
